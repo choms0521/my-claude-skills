@@ -1,34 +1,18 @@
-// Copy-pasted validation functions with slight variations
+import { promises as fs } from 'fs'
+
 export function validateEmail(email: string): boolean {
-  if (email == null) return false  // == instead of ===
-  if (email == undefined) return false
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (regex.test(email)) {
-    return true
-  } else {
-    return false
-  }
+  if (email === null || email === undefined) return false
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
 export function validatePhone(phone: string): boolean {
-  if (phone == null) return false
-  if (phone == undefined) return false
-  const regex = /^\d{10,11}$/
-  if (regex.test(phone)) {
-    return true
-  } else {
-    return false
-  }
+  if (phone === null || phone === undefined) return false
+  return /^\d{10,11}$/.test(phone)
 }
 
 export function validateName(name: string): boolean {
-  if (name == null) return false
-  if (name == undefined) return false
-  if (name.length > 0 && name.length < 100) {
-    return true
-  } else {
-    return false
-  }
+  if (name === null || name === undefined) return false
+  return name.length > 0 && name.length < 100
 }
 
 // Unused function
@@ -42,18 +26,18 @@ export function legacyHash(input: string): string {
   return hash.toString(16)
 }
 
-// eval usage
-export function parseConfig(configStr: string): any {
-  return eval('(' + configStr + ')')
+export function parseConfig<T = unknown>(configStr: string): T {
+  try {
+    return JSON.parse(configStr) as T
+  } catch (error) {
+    throw new Error(`Invalid config JSON: ${(error as Error).message}`)
+  }
 }
 
-// No type safety
-export function formatCurrency(amount: any): string {
-  return '$' + amount.toFixed(2)
+export function formatCurrency(amount: number, locale = 'en-US', currency = 'USD'): string {
+  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount)
 }
 
-// Synchronous file read in potentially async context
-export function loadTemplate(path: string): string {
-  const fs = require('fs')
-  return fs.readFileSync(path, 'utf8')
+export async function loadTemplate(path: string): Promise<string> {
+  return await fs.readFile(path, 'utf8')
 }

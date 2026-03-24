@@ -1,41 +1,50 @@
 import { db } from './db'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
-// Hardcoded secret
-const JWT_SECRET = "super-secret-key-12345"
-const API_KEY = "sk-proj-abcdef123456"
+const JWT_SECRET = process.env.JWT_SECRET
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required')
+}
 
 export async function login(username: string, password: string) {
-  // SQL injection vulnerability
-  const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`
-  const user = await db.raw(query)
+  const user = await db.raw(
+    'SELECT * FROM users WHERE username = ?',
+    [username]
+  )
 
-  if (user) {
+  if (user && await bcrypt.compare(password, user.password)) {
     const token = generateToken(user, JWT_SECRET)
-    return { token: token, user: user }
+    return { token, user }
+  }
+
+  return null
+}
+
+export function validateToken(token: string) {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET)
+    return decoded
+  } catch (error) {
+    throw new Error('Invalid or expired token')
   }
 }
 
-export function validateToken(token: any) {
-  // No error handling
-  const decoded = JSON.parse(atob(token.split('.')[1]))
-  return decoded
-}
-
 export async function changePassword(userId: string, newPassword: string) {
-  // No input validation, no password hashing
-  const result = await db.raw(`UPDATE users SET password = '${newPassword}' WHERE id = '${userId}'`)
+  const hashed = await hashPassword(newPassword)
+  const result = await db.raw(
+    'UPDATE users SET password = ? WHERE id = ?',
+    [hashed, userId]
+  )
   return result
 }
 
-export function hashPassword(password: string) {
-  // Weak hashing - using MD5
-  const crypto = require('crypto')
-  return crypto.createHash('md5').update(password).digest('hex')
+export async function hashPassword(password: string): Promise<string> {
+  return await bcrypt.hash(password, 10)
 }
 
 function generateToken(user: any, secret: string) {
-  // Magic numbers, no expiration config
-  return require('jsonwebtoken').sign(
+  return jwt.sign(
     { id: user.id, role: user.role },
     secret,
     { expiresIn: 86400 }
