@@ -72,8 +72,18 @@ Determine what code to review based on `{{ARGUMENTS}}`:
 | `--workspace` | All tracked code files: `git ls-files` filtered to code extensions |
 | `--staged` | Staged changes only: `git diff --cached` |
 
+**제외 규칙 (모든 스코프 모드에 적용):**
+- `.gitignore`에 포함된 파일은 제외 (`git ls-files`는 자동 제외, diff 모드에서도 무시)
+- `.`으로 시작하는 디렉토리(`.claude/`, `.git/`, `.omc/`, `.omx/` 등)의 모든 하위 파일 제외
+- 리뷰 결과 파일(`*-agent-llm-code-review.md`, `agent_code_review.md`) 제외
+
+**필터 적용 방법:**
+- `--workspace` 모드: `git ls-files | grep -v '^\.' | grep -E '\.(ts|js|tsx|jsx|py|go|rs|java|kt|swift|rb|php|c|cpp|h)$'`
+- Branch diff / `--staged` 모드: diff 결과에서 `.`으로 시작하는 경로 제거 — `git diff ... -- ':!.*'`
+- File paths 모드: 사용자 지정 파일 중 `.`으로 시작하는 경로는 경고 후 제외
+
 **Steps:**
-1. Run the appropriate git command via Bash to get the diff or file contents.
+1. Run the appropriate git command via Bash to get the diff or file contents, applying the exclusion rules above.
 2. **Size guard**: If total content exceeds ~50KB, split into file groups of max 10 files each.
 3. Store the diff/content for prompt construction.
 4. Detect base branch: `git rev-parse --verify main 2>/dev/null || echo master`
@@ -284,45 +294,79 @@ When merging, combine provider perspectives into a single item and note which pr
 
 ---
 
-### Stage 3: 액션 수행
+### Stage 3: 사용자 승인 후 액션 수행
 
-Read `agent_code_review.md` and process each item:
+Stage 2에서 생성된 `agent_code_review.md`를 기반으로, **코드를 자동 수정하지 않고** 사용자에게 리뷰 결과를 제시하고 승인을 받은 후에만 수정합니다.
 
-#### 3-1. FIX items → 코드 수정 후 항목 삭제
+#### 3-1. 리뷰 결과 요약 제시
 
-For each `[FIX]` item:
+사용자에게 아래 형식으로 리뷰 결과를 출력합니다:
+
+```
+## 리뷰 결과 요약
+
+### 🔧 수정 추천 (FIX) — N건
+2+ LLM이 동의한 이슈로, 수정을 권장합니다.
+
+| # | 파일 | Severity | 제목 | 리뷰어 |
+|---|------|----------|------|--------|
+| 1 | src/auth.ts:11 | CRITICAL | 평문 비밀번호 비교 | Claude, Codex, Gemini |
+| 2 | src/api.ts:37 | HIGH | Cache race condition | Claude, Gemini |
+...
+
+### ❌ 수정 불필요 (DISMISS) — N건
+오탐으로 판단되어 기각을 권장합니다.
+
+| # | 파일 | 제목 | 기각 사유 |
+|---|------|------|-----------|
+...
+
+### ❓ 판단 필요 (AMBIGUOUS) — N건
+1개 LLM만 지적했거나 수정 방향이 불명확한 항목입니다.
+
+| # | 파일 | Severity | 제목 | 리뷰어 |
+|---|------|----------|------|--------|
+...
+```
+
+> 각 항목의 상세 내용은 `agent_code_review.md`를 참조하도록 안내합니다.
+
+#### 3-2. 사용자 입력 대기
+
+사용자에게 다음과 같이 질문합니다:
+
+```
+수정할 항목 번호를 알려주세요.
+- 전체 수정: "all" 또는 "전부"
+- 선택 수정: "1, 2, 5" (쉼표로 구분)
+- 수정 안 함: "none" 또는 "없음"
+- 카테고리 수정: "fix만" (FIX 추천 항목만 전부 수정)
+```
+
+#### 3-3. 승인된 항목만 수정
+
+사용자가 선택한 항목에 대해서만:
 1. Read the target source file
 2. Apply the suggested fix using the Edit tool
-3. After ALL FIX edits are applied, run `lsp_diagnostics` on modified files
+3. After ALL approved edits are applied, run `lsp_diagnostics` on modified files
 4. Run project test suite if available (`npm test`, `pytest`, `go test ./...`, `cargo test`)
-5. If a fix breaks tests → revert that fix and reclassify as AMBIGUOUS with failure reason
-6. **Delete the [FIX] item from `agent_code_review.md`** (successfully applied)
-
-#### 3-2. DISMISS items → 항목 삭제
-
-For each `[DISMISS]` item:
-- **Delete the [DISMISS] item from `agent_code_review.md`** (no action needed)
-
-#### 3-3. AMBIGUOUS items → 사유 추가 후 남김
-
-For each `[AMBIGUOUS]` item:
-- Add Claude's analysis below the item: pros/cons of each approach, potential impact, recommended action
-- **Keep the item in `agent_code_review.md`** for human review
+5. If a fix breaks tests → revert that fix and report to user with failure reason
+6. **Delete successfully applied items from `agent_code_review.md`**
 
 #### 3-4. Update summary table
 
-After all actions, update the summary table to reflect final counts. The summary should now show:
-- FIX: 0 (all applied and removed)
-- DISMISS: 0 (all removed)
-- AMBIGUOUS: N (remaining items for human decision)
+After approved actions, update `agent_code_review.md`:
+- 적용된 항목: 삭제
+- 기각 확인된 항목: 삭제
+- 미처리 항목: 유지 (향후 참조용)
 
 #### 3-5. Report to user
 
 Output a concise summary:
-- Number of items auto-fixed and verified
+- Number of items fixed (user-approved)
 - Number of items dismissed
-- Number of AMBIGUOUS items remaining for human decision
-- Direct the user to `agent_code_review.md` for the remaining items
+- Number of items skipped (not selected by user)
+- Number of remaining items in `agent_code_review.md`
 
 ---
 
@@ -339,7 +383,7 @@ Output a concise summary:
 | Provider returns unstructured output | Claude manually extracts items from prose |
 | Diff too large (>50KB) | Batch into file groups, run multiple rounds, merge results |
 | Provider timeout (>5 min) | Proceed with available results, note in summary |
-| Auto-fix breaks tests | Revert fix, reclassify as AMBIGUOUS with failure details |
+| Approved fix breaks tests | Revert fix, report failure reason to user |
 | Individual review file write fails | Skip that LLM, continue with others |
 
 ---
