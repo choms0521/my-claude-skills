@@ -61,6 +61,8 @@ rm -f claude-agent-llm-code-review.md codex-agent-llm-code-review.md gemini-agen
 
 This ensures a clean slate and prevents stale results from contaminating the new review.
 
+> **CRITICAL: 재활용 금지 규칙** — Step 0 이후에는 이전 실행 결과를 절대 재활용하지 않습니다. 코드가 변경되지 않았더라도, 이전 리뷰 내용을 기억하더라도, 반드시 3개 리뷰 파일(`claude-agent-llm-code-review.md`, `codex-agent-llm-code-review.md`, `gemini-agent-llm-code-review.md`)을 모두 새로 생성해야 합니다. "이미 동일한 내용이다", "변경사항이 없다" 등의 이유로 파일 생성을 건너뛰는 것은 금지입니다.
+
 ---
 
 Determine what code to review based on `{{ARGUMENTS}}`:
@@ -175,7 +177,7 @@ While waiting for Codex/Gemini, Claude performs its own review:
 5. Check SOLID principles compliance
 6. Run `lsp_diagnostics` on modified files if LSP is available
 
-Write results to `claude-agent-llm-code-review.md` using the same `[REVIEW_ITEM]` format.
+**MUST** write results to `claude-agent-llm-code-review.md` using the same `[REVIEW_ITEM]` format. 이전 실행 결과와 동일하더라도 반드시 파일을 새로 작성합니다. 파일이 존재하지 않으면 Stage 2에서 Claude 리뷰가 누락됩니다.
 
 
 #### 1-4. Wait and normalize provider outputs
