@@ -22,10 +22,16 @@ argument-hint: "[file paths | --workspace | --staged | (no args = git branch dif
 
 ## Requirements
 
-- **Codex CLI**: `npm install -g @openai/codex` (uses `codex review` subcommand)
-- **Gemini CLI**: `npm install -g @google/gemini-cli`
-- `omc ask` command available (for Gemini dispatch)
-- CLI 일부 미설치 시 가용한 LLM만으로 계속 진행 (graceful degradation)
+- **oh-my-claudecode (OMC)**: `omc ask` 명령이 Codex/Gemini 디스패치에 사용됨
+  - 설치: `/oh-my-claudecode:omc-setup` 또는 [oh-my-claudecode GitHub](https://github.com/nicekid1/oh-my-claudecode) 참고
+  - OMC 미설치 시 → Claude 단독 리뷰로 fallback (graceful degradation)
+- **Codex CLI** (선택): `npm install -g @openai/codex`
+  - OMC 설치 + Codex CLI 설치 시 → `omc ask codex`로 리뷰 디스패치
+  - 미설치 시 → Codex 리뷰 건너뜀
+- **Gemini CLI** (선택): `npm install -g @google/gemini-cli`
+  - OMC 설치 + Gemini CLI 설치 시 → `omc ask gemini`로 리뷰 디스패치
+  - 미설치 시 → Gemini 리뷰 건너뜀
+- **최소 동작 조건**: Claude Code만 있으면 단독 리뷰가 가능 (1-LLM mode)
 
 ## Output Files
 
@@ -120,23 +126,33 @@ gemini --version 2>/dev/null && echo "gemini:available" || echo "gemini:unavaila
 
 #### 1-3. Dispatch ALL providers in parallel
 
-**Codex** — use native `codex review` subcommand (NOT `omc ask codex`):
+**Codex** — use `omc ask codex` with the structured review prompt:
 
 ```bash
-codex review --base main > codex-agent-llm-code-review.md 2>&1 &
+omc ask codex "You are an expert code reviewer specializing in security and performance.
+Review the following code with focus on: Security vulnerabilities, performance bottlenecks, algorithmic issues, injection risks.
+
+{STRUCTURED_OUTPUT_FORMAT from 1-1}
+
+Here is the code:
+{CODE_CONTENT}"
 ```
 
-> If `codex review` fails, fallback to `omc ask codex`. If that also fails, skip Codex.
+> Run in the background (`run_in_background: true`). If `omc ask codex` fails, skip Codex.
 
-**Gemini** — use `omc ask gemini` then copy artifact to project root:
+**Gemini** — use `omc ask gemini` with the structured review prompt:
 
 ```bash
-omc ask gemini "{gemini-review-prompt}"
-# After completion, copy the latest artifact:
-cp .omc/artifacts/ask/gemini-*.md gemini-agent-llm-code-review.md
+omc ask gemini "You are a senior code reviewer specializing in code clarity.
+Review the following code with focus on: Code clarity, alternative approaches, edge cases, documentation gaps, naming.
+
+{STRUCTURED_OUTPUT_FORMAT from 1-1}
+
+Here is the code:
+{CODE_CONTENT}"
 ```
 
-> Run Codex and Gemini in the background (`run_in_background: true`).
+> Run in the background (`run_in_background: true`). If `omc ask gemini` fails, skip Gemini.
 
 **Claude** — perform inline review directly (do NOT use `omc ask claude`):
 
@@ -151,7 +167,23 @@ While waiting for Codex/Gemini, Claude performs its own review:
 
 Write results to `claude-agent-llm-code-review.md` using the same `[REVIEW_ITEM]` format.
 
-**File format for ALL provider review files:**
+
+#### 1-4. Wait and normalize provider outputs
+
+Collect results from background tasks. If a provider times out (>5 min), proceed without it and note in the summary.
+
+**After each provider completes, Claude MUST normalize the output into the standard file format.**
+
+For Codex and Gemini, the raw output comes from `omc ask` artifacts (`.omc/artifacts/ask/`). These artifacts contain metadata, prompts, and raw text mixed together. Claude must:
+
+1. Find the latest artifact for each provider:
+   ```bash
+   ls -t .omc/artifacts/ask/codex-*.md 2>/dev/null | head -1
+   ls -t .omc/artifacts/ask/gemini-*.md 2>/dev/null | head -1
+   ```
+2. Read the artifact and extract `[REVIEW_ITEM]...[/REVIEW_ITEM]` blocks from the `## Raw output` section
+3. If the provider didn't follow the structured format, manually extract findings and convert them into `[REVIEW_ITEM]` blocks
+4. **Write the normalized result to the standard file** (`codex-agent-llm-code-review.md` or `gemini-agent-llm-code-review.md`) using the exact same format as `claude-agent-llm-code-review.md`:
 
 ```markdown
 # {Provider} 코드 리뷰
@@ -163,21 +195,11 @@ Write results to `claude-agent-llm-code-review.md` using the same `[REVIEW_ITEM]
 ## 리뷰 항목
 
 [REVIEW_ITEM]
-file: src/auth.ts
-line: 9
-severity: CRITICAL
-category: security
-title: login 함수의 SQL 인젝션 취약점
-description: 사용자 입력이 SQL 쿼리에 직접 삽입되어 공격자가 인증을 우회할 수 있습니다.
-suggestion: 파라미터화된 쿼리를 사용하세요: `db.raw('SELECT * FROM users WHERE username = ?', [username])`
-[/REVIEW_ITEM]
-
 ...
+[/REVIEW_ITEM]
 ```
 
-#### 1-4. Wait for all providers to complete
-
-Collect results from background tasks. If a provider times out (>5 min), proceed without it and note in the summary.
+> **핵심:** 3개 리뷰 파일은 반드시 동일한 포맷이어야 합니다. artifact의 메타데이터, 프롬프트 에코, MCP 로그 등은 모두 제거하고 순수 리뷰 항목만 포함합니다.
 
 ---
 
@@ -308,10 +330,12 @@ Output a concise summary:
 
 | Failure | Fallback |
 |---------|----------|
+| OMC unavailable | Skip Codex/Gemini dispatch, Claude-only review (1-LLM mode) |
 | Codex CLI unavailable | Skip Codex, continue with Claude + Gemini |
-| `codex review` fails | Fallback to `omc ask codex`, then skip if that also fails |
 | Gemini CLI unavailable | Skip Gemini, continue with Claude + Codex |
-| Both CLIs unavailable | Claude-only review (degrades to code-reviewer agent behavior) |
+| `omc ask codex` fails | Skip Codex, note in summary |
+| `omc ask gemini` fails | Skip Gemini, note in summary |
+| OMC + Both CLIs unavailable | Claude-only review (degrades to code-reviewer agent behavior) |
 | Provider returns unstructured output | Claude manually extracts items from prose |
 | Diff too large (>50KB) | Batch into file groups, run multiple rounds, merge results |
 | Provider timeout (>5 min) | Proceed with available results, note in summary |
