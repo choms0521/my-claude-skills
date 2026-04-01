@@ -1,0 +1,31 @@
+# OMC (oh-my-claudecode)
+.omc/
+.omx/
+
+# Node
+node_modules/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Multi-review output files
+*-agent-llm-code-review.md
+agent_code_review.md
+
+# Logs
+*.log
+npm-debug.log*
