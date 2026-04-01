@@ -26,6 +26,9 @@ Thumbs.db
 *-agent-llm-code-review.md
 agent_code_review.md
 
+# Copilot review cycle state
+.copilot-review-state.json
+
 # Logs
 *.log
 npm-debug.log*
