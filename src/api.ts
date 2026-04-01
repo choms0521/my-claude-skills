@@ -94,7 +94,7 @@ export class ApiHandler {
     }
 
     for (const item of order.items) {
-      if (!item?.quantity || item.quantity <= 0 || !item.price) continue
+      if (!item?.quantity || item.quantity <= 0 || item.price == null) continue
       const total = item.quantity * item.price
       this.logger.info(`Processing item: ${total}`)
     }

@@ -33,7 +33,7 @@ const TEMPLATE_DIR = path.resolve(__dirname, '../templates')
 
 export async function loadTemplate(templatePath: string): Promise<string> {
   const resolved = path.resolve(TEMPLATE_DIR, templatePath)
-  if (!resolved.startsWith(TEMPLATE_DIR)) {
+  if (!resolved.startsWith(TEMPLATE_DIR + path.sep) && resolved !== TEMPLATE_DIR) {
     throw new Error('Invalid template path: path traversal detected')
   }
   return await fs.readFile(resolved, 'utf8')

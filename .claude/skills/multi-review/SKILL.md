@@ -1,6 +1,6 @@
 ---
 name: multi-review
-description: Parallel multi-LLM code review (Claude + Codex + Gemini) with per-provider files, synthesis, and auto-fix
+description: Parallel multi-LLM code review (Claude + Codex + Gemini) with per-provider files, synthesis, and user-approved fix
 triggers: ["multi-review", "multi review", "3-way review", "tri-review"]
 argument-hint: "[file paths | --workspace | --staged | (no args = git branch diff)]"
 ---
@@ -81,7 +81,7 @@ Determine what code to review based on `{{ARGUMENTS}}`:
 
 **필터 적용 방법:**
 - `--workspace` 모드: `git ls-files | grep -vE '(^|/)\.' | grep -E '\.(ts|js|tsx|jsx|py|go|rs|java|kt|swift|rb|php|c|cpp|h)$'`
-- Branch diff / `--staged` 모드: diff 결과에서 `.`으로 시작하는 경로 제거 — `git diff ... -- ':!.*'`
+- Branch diff / `--staged` 모드: diff 결과에서 dot 디렉터리 제거 — `git diff ... -- ':!.*/' ':!.*'`
 - File paths 모드: 사용자 지정 파일 중 `.`으로 시작하는 경로는 경고 후 제외
 
 **Steps:**
