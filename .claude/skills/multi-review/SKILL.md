@@ -75,7 +75,7 @@ Determine what code to review based on `{{ARGUMENTS}}`:
 | `--staged` | Staged changes only: `git diff --cached` |
 
 **제외 규칙 (모든 스코프 모드에 적용):**
-- `.gitignore`에 포함된 파일은 제외 (`git ls-files`는 자동 제외, diff 모드에서도 무시)
+- `.gitignore`에 포함된 untracked 파일은 제외 (`git ls-files`는 tracked 파일만 나열하므로 별도 필터 불필요, `git diff`는 tracked 파일 간 비교이므로 자동 제외)
 - `.`으로 시작하는 디렉토리(`.claude/`, `.git/`, `.omc/`, `.omx/` 등)의 모든 하위 파일 제외
 - 리뷰 결과 파일(`*-agent-llm-code-review.md`, `agent_code_review.md`) 제외
 
@@ -155,7 +155,7 @@ PROMPT_EOF
 echo "" >> "$PROMPT_FILE"
 echo "Here is the code:" >> "$PROMPT_FILE"
 cat {CODE_FILES} >> "$PROMPT_FILE"
-omc ask codex "$(cat "$PROMPT_FILE")"
+omc ask codex "$(cat "$PROMPT_FILE")" < /dev/null
 rm -f "$PROMPT_FILE"
 ```
 
@@ -175,7 +175,7 @@ PROMPT_EOF
 echo "" >> "$PROMPT_FILE"
 echo "Here is the code:" >> "$PROMPT_FILE"
 cat {CODE_FILES} >> "$PROMPT_FILE"
-omc ask gemini "$(cat "$PROMPT_FILE")"
+omc ask gemini "$(cat "$PROMPT_FILE")" < /dev/null
 rm -f "$PROMPT_FILE"
 ```
 
