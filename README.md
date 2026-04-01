@@ -52,6 +52,8 @@ Claude Code에서 슬래시 커맨드로 호출:
 
 이 저장소의 스킬을 모든 프로젝트에서 사용하려면 `~/.claude/skills/`에 심볼릭 링크를 생성합니다.
 
+> **주의:** 대상 경로에 이미 일반 디렉토리가 존재하면 심볼릭 링크 생성이 실패합니다. 기존 디렉토리가 있다면 먼저 삭제(`rm -rf ~/.claude/skills/<스킬명>`)한 후 실행하세요.
+
 ### 전체 스킬 일괄 설치
 
 ```bash
@@ -59,18 +61,18 @@ Claude Code에서 슬래시 커맨드로 호출:
 mkdir -p ~/.claude/skills
 
 # 각 스킬을 심볼릭 링크로 연결
-ln -sf /path/to/my-claude-skills/.claude/skills/multi-review ~/.claude/skills/multi-review
-ln -sf /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.claude/skills/check-github-copilot-review
+ln -sfn /path/to/my-claude-skills/.claude/skills/multi-review ~/.claude/skills/multi-review
+ln -sfn /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.claude/skills/check-github-copilot-review
 ```
 
 ### 개별 스킬 설치
 
 ```bash
 # multi-review만 설치
-ln -sf /path/to/my-claude-skills/.claude/skills/multi-review ~/.claude/skills/multi-review
+ln -sfn /path/to/my-claude-skills/.claude/skills/multi-review ~/.claude/skills/multi-review
 
 # check-github-copilot-review만 설치
-ln -sf /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.claude/skills/check-github-copilot-review
+ln -sfn /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.claude/skills/check-github-copilot-review
 ```
 
 ### 스킬 파일 직접 복사 (심볼릭 링크 대신)
