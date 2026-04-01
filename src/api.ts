@@ -1,5 +1,13 @@
 import { Request, Response } from 'express'
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: { id: string; role: string }
+    }
+  }
+}
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, '&amp;')
@@ -9,9 +17,11 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#039;')
 }
 
+const MAX_CACHE_SIZE = 1000
+
 // God object - handles everything
 export class ApiHandler {
-  private cache: Record<string, Promise<unknown>> = {}
+  private cache: Map<string, Promise<unknown>> = new Map()
   private db: any
   private logger: any
 
@@ -34,13 +44,25 @@ export class ApiHandler {
   }
 
   async getData(req: Request, res: Response) {
-    const key = req.query.key as string
-
-    if (!this.cache[key]) {
-      this.cache[key] = this.db.findData(key)
+    const key = typeof req.query.key === 'string' ? req.query.key : ''
+    if (!key) {
+      return res.status(400).json({ error: 'Missing or invalid query parameter: key' })
     }
 
-    const data = await this.cache[key]
+    if (!this.cache.has(key)) {
+      if (this.cache.size >= MAX_CACHE_SIZE) {
+        const firstKey = this.cache.keys().next().value
+        if (firstKey !== undefined) {
+          this.cache.delete(firstKey)
+        }
+      }
+      this.cache.set(key, this.db.findData(key).catch((err: Error) => {
+        this.cache.delete(key)
+        throw err
+      }))
+    }
+
+    const data = await this.cache.get(key)
     res.json(data)
   }
 

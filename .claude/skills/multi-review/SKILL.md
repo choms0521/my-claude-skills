@@ -5,7 +5,7 @@ triggers: ["multi-review", "multi review", "3-way review", "tri-review"]
 argument-hint: "[file paths | --workspace | --staged | (no args = git branch diff)]"
 ---
 
-# Multi-Review v2 - Parallel Multi-LLM Code Review
+# Multi-Review v3 - Parallel Multi-LLM Code Review
 
 3개 LLM(Claude, Codex, Gemini)이 각각 독립 리뷰 파일을 생성하고, Claude가 종합하여 코드 수정/기각/사람 판단 대기를 수행하는 3-Stage 파이프라인.
 
@@ -80,7 +80,7 @@ Determine what code to review based on `{{ARGUMENTS}}`:
 - 리뷰 결과 파일(`*-agent-llm-code-review.md`, `agent_code_review.md`) 제외
 
 **필터 적용 방법:**
-- `--workspace` 모드: `git ls-files | grep -v '^\.' | grep -E '\.(ts|js|tsx|jsx|py|go|rs|java|kt|swift|rb|php|c|cpp|h)$'`
+- `--workspace` 모드: `git ls-files | grep -vE '(^|/)\.' | grep -E '\.(ts|js|tsx|jsx|py|go|rs|java|kt|swift|rb|php|c|cpp|h)$'`
 - Branch diff / `--staged` 모드: diff 결과에서 `.`으로 시작하는 경로 제거 — `git diff ... -- ':!.*'`
 - File paths 모드: 사용자 지정 파일 중 `.`으로 시작하는 경로는 경고 후 제외
 
@@ -132,22 +132,31 @@ If no issues found, output: [NO_ISSUES_FOUND]
 #### 1-2. Check CLI availability
 
 ```bash
+command -v omc >/dev/null 2>&1 && echo "omc:available" || echo "omc:unavailable"
 codex --version 2>/dev/null && echo "codex:available" || echo "codex:unavailable"
 gemini --version 2>/dev/null && echo "gemini:available" || echo "gemini:unavailable"
 ```
+
+> `omc`가 unavailable이면 즉시 Claude 단독 리뷰(1-LLM mode)로 전환합니다.
 
 #### 1-3. Dispatch ALL providers in parallel
 
 **Codex** — use `omc ask codex` with the structured review prompt:
 
 ```bash
-omc ask codex "You are an expert code reviewer specializing in security and performance.
+# 프롬프트를 임시 파일로 저장하여 셸 이스케이프/길이 제한 문제를 방지
+PROMPT_FILE=$(mktemp)
+cat > "$PROMPT_FILE" <<'PROMPT_EOF'
+You are an expert code reviewer specializing in security and performance.
 Review the following code with focus on: Security vulnerabilities, performance bottlenecks, algorithmic issues, injection risks.
 
 {STRUCTURED_OUTPUT_FORMAT from 1-1}
-
-Here is the code:
-{CODE_CONTENT}"
+PROMPT_EOF
+echo "" >> "$PROMPT_FILE"
+echo "Here is the code:" >> "$PROMPT_FILE"
+cat {CODE_FILES} >> "$PROMPT_FILE"
+omc ask codex "$(cat "$PROMPT_FILE")"
+rm -f "$PROMPT_FILE"
 ```
 
 > Run in the background (`run_in_background: true`). If `omc ask codex` fails, skip Codex.
@@ -155,13 +164,19 @@ Here is the code:
 **Gemini** — use `omc ask gemini` with the structured review prompt:
 
 ```bash
-omc ask gemini "You are a senior code reviewer specializing in code clarity.
+# 프롬프트를 임시 파일로 저장하여 셸 이스케이프/길이 제한 문제를 방지
+PROMPT_FILE=$(mktemp)
+cat > "$PROMPT_FILE" <<'PROMPT_EOF'
+You are a senior code reviewer specializing in code clarity.
 Review the following code with focus on: Code clarity, alternative approaches, edge cases, documentation gaps, naming.
 
 {STRUCTURED_OUTPUT_FORMAT from 1-1}
-
-Here is the code:
-{CODE_CONTENT}"
+PROMPT_EOF
+echo "" >> "$PROMPT_FILE"
+echo "Here is the code:" >> "$PROMPT_FILE"
+cat {CODE_FILES} >> "$PROMPT_FILE"
+omc ask gemini "$(cat "$PROMPT_FILE")"
+rm -f "$PROMPT_FILE"
 ```
 
 > Run in the background (`run_in_background: true`). If `omc ask gemini` fails, skip Gemini.
