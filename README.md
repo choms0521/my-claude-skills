@@ -21,7 +21,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | 스킬 | 설명 | 사용법 |
 |------|------|--------|
 | **multi-review** | 3개 LLM(Claude, Codex, Gemini) 병렬 코드 리뷰 + 종합 + 사용자 승인 후 수정 | `/multi-review [파일 \| --workspace \| --staged]` |
-| **check-github-copilot-review** | GitHub Copilot 리뷰 코멘트 자동 처리 (코드 수정/기각 + 댓글 + resolve + 커밋·푸시) | `/check-github-copilot-review [PR URL \| PR번호]` |
+| **check-github-copilot-review** | GitHub Copilot 리뷰 코멘트 자동 처리 (코드 수정/기각 + 댓글 + resolve + 커밋·푸시, 최대 3사이클 자동 폴링) | `/check-github-copilot-review [PR URL \| PR번호] [--reset]` |
 
 ## 스킬 사용
 
@@ -40,12 +40,16 @@ Claude Code에서 슬래시 커맨드로 호출:
 # 스테이징된 변경만 리뷰
 /multi-review --staged
 
-# 현재 브랜치 PR의 Copilot 리뷰 처리
+# 현재 브랜치 PR의 Copilot 리뷰 처리 (사이클 1부터 시작, 최대 3사이클 자동 폴링)
 /check-github-copilot-review
 
 # 특정 PR의 Copilot 리뷰 처리
 /check-github-copilot-review 123
 /check-github-copilot-review https://github.com/owner/repo/pull/456
+
+# 사이클 초기화 후 처음부터 다시 시작
+/check-github-copilot-review --reset
+/check-github-copilot-review 123 --reset
 ```
 
 ## 로컬 전역 설치
