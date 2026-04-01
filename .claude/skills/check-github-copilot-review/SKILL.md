@@ -59,7 +59,7 @@ PR이 `OPEN` 상태인지 확인합니다. closed/merged PR은 경고 후 중단
 GitHub API를 사용하여 Copilot이 남긴 리뷰 코멘트를 가져옵니다:
 
 ```bash
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments --paginate --jq '.[] | select(.user.login == "copilot-pull-request-reviewer[bot]" or .user.login == "github-copilot[bot]" or (.user.type == "Bot" and (.user.login | test("copilot"; "i")))) | {id, path, line, side, body, in_reply_to_id, subject_type, diff_hunk, original_line, position}'
+gh api repos/{owner}/{repo}/pulls/{pr_number}/comments --paginate --jq '[.[] | select((.user.login == "copilot-pull-request-reviewer[bot]" or .user.login == "github-copilot[bot]" or (.user.type == "Bot" and (.user.login | test("copilot"; "i")))) and .in_reply_to_id == null) | {id, path, line, side, body, in_reply_to_id, subject_type, diff_hunk, original_line, position}]'
 ```
 
 > **필터링**: `in_reply_to_id`가 null인 최상위 코멘트만 처리 대상으로 삼습니다 (이미 답글이 달린 스레드의 원본).
@@ -117,7 +117,7 @@ gh api repos/{owner}/{repo}/pulls/{pr_number}/comments --paginate --jq '.[] | se
    gh api repos/{owner}/{repo}/pulls/{pr_number}/comments -f body="수정했습니다. {변경 내용 요약}" -f in_reply_to={comment_id}
    ```
 3. **Resolve**: 해당 리뷰 스레드를 resolve합니다
-   - 먼저 comment_id로 해당 코멘트가 속한 review thread의 node_id를 가져옵니다:
+   - 먼저 모든 review thread를 가져와서 comment_id → thread_id 매핑을 구축합니다. 100건 이상이면 `after` 커서로 pagination합니다:
    ```bash
    gh api graphql -f query='
    query($owner: String!, $repo: String!, $pr: Int!) {
@@ -133,11 +133,16 @@ gh api repos/{owner}/{repo}/pulls/{pr_number}/comments --paginate --jq '.[] | se
                }
              }
            }
+           pageInfo {
+             hasNextPage
+             endCursor
+           }
          }
        }
      }
    }' -f owner="{owner}" -f repo="{repo}" -F pr={pr_number}
    ```
+   - 결과에서 `comments.nodes[0].databaseId`가 대상 comment_id와 일치하는 thread의 `id`를 찾습니다.
    - 그런 다음 thread를 resolve합니다:
    ```bash
    gh api graphql -f query='
@@ -237,7 +242,7 @@ git push origin {head_branch_name}
 | 댓글 작성 실패 | 재시도 1회, 실패 시 건너뛰고 보고 |
 | Resolve 실패 | 경고 출력 후 계속 진행 (수동 resolve 안내) |
 | 푸시 실패 (권한 등) | 에러 보고, 로컬 커밋은 유지 |
-| GraphQL API 실패 | REST API fallback 시도, 실패 시 resolve 건너뜀 |
+| GraphQL API 실패 | resolve 건너뜀 (리뷰 스레드 resolve는 GraphQL만 지원) |
 
 ---
 
