@@ -11,7 +11,7 @@ GitHub Copilot이 PR에 남긴 리뷰 코멘트를 자동으로 처리하는 스
 수정이 필요한 항목은 코드를 직접 고치고 댓글+resolve, 불필요한 항목은 사유 댓글+resolve 후 커밋·푸시합니다.
 
 **사이클 지원:** 수정 → 푸시 → Copilot 재리뷰 → 재수정 흐름을 최대 3회까지 반복할 수 있습니다.
-각 사이클은 사용자가 수동으로 재호출하며, 이전에 resolve된 코멘트는 자동으로 건너뜁니다.
+사이클은 기본적으로 자동 폴링을 통해 다음 단계로 진행되며, 폴링 없이 즉시 다시 실행하고 싶을 때만 사용자가 수동으로 재호출합니다. 이전에 resolve된 코멘트는 자동으로 건너뜁니다.
 
 ## When to Use
 
@@ -131,10 +131,10 @@ gh api repos/{owner}/{repo}/pulls/{pr_number}/comments --paginate --jq '[.[] | s
 
 ```bash
 gh api graphql -f query='
-query($owner: String!, $repo: String!, $pr: Int!) {
+query($owner: String!, $repo: String!, $pr: Int!, $cursor: String) {
   repository(owner: $owner, name: $repo) {
     pullRequest(number: $pr) {
-      reviewThreads(first: 100) {
+      reviewThreads(first: 100, after: $cursor) {
         nodes {
           id
           isResolved
@@ -142,11 +142,17 @@ query($owner: String!, $repo: String!, $pr: Int!) {
             nodes { databaseId }
           }
         }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
       }
     }
   }
 }' -f owner="{owner}" -f repo="{repo}" -F pr={pr_number}
 ```
+
+100건 이상이면 `pageInfo.hasNextPage`를 확인하고 `endCursor`를 `$cursor`로 전달하여 반복 조회합니다.
 
 resolve된 thread의 `databaseId`를 수집하고, 해당 comment_id를 가진 코멘트를 처리 대상에서 제외합니다.
 
@@ -344,7 +350,7 @@ git push origin {head_branch_name}
 
    코드가 푸시되었습니다. Copilot의 재리뷰를 30초 간격으로 확인합니다 (최대 5분).
    ```
-2. **폴링 방법**: Stage 1-3과 동일한 API를 사용하여 Copilot 코멘트를 조회하고, `processed_comment_ids`에 없는 미resolve 코멘트가 1건 이상이면 "새 리뷰 있음"으로 판단합니다
+2. **폴링 방법**: Stage 1-3의 REST API를 사용하여 Copilot 코멘트를 조회하고, `processed_comment_ids`에 없는 **새로운 최상위 코멘트**(`in_reply_to_id == null`)가 1건 이상이면 "새 리뷰 있음"으로 판단합니다
 3. **새 코멘트 발견 시**:
    ```
    ✅ 새로운 Copilot 코멘트 {N}건 발견! 다음 사이클(사이클 {cycle+1}/3)을 자동으로 시작합니다.
@@ -380,7 +386,7 @@ git push origin {head_branch_name}
 사이클을 초기화하고 다시 시작할까요? (Y/N)
 ```
 
-- **Y**: 상태를 초기화(cycle=0)하고 조건 B의 폴링 로직을 시작합니다. 새 코멘트 발견 시 cycle=1부터 재시작.
+- **Y**: 상태를 초기화하고 cycle=1로 설정한 뒤, 바로 Stage 1부터 새 사이클을 시작합니다.
 - **N**: 작업 종료
 
 ---
