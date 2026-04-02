@@ -359,7 +359,7 @@ git push origin {head_branch_name}
    ```
    ### Copilot 재리뷰 대기 중...
 
-   코드가 푸시되었습니다. Copilot에 리뷰를 요청했습니다. 30초 간격으로 확인합니다 (최대 7분).
+   코드가 푸시되었습니다. Copilot에 리뷰 요청을 시도했습니다. 30초 간격으로 확인합니다 (최대 7분).
    ```
 3. **폴링 방법**: Stage 1-3의 REST API를 사용하여 Copilot 코멘트를 조회하고, `processed_comment_ids`에 없는 **새로운 최상위 코멘트**(`in_reply_to_id == null`)가 1건 이상이면 "새 리뷰 있음"으로 판단합니다
 4. **새 코멘트 발견 시**:
