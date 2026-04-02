@@ -103,8 +103,8 @@ cp -r /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.cl
 
 - [Claude Code](https://claude.com/claude-code) CLI
 - [GitHub CLI](https://cli.github.com/) (`gh`) — check-github-copilot-review 스킬에 필수
-- (선택) OMC CLI — Codex/Gemini 디스패치에 사용 (`omc ask`)
-- (선택) [Codex CLI](https://github.com/openai/codex) — `npm install -g @openai/codex` (OMC를 통해 호출)
+- (선택) [Codex CLI](https://github.com/openai/codex) — `npm install -g @openai/codex` (`codex review`로 직접 호출)
+- (선택) OMC CLI — Gemini 디스패치에 사용 (`omc ask gemini`)
 - (선택) [Gemini CLI](https://github.com/google/gemini-cli) — `npm install -g @google/gemini-cli` (OMC를 통해 호출)
 
-OMC 또는 Codex/Gemini CLI가 미설치된 경우 Claude만 사용하여 동작합니다.
+Codex/Gemini CLI가 미설치된 경우 Claude만 사용하여 동작합니다.
