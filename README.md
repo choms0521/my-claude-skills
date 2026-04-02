@@ -52,7 +52,20 @@ Claude Code에서 슬래시 커맨드로 호출:
 /check-github-copilot-review 123 --reset
 ```
 
-## 로컬 전역 설치
+## 설치
+
+### Claude Code로 바로 설치
+
+Claude Code에서 아래 프롬프트를 입력하면 스킬이 즉시 설치됩니다:
+
+```
+이 저장소(https://github.com/choms0521/my-claude-skills)의 .claude/skills/ 하위 스킬들을
+~/.claude/skills/에 심볼릭 링크로 설치해줘
+```
+
+저장소를 먼저 클론한 뒤, Claude Code가 알아서 심볼릭 링크를 생성하고 설치를 완료합니다.
+
+### 수동 설치
 
 이 저장소의 스킬을 모든 프로젝트에서 사용하려면 `~/.claude/skills/`에 심볼릭 링크를 생성합니다.
 
