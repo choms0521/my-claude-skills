@@ -52,9 +52,33 @@ Claude Code에서 슬래시 커맨드로 호출:
 /check-github-copilot-review 123 --reset
 ```
 
-## 로컬 전역 설치
+## 설치
 
-이 저장소의 스킬을 모든 프로젝트에서 사용하려면 `~/.claude/skills/`에 심볼릭 링크를 생성합니다.
+### Claude Code로 바로 설치
+
+Claude Code에서 아래 프롬프트를 입력하면 스킬이 즉시 설치됩니다.
+
+**심볼릭 링크 방식** — `git pull`로 항상 최신 상태 유지:
+
+```
+이 저장소(https://github.com/choms0521/my-claude-skills)를 클론하고,
+.claude/skills/ 하위 스킬들을 ~/.claude/skills/에 심볼릭 링크로 설치해줘
+```
+
+**복사 방식** — 독립적으로 사용, 원본 저장소 불필요:
+
+```
+이 저장소(https://github.com/choms0521/my-claude-skills)의 .claude/skills/ 하위 스킬들을
+~/.claude/skills/에 복사해서 설치해줘
+```
+
+Claude Code가 저장소 클론부터 설치까지 알아서 처리합니다.
+
+> **참고:** 심볼릭 링크 방식은 `~/.claude/skills/`에 동일 이름의 디렉토리가 이미 있으면 실패할 수 있습니다. 기존 디렉토리를 먼저 삭제하도록 프롬프트에 추가하거나, Claude Code가 안내할 때 확인하세요.
+
+### 수동 설치
+
+이 저장소의 스킬을 모든 프로젝트에서 사용하려면 `~/.claude/skills/`에 심볼릭 링크를 생성하거나 직접 복사합니다.
 
 > **주의:** 대상 경로에 이미 일반 디렉토리가 존재하면 심볼릭 링크 생성이 실패합니다. 기존 디렉토리가 있다면 먼저 삭제(`rm -rf ~/.claude/skills/<스킬명>`)한 후 실행하세요.
 
