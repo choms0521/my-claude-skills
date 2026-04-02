@@ -345,10 +345,14 @@ git push origin {head_branch_name}
 
 자동 폴링을 시작합니다:
 
-1. **Copilot 리뷰 요청**: 푸시 직후, GitHub PR에 Copilot 리뷰를 요청하는 코멘트를 남깁니다
+1. **Copilot 리뷰 요청**: 푸시 직후, GitHub API로 Copilot에게 리뷰를 요청합니다
    ```bash
-   gh pr comment {pr_number} --body "@github-copilot 코드 변경사항을 리뷰해주세요."
+   gh api repos/{owner}/{repo}/pulls/{pr_number}/requested_reviewers \
+     -f 'reviewers[]=copilot-pull-request-reviewer[bot]' || \
+   gh api repos/{owner}/{repo}/pulls/{pr_number}/requested_reviewers \
+     -f 'reviewers[]=github-copilot[bot]'
    ```
+   > 리뷰 요청 API가 실패하면 (Copilot이 해당 repo에서 활성화되지 않은 경우 등) 무시하고 폴링을 계속합니다.
 2. **폴링 시작**: 30초 간격으로 최대 7분(14회) 동안 새 Copilot 리뷰 코멘트를 확인합니다
    ```
    ### Copilot 재리뷰 대기 중...
