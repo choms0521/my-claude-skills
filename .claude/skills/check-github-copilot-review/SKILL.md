@@ -105,7 +105,7 @@ PR을 찾지 못하면 사용자에게 알리고 중단합니다.
 #### 1-2. PR 정보 확인
 
 ```bash
-gh pr view {PR_NUMBER} --json number,url,title,headRefName,baseRefName,state
+gh pr view {pr_number} --json number,url,title,headRefName,baseRefName,state
 ```
 
 PR이 `OPEN` 상태인지 확인합니다. closed/merged PR은 경고 후 중단.
@@ -347,7 +347,7 @@ git push origin {head_branch_name}
 
 1. **Copilot 리뷰 요청**: 푸시 직후, GitHub PR에 Copilot 리뷰를 요청하는 코멘트를 남깁니다
    ```bash
-   gh pr comment {pr_number} --body "@copilot 코드 변경사항을 리뷰해주세요."
+   gh pr comment {pr_number} --body "@github-copilot 코드 변경사항을 리뷰해주세요."
    ```
 2. **폴링 시작**: 30초 간격으로 최대 7분(14회) 동안 새 Copilot 리뷰 코멘트를 확인합니다
    ```
