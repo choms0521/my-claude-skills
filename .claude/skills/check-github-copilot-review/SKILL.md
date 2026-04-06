@@ -361,13 +361,19 @@ git push origin {head_branch_name}
 
    코드가 푸시되었습니다. Copilot에 리뷰 요청을 시도했습니다. 30초 간격으로 확인합니다 (최대 7분).
    ```
-3. **폴링 방법**: Stage 1-3의 REST API를 사용하여 Copilot 코멘트를 조회하고, `processed_comment_ids`에 없는 **새로운 최상위 코멘트**(`in_reply_to_id == null`)가 1건 이상이면 "새 리뷰 있음"으로 판단합니다
+3. **폴링 방법**: 매 폴링마다 두 가지를 동시에 확인합니다:
+   - **코멘트 확인**: Stage 1-3의 REST API를 사용하여 Copilot 코멘트를 조회하고, `processed_comment_ids`에 없는 **새로운 최상위 코멘트**(`in_reply_to_id == null`)가 1건 이상이면 "새 리뷰 있음"으로 판단합니다
+   - **리뷰 완료 확인**: `gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews`에서 Copilot(`copilot-pull-request-reviewer[bot]` 또는 `github-copilot[bot]`)의 리뷰를 조회하되, **`submitted_at > last_push_at`를 만족하는 리뷰** 또는 **`commit_id == latest_head_sha`인 리뷰**만 "이번 푸시 이후의 새 리뷰"로 인정합니다. 이전 사이클의 오래된 리뷰가 걸리지 않도록 정밀 필터를 적용합니다. 조건을 만족하는 리뷰가 있으면 Copilot이 이번 푸시에 대한 검토를 완료한 것으로 보고 (코멘트 0건이라도) 폴링을 종료합니다.
 4. **새 코멘트 발견 시**:
    ```
    ✅ 새로운 Copilot 코멘트 {N}건 발견! 다음 사이클(사이클 {cycle+1}/3)을 자동으로 시작합니다.
    ```
    Stage 1로 돌아가 다음 사이클을 자동 실행합니다.
-5. **7분 경과, 새 코멘트 없음**: 사용자에게 계속 여부를 묻습니다
+5. **리뷰 완료 + 코멘트 없음**: Copilot이 리뷰를 완료했지만 추가 코멘트가 없는 경우 즉시 종료합니다:
+   ```
+   ✅ Copilot이 재리뷰를 완료했습니다. 추가 지적 사항이 없습니다.
+   ```
+6. **7분 경과, 새 코멘트 없음**: 사용자에게 계속 여부를 묻습니다
    ```
    ⏰ 7분간 새로운 Copilot 코멘트가 발견되지 않았습니다.
 

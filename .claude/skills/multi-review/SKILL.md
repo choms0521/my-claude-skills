@@ -182,9 +182,31 @@ rm -f "$PROMPT_FILE"
 
 > Run in the background (`run_in_background: true`). If `omc ask gemini` fails, skip Gemini.
 
-**Claude** — perform inline review directly (do NOT use `omc ask claude`):
+**Claude** — OMC 가용 시 `oh-my-claudecode:code-reviewer` 에이전트에 위임, 미가용 시 인라인 리뷰:
 
-While waiting for Codex/Gemini, Claude performs its own review:
+While waiting for Codex/Gemini, Claude 리뷰를 수행합니다.
+
+**OMC 가용 시 (권장):**
+
+Agent 도구로 `oh-my-claudecode:code-reviewer` 에이전트를 spawning하여 리뷰를 위임합니다:
+
+```
+Agent(
+  subagent_type: "oh-my-claudecode:code-reviewer",
+  prompt: "다음 코드 변경사항을 리뷰해주세요. Logic correctness, error handling, SOLID principles, spec compliance, anti-patterns에 집중하세요.
+
+{STRUCTURED_OUTPUT_FORMAT from 1-1}
+
+{CODE_FILES}",
+  run_in_background: true
+)
+```
+
+> 에이전트 완료 후 결과를 `claude-agent-llm-code-review.md`에 `[REVIEW_ITEM]` 포맷으로 정규화하여 저장합니다. 에이전트가 구조화된 포맷을 따르지 않은 경우, Claude가 수동으로 추출하여 변환합니다.
+
+**OMC 미가용 시 (fallback — 인라인 리뷰):**
+
+Claude가 직접 리뷰를 수행합니다:
 
 1. Read the diff/files
 2. Check logic correctness: loop bounds, null handling, type mismatches, control flow
