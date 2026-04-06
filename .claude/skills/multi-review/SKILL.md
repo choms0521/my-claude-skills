@@ -197,7 +197,7 @@ Agent(
 
 {STRUCTURED_OUTPUT_FORMAT from 1-1}
 
-{CODE_CONTENT}",
+{CODE_FILES}",
   run_in_background: true
 )
 ```

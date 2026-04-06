@@ -128,7 +128,7 @@ extract_links() {
     URLS+=("$url")
   done < <(printf '%s\n' "$desc" \
     | grep -Eo 'https?://[^[:space:])>]+' \
-    | sed 's/[",.]$//' \
+    | sed 's/[".,]$//' \
     | grep -Ei '^https?://([[:alnum:]-]+\.)?(youtube\.com|music\.youtube\.com|youtu\.be)(/|$)' \
     | awk '!seen[$0]++')
 
@@ -141,6 +141,11 @@ extract_links() {
 }
 
 if [[ -n "$EXTRACT_FROM" ]]; then
+  if [[ ${#URLS[@]} -gt 0 ]]; then
+    echo "[ERROR] --extract-from-description cannot be combined with positional URL arguments." >&2
+    usage
+    exit 1
+  fi
   extract_links "$EXTRACT_FROM"
 fi
 
