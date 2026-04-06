@@ -363,7 +363,7 @@ git push origin {head_branch_name}
    ```
 3. **폴링 방법**: 매 폴링마다 두 가지를 동시에 확인합니다:
    - **코멘트 확인**: Stage 1-3의 REST API를 사용하여 Copilot 코멘트를 조회하고, `processed_comment_ids`에 없는 **새로운 최상위 코멘트**(`in_reply_to_id == null`)가 1건 이상이면 "새 리뷰 있음"으로 판단합니다
-   - **리뷰 완료 확인**: `gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews`에서 `last_push_at` 이후 Copilot(`copilot-pull-request-reviewer[bot]` 또는 `github-copilot[bot]`)의 새 리뷰가 있는지 확인합니다. 리뷰가 존재하면 Copilot이 검토를 완료한 것이므로 (코멘트 0건이라도) 폴링을 종료합니다.
+   - **리뷰 완료 확인**: `gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews`에서 Copilot(`copilot-pull-request-reviewer[bot]` 또는 `github-copilot[bot]`)의 리뷰를 조회하되, **`submitted_at > last_push_at`를 만족하는 리뷰** 또는 **`commit_id == latest_head_sha`인 리뷰**만 "이번 푸시 이후의 새 리뷰"로 인정합니다. 이전 사이클의 오래된 리뷰가 걸리지 않도록 정밀 필터를 적용합니다. 조건을 만족하는 리뷰가 있으면 Copilot이 이번 푸시에 대한 검토를 완료한 것으로 보고 (코멘트 0건이라도) 폴링을 종료합니다.
 4. **새 코멘트 발견 시**:
    ```
    ✅ 새로운 Copilot 코멘트 {N}건 발견! 다음 사이클(사이클 {cycle+1}/3)을 자동으로 시작합니다.

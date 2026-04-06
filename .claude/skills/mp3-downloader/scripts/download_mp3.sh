@@ -21,11 +21,21 @@ URLS=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --out)
-      OUT_DIR="${2:-}"
+      if [[ -z "${2:-}" || "${2:-}" == --* ]]; then
+        echo "[ERROR] --out requires a directory argument." >&2
+        usage
+        exit 1
+      fi
+      OUT_DIR="$2"
       shift 2
       ;;
     --extract-from-description)
-      EXTRACT_FROM="${2:-}"
+      if [[ -z "${2:-}" || "${2:-}" == --* ]]; then
+        echo "[ERROR] --extract-from-description requires a URL argument." >&2
+        usage
+        exit 1
+      fi
+      EXTRACT_FROM="$2"
       shift 2
       ;;
     -h|--help)
@@ -97,6 +107,9 @@ ensure_cmd() {
 ensure_cmd yt-dlp yt-dlp
 ensure_cmd ffmpeg ffmpeg
 
+# Expand leading tilde to $HOME (tilde doesn't expand inside quotes)
+OUT_DIR="${OUT_DIR/#\~/$HOME}"
+
 mkdir -p "$OUT_DIR"
 
 extract_links() {
@@ -109,18 +122,22 @@ extract_links() {
     exit 1
   fi
 
-  # Extract unique URLs from description
-  mapfile -t URLS < <(printf '%s\n' "$desc" \
+  # Extract unique YouTube/YouTube Music URLs from description (bash 3.2 compatible)
+  URLS=()
+  while IFS= read -r url; do
+    URLS+=("$url")
+  done < <(printf '%s\n' "$desc" \
     | grep -Eo 'https?://[^[:space:])>]+' \
     | sed 's/[",.]$//' \
+    | grep -Ei '^https?://([[:alnum:]-]+\.)?(youtube\.com|music\.youtube\.com|youtu\.be)(/|$)' \
     | awk '!seen[$0]++')
 
   if [[ ${#URLS[@]} -eq 0 ]]; then
-    echo "[ERROR] No URLs found in description: $video_url" >&2
+    echo "[ERROR] No YouTube URLs found in description: $video_url" >&2
     exit 1
   fi
 
-  echo "[INFO] Extracted ${#URLS[@]} links from description."
+  echo "[INFO] Extracted ${#URLS[@]} YouTube link(s) from description."
 }
 
 if [[ -n "$EXTRACT_FROM" ]]; then
