@@ -36,5 +36,5 @@ bash scripts/download_mp3.sh --extract-from-description <video_url> --out "$HOME
 
 ## Notes
 
-- If auto-install fails due to permissions, ask user to run the printed install command manually.
+- If auto-install fails due to permissions or package manager issues, ask the user to install `yt-dlp` and `ffmpeg` manually, then rerun the script.
 - Some YouTube challenge warnings may appear; continue if downloads still succeed.
