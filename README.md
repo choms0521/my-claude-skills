@@ -22,6 +22,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 |------|------|--------|
 | **multi-review** | 3개 LLM(Claude, Codex, Gemini) 병렬 코드 리뷰 + 종합 + 사용자 승인 후 수정 | `/multi-review [파일 \| --workspace \| --staged]` |
 | **check-github-copilot-review** | GitHub Copilot 리뷰 코멘트 자동 처리 (코드 수정/기각 + 댓글 + resolve + 커밋·푸시, 최대 3사이클 자동 폴링) | `/check-github-copilot-review [PR URL \| PR번호] [--reset]` |
+| **mp3-downloader** | YouTube/YouTube Music에서 MP3 다운로드 (yt-dlp+ffmpeg 기반, 자동 의존성 설치, 디렉토리 자동 생성) | `/mp3-downloader <url> [--out <dir>]` |
 
 ## 스킬 사용
 
@@ -50,6 +51,15 @@ Claude Code에서 슬래시 커맨드로 호출:
 # 사이클 초기화 후 처음부터 다시 시작
 /check-github-copilot-review --reset
 /check-github-copilot-review 123 --reset
+
+# YouTube URL에서 MP3 다운로드 (기본 ~/mp3에 저장)
+/mp3-downloader https://www.youtube.com/watch?v=xxxxx
+
+# 커스텀 경로에 저장
+/mp3-downloader https://www.youtube.com/watch?v=xxxxx --out $HOME/Music
+
+# 영상 설명에서 트랙 링크 추출 후 다운로드
+/mp3-downloader --extract-from-description https://www.youtube.com/watch?v=xxxxx
 ```
 
 ## 로컬 전역 설치
@@ -67,6 +77,7 @@ mkdir -p ~/.claude/skills
 # 각 스킬을 심볼릭 링크로 연결
 ln -sfn /path/to/my-claude-skills/.claude/skills/multi-review ~/.claude/skills/multi-review
 ln -sfn /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.claude/skills/check-github-copilot-review
+ln -sfn /path/to/my-claude-skills/.claude/skills/mp3-downloader ~/.claude/skills/mp3-downloader
 ```
 
 ### 개별 스킬 설치
@@ -77,6 +88,9 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/multi-review ~/.claude/skills/m
 
 # check-github-copilot-review만 설치
 ln -sfn /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.claude/skills/check-github-copilot-review
+
+# mp3-downloader만 설치
+ln -sfn /path/to/my-claude-skills/.claude/skills/mp3-downloader ~/.claude/skills/mp3-downloader
 ```
 
 ### 스킬 파일 직접 복사 (심볼릭 링크 대신)
@@ -106,5 +120,6 @@ cp -r /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.cl
 - (선택) [Codex CLI](https://github.com/openai/codex) — `npm install -g @openai/codex` (`codex review`로 직접 호출)
 - (선택) OMC CLI — Gemini 디스패치에 사용 (`omc ask gemini`)
 - (선택) [Gemini CLI](https://github.com/google/gemini-cli) — `npm install -g @google/gemini-cli` (OMC를 통해 호출)
+- (자동 설치) `yt-dlp`, `ffmpeg` — mp3-downloader 스킬에 필요 (미설치 시 스크립트가 자동 설치 시도)
 
 Codex/Gemini CLI가 미설치된 경우 Claude만 사용하여 동작합니다.

@@ -1,6 +1,8 @@
 ---
 name: mp3-downloader
 description: Download audio as MP3 from YouTube or YouTube Music links using yt-dlp+ffmpeg with automatic dependency install. Use when user asks to save songs/playlists as mp3, extract track links from a video description, or batch-convert URL lists to mp3 files.
+triggers: ["mp3 download", "download youtube audio", "download youtube music", "save as mp3", "extract track links", "batch convert urls to mp3"]
+argument-hint: "<url1> [url2 ...] | --extract-from-description <video_url> [--out <directory>]"
 ---
 
 # MP3 Downloader Skill
