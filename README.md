@@ -23,6 +23,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **multi-review** | 3개 LLM(Claude, Codex, Gemini) 병렬 코드 리뷰 + 종합 + 사용자 승인 후 수정 | `/multi-review [파일 \| --workspace \| --staged]` |
 | **check-github-copilot-review** | GitHub Copilot 리뷰 코멘트 자동 처리 (코드 수정/기각 + 댓글 + resolve + 커밋·푸시, 최대 3사이클 자동 폴링) | `/check-github-copilot-review [PR URL \| PR번호] [--reset]` |
 | **mp3-downloader** | YouTube/YouTube Music에서 MP3 다운로드 (yt-dlp+ffmpeg 기반, 자동 의존성 설치, 디렉토리 자동 생성) | `/mp3-downloader <url> [--out <dir>]` |
+| **fe-interview** | 프론트엔드 면접 코치 — 연차별 맞춤 질문, 꼬리질문(최대 4회), S/A/B/C/D 등급 평가, 모범답안, 개선 로드맵 포함 종합 리포트 | `/fe-interview [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` |
 
 ## 스킬 사용
 
@@ -60,6 +61,15 @@ Claude Code에서 슬래시 커맨드로 호출:
 
 # 영상 설명에서 트랙 링크 추출 후 다운로드
 /mp3-downloader --extract-from-description https://www.youtube.com/watch?v=xxxxx
+
+# 프론트엔드 면접 연습 (기본 - 연차 입력 후 시작)
+/fe-interview
+
+# 이력서 기반 면접 연습
+/fe-interview --resume ./resume.pdf --length medium
+
+# 시니어 레벨 짧은 세션
+/fe-interview --level senior --length short
 ```
 
 ## 설치
@@ -102,6 +112,7 @@ mkdir -p ~/.claude/skills
 ln -sfn /path/to/my-claude-skills/.claude/skills/multi-review ~/.claude/skills/multi-review
 ln -sfn /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.claude/skills/check-github-copilot-review
 ln -sfn /path/to/my-claude-skills/.claude/skills/mp3-downloader ~/.claude/skills/mp3-downloader
+ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/fe-interview
 ```
 
 ### 개별 스킬 설치
