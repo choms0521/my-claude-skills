@@ -83,12 +83,13 @@ Determine what code to review based on `{{ARGUMENTS}}`:
 - `--workspace` 모드: `git ls-files | grep -vE '(^|/)\.' | grep -E '\.(ts|js|tsx|jsx|py|go|rs|java|kt|swift|rb|php|c|cpp|h)$'`
 - Branch diff / `--staged` 모드: `--name-only`로 파일 목록을 먼저 구한 뒤 dot 디렉터리 경로를 제외하고, 남은 파일들에 대해서만 diff를 생성합니다. **pathspec(`-- ':!pattern'`)은 git 버전·셸 환경에 따라 실패할 수 있으므로 사용하지 않습니다.**
   ```bash
-  # Branch diff (NUL-delimited로 공백 안전)
-  # 참고: -r 플래그는 GNU xargs 전용이므로 사용하지 않음. 빈 입력 시 git diff는 안전하게 빈 결과 반환.
-  git diff $(git merge-base HEAD main)...HEAD --name-only -z | grep -zvE '(^|/)\.' | xargs -0 git diff $(git merge-base HEAD main)...HEAD --
+  # Branch diff
+  FILES=$(git diff $(git merge-base HEAD main)...HEAD --name-only | grep -vE '(^|/)\.')
+  [ -n "$FILES" ] && echo "$FILES" | xargs git diff $(git merge-base HEAD main)...HEAD --
 
   # --staged
-  git diff --cached --name-only -z | grep -zvE '(^|/)\.' | xargs -0 git diff --cached --
+  FILES=$(git diff --cached --name-only | grep -vE '(^|/)\.')
+  [ -n "$FILES" ] && echo "$FILES" | xargs git diff --cached --
   ```
 - File paths 모드: 사용자 지정 파일 중 `.`으로 시작하는 경로는 경고 후 제외
 
@@ -169,9 +170,12 @@ Security vulnerabilities, performance bottlenecks, algorithmic issues, injection
 
 아래 코드를 리뷰하세요:
 CODEX_EOF
-# Branch diff 모드: diff 내용 추가 (NUL-delimited로 공백 안전, -r로 빈 입력 시 실행 생략)
-git diff $(git merge-base HEAD {base_branch})...HEAD --name-only -z | grep -zvE '(^|/)\.' | xargs -0 git diff $(git merge-base HEAD {base_branch})...HEAD -- >> "$CODEX_PROMPT"
-# --staged 모드: git diff --cached --name-only -z | grep -zvE '(^|/)\.' | xargs -0 git diff --cached -- >> "$CODEX_PROMPT"
+# Branch diff 모드: diff 내용 추가
+FILES=$(git diff $(git merge-base HEAD {base_branch})...HEAD --name-only | grep -vE '(^|/)\.')
+[ -n "$FILES" ] && echo "$FILES" | xargs git diff $(git merge-base HEAD {base_branch})...HEAD -- >> "$CODEX_PROMPT"
+# --staged 모드:
+# FILES=$(git diff --cached --name-only | grep -vE '(^|/)\.')
+# [ -n "$FILES" ] && echo "$FILES" | xargs git diff --cached -- >> "$CODEX_PROMPT"
 # 특정 파일 모드: cat {file_list} >> "$CODEX_PROMPT"
 
 codex review "$(cat "$CODEX_PROMPT")"
