@@ -81,12 +81,13 @@ Determine what code to review based on `{{ARGUMENTS}}`:
 
 **필터 적용 방법:**
 - `--workspace` 모드: `git ls-files | grep -vE '(^|/)\.' | grep -E '\.(ts|js|tsx|jsx|py|go|rs|java|kt|swift|rb|php|c|cpp|h)$'`
-- Branch diff / `--staged` 모드: diff를 먼저 생성한 후 `grep -v`로 dot 디렉터리 파일을 제거합니다. **pathspec(`-- ':!pattern'`)은 git 버전·셸 환경에 따라 실패할 수 있으므로 사용하지 않습니다.**
+- Branch diff / `--staged` 모드: `--name-only`로 파일 목록을 먼저 구한 뒤 dot 디렉터리 경로를 제외하고, 남은 파일들에 대해서만 diff를 생성합니다. **pathspec(`-- ':!pattern'`)은 git 버전·셸 환경에 따라 실패할 수 있으므로 사용하지 않습니다.**
   ```bash
-  # Branch diff
-  git diff $(git merge-base HEAD main)...HEAD | grep -v '^\(diff --git a/\.\|--- a/\.\|+++ b/\.\)'
-  # 또는 파일 목록을 먼저 필터링 후 개별 diff:
-  git diff $(git merge-base HEAD main)...HEAD --name-only | grep -vE '(^|/)\.' | xargs git diff $(git merge-base HEAD main)...HEAD --
+  # Branch diff (NUL-delimited로 공백 안전, -r로 빈 입력 시 실행 생략)
+  git diff $(git merge-base HEAD main)...HEAD --name-only -z | grep -zvE '(^|/)\.' | xargs -0 -r git diff $(git merge-base HEAD main)...HEAD --
+
+  # --staged
+  git diff --cached --name-only -z | grep -zvE '(^|/)\.' | xargs -0 -r git diff --cached --
   ```
 - File paths 모드: 사용자 지정 파일 중 `.`으로 시작하는 경로는 경고 후 제외
 
@@ -156,7 +157,9 @@ gemini --version 2>/dev/null && echo "gemini:available" || echo "gemini:unavaila
 #
 # 프롬프트 구성: Pre-Stage에서 수집한 diff 또는 파일 내용을 임시 파일로 저장 후 전달합니다.
 
-# 프롬프트를 임시 파일로 저장하여 셸 이스케이프/길이 제한 문제를 방지
+# 프롬프트를 임시 파일로 저장하여 셸 이스케이프 문제를 방지
+# 주의: $(cat)으로 인자 치환하므로 OS의 ARG_MAX 제한은 여전히 적용됨
+# diff가 매우 클 경우 Pre-Stage의 Size guard(50KB)에서 분할 처리됨
 CODEX_PROMPT=$(mktemp)
 cat > "$CODEX_PROMPT" <<'CODEX_EOF'
 Security vulnerabilities, performance bottlenecks, algorithmic issues, injection risks에 집중하여 리뷰.
@@ -165,9 +168,9 @@ Security vulnerabilities, performance bottlenecks, algorithmic issues, injection
 
 아래 코드를 리뷰하세요:
 CODEX_EOF
-# Branch diff 모드: diff 내용 추가
-git diff $(git merge-base HEAD {base_branch})...HEAD --name-only | grep -vE '(^|/)\.' | xargs git diff $(git merge-base HEAD {base_branch})...HEAD -- >> "$CODEX_PROMPT"
-# --staged 모드: git diff --cached >> "$CODEX_PROMPT"
+# Branch diff 모드: diff 내용 추가 (NUL-delimited로 공백 안전, -r로 빈 입력 시 실행 생략)
+git diff $(git merge-base HEAD {base_branch})...HEAD --name-only -z | grep -zvE '(^|/)\.' | xargs -0 -r git diff $(git merge-base HEAD {base_branch})...HEAD -- >> "$CODEX_PROMPT"
+# --staged 모드: git diff --cached --name-only -z | grep -zvE '(^|/)\.' | xargs -0 -r git diff --cached -- >> "$CODEX_PROMPT"
 # 특정 파일 모드: cat {file_list} >> "$CODEX_PROMPT"
 
 codex review "$(cat "$CODEX_PROMPT")"
