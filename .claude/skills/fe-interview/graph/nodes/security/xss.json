@@ -1,0 +1,25 @@
+{
+  "id": "sec-xss",
+  "type": "concept",
+  "name": "XSS Prevention",
+  "category": "security",
+  "levels": ["senior"],
+  "description": "Stored, Reflected, DOM-based XSS 공격의 이해와 방어",
+  "key_points": [
+    "Stored XSS: 악성 스크립트가 DB에 저장되어 모든 사용자에게 실행 - 가장 위험한 유형",
+    "Reflected XSS: URL 파라미터에 포함된 페이로드가 서버 응답에 반영되어 실행",
+    "DOM-based XSS: 클라이언트 JavaScript에서 innerHTML, eval() 등 sink에 신뢰할 수 없는 데이터 삽입",
+    "textContent를 innerHTML 대신 사용 - HTML 파싱 없이 텍스트만 삽입하여 XSS 원천 차단",
+    "DOMPurify로 HTML 삽입이 필수인 경우 화이트리스트 기반 새니타이징",
+    "Content Security Policy(CSP)로 인라인 스크립트와 외부 스크립트 소스 제한",
+    "Trusted Types API로 DOM sink 할당을 정책으로 강제하여 DOM XSS 자동 방지",
+    "HttpOnly 쿠키로 XSS 성공 시에도 세션 쿠키 탈취 방지"
+  ],
+  "model_answer_summary": "XSS는 Stored(DB 저장), Reflected(URL 반영), DOM-based(클라이언트 sink) 세 유형이 있습니다. textContent 사용, DOMPurify 새니타이징, CSP 헤더, Trusted Types API가 핵심 방어 수단이며, HttpOnly 쿠키로 심층 방어를 구축합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "세 가지 유형의 XSS 공격을 설명하고, 각각에 대한 구체적인 방어 메커니즘은?"
+  },
+  "source_files": ["security-senior.md#Q1"],
+  "references": []
+}

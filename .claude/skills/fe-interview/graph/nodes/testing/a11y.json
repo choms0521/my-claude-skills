@@ -1,0 +1,26 @@
+{
+  "id": "testing-a11y",
+  "type": "concept",
+  "name": "Accessibility Testing",
+  "category": "testing",
+  "levels": ["mid", "senior"],
+  "description": "axe-core, jest-axe, Lighthouse 등을 활용한 접근성 자동화 테스트",
+  "key_points": [
+    "axe-core 엔진은 WCAG 규칙을 자동으로 검사하며 약 57%의 접근성 문제 탐지 가능",
+    "jest-axe로 컴포넌트 단위의 접근성 자동 테스트를 CI에 통합",
+    "Lighthouse Accessibility 점수로 전체 페이지 수준의 접근성 모니터링",
+    "자동화 테스트만으로는 부족 - 키보드 네비게이션, 스크린 리더 수동 테스트 필수",
+    "Storybook a11y 애드온으로 개발 중 실시간 접근성 피드백 제공",
+    "pa11y-ci로 CI 파이프라인에서 페이지별 접근성 검사 자동화",
+    "접근성 테스트 전략: 자동화(컴포넌트 + 페이지) + 수동(키보드 + 스크린 리더) + 사용자 테스트",
+    "접근성 회귀를 방지하기 위한 PR 단위 접근성 게이트 설정"
+  ],
+  "model_answer_summary": "접근성 테스트는 axe-core 기반 자동화 도구(jest-axe, pa11y-ci)와 수동 테스트(키보드 네비게이션, 스크린 리더)의 조합이 필요합니다. 자동화만으로는 전체 접근성 문제의 약 57%만 탐지 가능하므로, CI 통합 자동화와 정기적인 수동 감사를 병행하는 전략이 효과적입니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "jest-axe를 사용한 컴포넌트 접근성 자동 테스트의 장점과 한계는?",
+    "senior": "대규모 접근성 테스트 자동화 전략을 CI/CD에 통합하는 방법과 수동 테스트와의 균형은?"
+  },
+  "source_files": ["testing-senior.md#Q7", "accessibility-mid.md#Q6", "accessibility-senior.md#Q7"],
+  "references": []
+}

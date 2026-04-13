@@ -1,0 +1,31 @@
+{
+  "id": "react-redux",
+  "type": "concept",
+  "name": "React Redux & 상태 관리 라이브러리",
+  "category": "react",
+  "levels": ["mid", "senior"],
+  "description": "Redux의 핵심 원칙과 데이터 흐름, Redux Toolkit, middleware(Thunk/Saga), MobX/Zustand 등 외부 상태 관리 라이브러리 비교",
+  "key_points": [
+    "Redux의 3가지 핵심 원칙 - Single source of truth, State is read-only, Changes with pure functions",
+    "Redux 단방향 데이터 흐름 - dispatch(action) → reducer → new state → UI 업데이트",
+    "Redux Toolkit(RTK)의 createSlice, configureStore로 보일러플레이트 감소",
+    "RTK Query를 활용한 서버 상태 관리와 캐싱 전략",
+    "Middleware의 역할 - Redux Thunk(비동기 액션)와 Redux Saga(제너레이터 기반 사이드 이펙트)",
+    "useSelector와 useDispatch 훅을 통한 React-Redux 연결",
+    "Redux DevTools를 활용한 시간 여행 디버깅과 액션 추적",
+    "MobX의 관찰 가능한 상태(Observable)와 자동 추적(autorun) 패턴 비교",
+    "Zustand의 단순한 API와 Redux 대비 장점 - 보일러플레이트 감소, 번들 크기",
+    "Flux 아키텍처에서 Redux로의 진화 과정과 단방향 데이터 흐름의 의의"
+  ],
+  "model_answer_summary": "Redux는 예측 가능한 상태 관리를 위한 라이브러리로, 단일 스토어(Single source of truth)에 전체 앱 상태를 보관하고 순수 함수인 리듀서로만 상태를 변경합니다. Redux Toolkit(RTK)은 createSlice로 보일러플레이트를 줄이고, RTK Query로 서버 상태 캐싱을 지원합니다. 비동기 처리에는 Thunk(간단한 비동기)나 Saga(복잡한 사이드 이펙트)를 사용합니다. MobX는 Observable 기반 반응형 접근, Zustand는 최소한의 API로 가벼운 상태 관리를 제공합니다. 프로젝트 규모, 팀 숙련도, 디버깅 요구사항에 따라 적절한 도구를 선택해야 합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Redux의 핵심 원칙 3가지를 설명하고, Redux Toolkit이 기존 Redux의 어떤 문제를 해결하는지 설명해주세요.",
+    "senior": "Redux, MobX, Zustand의 상태 관리 철학과 데이터 흐름 차이를 비교하고, 어떤 상황에서 각각을 선택하는지 트레이드오프와 함께 설명해주세요."
+  },
+  "source_files": [],
+  "references": [
+    "https://redux.js.org/introduction/core-concepts",
+    "https://redux-toolkit.js.org/introduction/getting-started"
+  ]
+}

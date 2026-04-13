@@ -1,0 +1,26 @@
+{
+  "id": "testing-tdd",
+  "type": "concept",
+  "name": "TDD & Methodology",
+  "category": "testing",
+  "levels": ["mid", "senior"],
+  "description": "테스트 주도 개발 방법론과 테스트 전략 수립 원칙",
+  "key_points": [
+    "Red-Green-Refactor 사이클: 실패하는 테스트 작성 → 최소 구현 → 리팩토링",
+    "테스트 피라미드: 단위 테스트(많이) > 통합 테스트(적당히) > E2E 테스트(소수)",
+    "BDD(Behavior-Driven Development)는 Given-When-Then 형식으로 비즈니스 요구사항을 테스트로 표현",
+    "Testing Trophy는 통합 테스트에 더 많은 비중을 두는 대안적 모델",
+    "Mutation Testing으로 테스트 품질을 검증 - 코드 변형 후에도 테스트가 통과하면 테스트 부족",
+    "대규모 코드베이스에서 테스트 전략은 팀 오너십과 CI 게이팅이 핵심",
+    "Shift-Left 접근법으로 테스트를 개발 프로세스 초기에 통합",
+    "테스트 스위트를 제품처럼 관리: 실행 시간, 불안정률, 커버리지 트렌드 모니터링"
+  ],
+  "model_answer_summary": "TDD는 테스트를 먼저 작성하고 최소 구현 후 리팩토링하는 Red-Green-Refactor 사이클을 따릅니다. 테스트 피라미드는 단위 > 통합 > E2E 비율을 권장하며, 대규모 환경에서는 팀 오너십, CI 게이팅, 불안정 테스트 관리가 핵심입니다. Mutation Testing으로 테스트 자체의 품질도 검증할 수 있습니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "테스트 피라미드의 각 계층별 역할과 적절한 비율은 무엇인가요?",
+    "senior": "대규모 프론트엔드 코드베이스에서 E2E 중심의 불안정한 테스트 스위트를 건강한 피라미드로 마이그레이션하는 전략은?"
+  },
+  "source_files": ["testing-mid.md#Q1", "testing-senior.md#Q1", "testing-senior.md#Q4"],
+  "references": []
+}

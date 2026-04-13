@@ -1,0 +1,31 @@
+{
+  "id": "js-async",
+  "type": "concept",
+  "name": "Async Programming",
+  "category": "javascript",
+  "levels": ["junior", "mid", "senior"],
+  "description": "Promise, async/await, 이벤트 루프, 마이크로태스크/매크로태스크 기반의 비동기 프로그래밍",
+  "key_points": [
+    "Promise의 3가지 상태: pending, fulfilled, rejected - 한번 settled되면 변경 불가",
+    "async/await는 Promise 체인의 문법적 설탕 - 내부적으로 Promise로 변환",
+    "이벤트 루프: 콜 스택, 태스크 큐, 마이크로태스크 큐의 상호작용",
+    "마이크로태스크(Promise)가 매크로태스크(setTimeout)보다 우선 실행",
+    "Promise.all, Promise.race, Promise.allSettled, Promise.any의 차이와 사용 시나리오",
+    "순차적 await vs Promise.all 병렬 실행의 성능 차이",
+    "에러 전파: .catch()와 try/catch에서의 비동기 에러 처리",
+    "queueMicrotask와 Promise.resolve().then()의 관계",
+    "콜백 헬에서 Promise 체인, async/await로의 발전 과정"
+  ],
+  "model_answer_summary": "JavaScript의 비동기 프로그래밍은 이벤트 루프를 기반으로 하며, Promise는 비동기 연산의 최종 결과를 나타내는 객체입니다. async/await는 Promise 위에 구축된 문법적 설탕으로, 비동기 코드를 동기적으로 읽히게 합니다. 마이크로태스크(Promise 콜백)는 매크로태스크(setTimeout) 사이에 전부 처리되며, 병렬 실행이 필요한 경우 Promise.all()을 사용해야 합니다.",
+  "difficulty_range": { "min": "basic", "max": "advanced" },
+  "sample_questions": {
+    "junior": "Promise가 무엇이고, async/await는 어떻게 동작하는지 설명해주세요.",
+    "mid": "Promise.all, Promise.race, Promise.allSettled의 차이점과 각각의 적절한 사용 시나리오를 설명해주세요.",
+    "senior": "마이크로태스크와 매크로태스크의 실행 순서를 브라우저 렌더링 파이프라인과 연관지어 심도있게 설명해주세요."
+  },
+  "source_files": ["javascript-junior.md#Q6", "javascript-junior-2.md#Q14", "javascript-mid.md#Q3", "javascript-senior.md#Q3"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop"
+  ]
+}
