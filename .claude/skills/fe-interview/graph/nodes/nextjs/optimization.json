@@ -1,0 +1,25 @@
+{
+  "id": "nextjs-optimization",
+  "type": "concept",
+  "name": "Next.js Optimization",
+  "category": "nextjs",
+  "levels": ["mid"],
+  "description": "next/image, next/font, next/script, ISR, 프리페칭 등 Next.js 내장 최적화 기능",
+  "key_points": [
+    "next/image - 자동 이미지 최적화, WebP/AVIF 변환, 지연 로딩, CLS 방지를 위한 크기 지정",
+    "next/font - 빌드 타임 폰트 최적화, 자체 호스팅으로 외부 네트워크 요청 제거, FOIT/FOUT 방지",
+    "next/script - strategy 옵션(beforeInteractive, afterInteractive, lazyOnload)으로 스크립트 로딩 제어",
+    "ISR(Incremental Static Regeneration) - revalidate로 정적 페이지의 주기적 백그라운드 재생성",
+    "next/link 프리페칭 - 뷰포트 내 링크의 라우트를 자동으로 프리페치",
+    "dynamic import - next/dynamic으로 컴포넌트 레벨 코드 스플리팅과 SSR 비활성화",
+    "번들 분석기 - @next/bundle-analyzer로 페이지별 번들 크기 시각화",
+    "Turbopack - Rust 기반 빌드 도구로 개발 모드 빌드 속도 대폭 향상"
+  ],
+  "model_answer_summary": "Next.js는 next/image로 자동 이미지 최적화, next/font로 폰트 자체 호스팅, next/script로 서드파티 스크립트 로딩 제어를 내장합니다. ISR로 정적 페이지를 주기적으로 갱신하고, next/link의 자동 프리페칭으로 후속 네비게이션을 가속합니다. 이러한 내장 최적화는 별도 설정 없이 Core Web Vitals를 개선합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "intermediate" },
+  "sample_questions": {
+    "mid": "next/image, next/font, next/script의 최적화 동작 원리와 성능 이점을 각각 설명해주세요."
+  },
+  "source_files": ["nextjs-mid.md#Q7", "nextjs-mid.md#Q8", "nextjs-mid.md#Q9", "nextjs-mid.md#Q10"],
+  "references": []
+}

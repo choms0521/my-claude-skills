@@ -1,0 +1,29 @@
+{
+  "id": "js-variables-scope",
+  "type": "concept",
+  "name": "Variables & Scope",
+  "category": "javascript",
+  "levels": ["junior", "mid"],
+  "description": "var, let, const의 차이점과 스코프 체인, 호이스팅, TDZ 등 변수 선언과 스코프 규칙",
+  "key_points": [
+    "var는 함수 스코프, let/const는 블록 스코프로 동작",
+    "호이스팅: var는 undefined로 초기화, let/const는 TDZ(Temporal Dead Zone)에 진입",
+    "const는 재할당을 방지하지만 객체 내부 속성 변경은 가능 (얕은 불변성)",
+    "스코프 체인: 내부 스코프에서 외부 스코프로 변수를 탐색하는 메커니즘",
+    "함수 선언문은 전체가 호이스팅되지만, 함수 표현식은 변수 선언만 호이스팅",
+    "블록 스코프를 활용한 루프 변수 캡처 문제 해결 (var vs let)",
+    "전역 스코프 오염 방지를 위한 모듈 패턴과 IIFE 활용",
+    "Object.freeze()를 사용한 깊은 불변성 구현 방법"
+  ],
+  "model_answer_summary": "var는 함수 스코프이고 호이스팅 시 undefined로 초기화되며, let과 const는 블록 스코프로 TDZ가 적용됩니다. const는 재할당을 방지하지만 객체의 속성 변경은 허용하므로 진정한 불변성을 위해서는 Object.freeze()가 필요합니다. 현대 코드에서는 const를 기본으로, 재할당이 필요한 경우 let을 사용하고 var는 지양합니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "var, let, const의 차이점을 설명하고, 각각 어떤 상황에서 사용해야 하는지 설명해주세요.",
+    "mid": "호이스팅과 TDZ(Temporal Dead Zone)의 동작 원리를 설명하고, 이것이 실제 버그를 어떻게 유발하는지 예시를 들어주세요."
+  },
+  "source_files": ["javascript-junior.md#Q1", "javascript-junior.md#Q2"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let",
+    "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting"
+  ]
+}

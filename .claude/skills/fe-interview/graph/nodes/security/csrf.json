@@ -1,0 +1,25 @@
+{
+  "id": "sec-csrf",
+  "type": "concept",
+  "name": "CSRF Protection",
+  "category": "security",
+  "levels": ["senior"],
+  "description": "CSRF 토큰, SameSite 쿠키를 활용한 크로스 사이트 요청 위조 방어",
+  "key_points": [
+    "CSRF 공격: 인증된 사용자의 브라우저를 이용해 악의적인 요청을 전송",
+    "CSRF 토큰: 서버가 발급한 예측 불가능한 토큰을 폼/요청에 포함하여 검증",
+    "SameSite=Strict 쿠키: 크로스 사이트 요청에서 쿠키를 완전히 차단",
+    "SameSite=Lax: GET 요청만 크로스 사이트에서 쿠키 전송 허용 - 링크 클릭 UX와 보안의 균형",
+    "Double Submit Cookie 패턴: 쿠키와 요청 본문에 동일 토큰을 전송하여 서버에서 비교",
+    "Origin/Referer 헤더 검증으로 요청의 출처를 확인하는 보조 방어",
+    "상태 변경 요청(POST, PUT, DELETE)에만 CSRF 보호 적용, GET은 부작용 없어야 함",
+    "SPA에서는 Authorization 헤더 기반 인증이 CSRF에 면역 - 쿠키가 아닌 토큰 사용 시"
+  ],
+  "model_answer_summary": "CSRF는 인증된 사용자의 브라우저를 악용하여 위조 요청을 보내는 공격입니다. CSRF 토큰, SameSite 쿠키, Origin 헤더 검증이 주요 방어 수단이며, SPA에서 Authorization 헤더 기반 인증은 CSRF에 자연적으로 면역입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "CSRF 토큰과 SameSite 쿠키가 CSRF 공격을 어떻게 방어하며, 각각의 한계는?"
+  },
+  "source_files": ["security-senior.md#Q4"],
+  "references": []
+}

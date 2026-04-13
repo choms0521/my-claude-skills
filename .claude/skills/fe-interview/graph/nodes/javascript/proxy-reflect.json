@@ -1,0 +1,28 @@
+{
+  "id": "js-proxy-reflect",
+  "type": "concept",
+  "name": "Proxy & Reflect",
+  "category": "javascript",
+  "levels": ["mid", "senior"],
+  "description": "Proxy를 통한 객체 동작 가로채기, Reflect API, 메타프로그래밍 패턴",
+  "key_points": [
+    "Proxy는 대상 객체를 감싸서 get, set, apply, has, deleteProperty 등의 트랩으로 동작을 가로챔",
+    "Reflect는 각 트랩의 기본 동작을 제공 - 트랩 내에서 Reflect 사용이 모범 사례",
+    "Vue 3의 반응성 시스템이 Proxy 기반으로 동작하는 원리",
+    "유효성 검사 Proxy: set 트랩에서 타입/범위 검증 후 거부 가능",
+    "기본값 제공 패턴: get 트랩에서 존재하지 않는 프로퍼티에 기본값 반환",
+    "로깅/디버깅: 투명하게 모든 프로퍼티 접근과 변경을 추적",
+    "Proxy의 성능 오버헤드 - 핫 패스에서의 사용 주의",
+    "proxy !== target 참조 동등성 문제와 주의사항"
+  ],
+  "model_answer_summary": "Proxy는 객체의 기본 동작(프로퍼티 접근, 할당, 함수 호출 등)을 가로채는 트랩을 정의하여 메타프로그래밍을 가능하게 합니다. Reflect는 각 트랩에 대응하는 기본 동작 메서드를 제공하며, 트랩 내에서 기본 동작을 유지하면서 확장할 때 사용합니다. Vue 3의 반응성 시스템, 유효성 검사, API 모킹 등 다양한 패턴에 활용되지만, 성능 오버헤드가 있으므로 핫 패스에서는 주의가 필요합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Proxy와 Reflect의 기본 개념을 설명하고, 유효성 검사에 활용하는 예시를 보여주세요.",
+    "senior": "Vue 3의 반응성 시스템에서 Proxy가 어떻게 활용되는지 설명하고, Object.defineProperty 기반 Vue 2와 비교해주세요."
+  },
+  "source_files": ["javascript-mid.md#Q8"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "ts-patterns",
+  "type": "concept",
+  "name": "TypeScript Patterns",
+  "category": "typescript",
+  "levels": ["senior"],
+  "description": "브랜디드 타입, 빌더 패턴, 팬텀 타입 등 TypeScript의 고급 디자인 패턴",
+  "key_points": [
+    "브랜디드 타입(Branded Types) - 구조적 타이핑의 한계를 극복하는 명목적 타입 구분",
+    "팬텀 타입(Phantom Types) - 런타임 표현 없이 타입 레벨에서 의미적 상태를 인코딩",
+    "타입 안전 빌더 패턴 - 제네릭으로 빌더 상태를 추적하여 잘못된 호출 순서를 컴파일 타임에 방지",
+    "타입 안전 이벤트 이미터 - 이벤트 이름과 페이로드 타입을 연결하는 제네릭 패턴",
+    "타입 안전 라우팅 - 템플릿 리터럴 타입으로 URL 파라미터를 자동 추출",
+    "타입 안전 i18n - 번역 키와 보간 매개변수를 타입으로 검증",
+    "Result/Either 패턴 - 판별 유니온으로 성공/실패를 타입 안전하게 모델링",
+    "exhaustive switch 패턴 - never 타입으로 모든 케이스 처리를 컴파일 타임에 보장"
+  ],
+  "model_answer_summary": "TypeScript 고급 패턴은 타입 시스템을 활용하여 런타임 오류를 컴파일 시점으로 끌어올립니다. 브랜디드 타입으로 UserId와 PostId를 구분하고, 팬텀 타입으로 상태 머신을 인코딩하며, 빌더 패턴에서 제네릭으로 호출 순서를 강제합니다. 이러한 패턴들은 tRPC, TanStack Router, Zod 등 현대 라이브러리의 타입 안전성을 구현하는 기반 기술입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "브랜디드 타입과 팬텀 타입의 차이를 설명하고, 각각의 실용적 사용 사례를 들어주세요."
+  },
+  "source_files": ["typescript-mid-2.md#Q14", "typescript-senior-2.md#Q13", "typescript-senior-2.md#Q14", "typescript-senior-2.md#Q15", "typescript-senior-2.md#Q16", "typescript-senior-2.md#Q18"],
+  "references": []
+}

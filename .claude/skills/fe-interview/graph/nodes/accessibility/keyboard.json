@@ -1,0 +1,26 @@
+{
+  "id": "a11y-keyboard",
+  "type": "concept",
+  "name": "Keyboard Navigation",
+  "category": "accessibility",
+  "levels": ["mid", "senior"],
+  "description": "키보드 네비게이션 구현과 포커스 관리 전략",
+  "key_points": [
+    "Tab 키로 포커스 가능한 요소 간 이동, 화살표 키로 복합 위젯 내부 탐색",
+    "tabindex=0은 자연 탭 순서에 추가, tabindex=-1은 프로그래밍적 포커스만 허용",
+    "tabindex > 0은 사용하지 않음 - 예측 불가능한 탐색 순서 생성",
+    "포커스 트랩: 모달, 다이얼로그에서 포커스가 외부로 빠져나가지 않도록 제한",
+    "Skip Link로 반복적인 네비게이션을 건너뛰고 주요 콘텐츠로 바로 이동",
+    "Roving Tabindex 패턴: 그룹 내 하나의 요소만 tabindex=0, 나머지는 -1로 설정",
+    "SPA 라우트 변경 시 포커스를 새 페이지의 주요 콘텐츠 영역으로 이동",
+    "포커스 인디케이터는 WCAG 2.2에서 최소 면적과 3:1 대비 비율 요구"
+  ],
+  "model_answer_summary": "키보드 네비게이션은 모터 장애, 스크린 리더 사용자 등이 웹을 이용하는 핵심 수단입니다. Tab으로 요소 간 이동하고, 화살표 키로 복합 위젯 내부를 탐색합니다. 포커스 트랩, Skip Link, Roving Tabindex 패턴이 핵심이며, WCAG 2.2는 포커스 인디케이터에 대한 정확한 측정 기준을 요구합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "커스텀 인터랙티브 컴포넌트에서 키보드 네비게이션을 올바르게 구현하는 방법은?",
+    "senior": "SPA에서 라우트 변경 시 포커스 관리와 스크린 리더 사용자 경험을 어떻게 설계하나요?"
+  },
+  "source_files": ["accessibility-mid.md#Q3", "accessibility-mid.md#Q4", "accessibility-senior.md#Q5"],
+  "references": []
+}

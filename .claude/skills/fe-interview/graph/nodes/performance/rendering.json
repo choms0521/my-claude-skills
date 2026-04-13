@@ -1,0 +1,26 @@
+{
+  "id": "perf-rendering",
+  "type": "concept",
+  "name": "Rendering Performance",
+  "category": "performance",
+  "levels": ["mid", "senior"],
+  "description": "브라우저 렌더링 파이프라인(Layout, Paint, Composite)의 이해와 렌더링 성능 최적화 기법",
+  "key_points": [
+    "렌더링 파이프라인 - JavaScript > Style > Layout > Paint > Composite 단계와 각 단계의 비용",
+    "레이아웃 스래싱(Layout Thrashing) - DOM 읽기/쓰기를 교차하면 강제 동기 레이아웃 발생",
+    "리플로우(Reflow)와 리페인트(Repaint) - 기하학적 변경은 레이아웃, 시각적 변경은 페인트 트리거",
+    "컴포지터 전용 애니메이션 - transform과 opacity만 사용하면 Layout/Paint를 건너뜀",
+    "will-change 속성 - 요소를 별도 컴포지터 레이어로 승격, GPU 메모리 과사용 주의",
+    "requestAnimationFrame - 프레임 경계에 맞춘 DOM 쓰기로 강제 리플로우 방지",
+    "CSS containment(contain 속성) - layout, paint, size 격리로 리렌더링 범위 제한",
+    "FastDOM 라이브러리 - 읽기/쓰기를 자동 배치하여 레이아웃 스래싱 방지"
+  ],
+  "model_answer_summary": "브라우저 렌더링 파이프라인은 JavaScript, Style, Layout, Paint, Composite 단계로 구성되며, 초기 단계를 트리거할수록 비용이 큽니다. transform과 opacity는 Composite만 트리거하므로 애니메이션에 최적이고, 레이아웃 스래싱은 DOM 읽기와 쓰기를 배치 분리하여 방지합니다. will-change로 레이어 승격을 제어하되 과사용을 피하고, CSS containment로 리렌더링 범위를 격리합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "레이아웃 스래싱이란 무엇이며, 이를 방지하기 위한 DOM 조작 패턴을 설명해주세요.",
+    "senior": "브라우저 렌더링 파이프라인의 전체 과정과 각 단계를 건너뛰는 CSS 속성 최적화를 설명해주세요."
+  },
+  "source_files": ["performance-mid-2.md#Q11", "performance-senior.md#Q2", "performance-senior.md#Q8"],
+  "references": []
+}

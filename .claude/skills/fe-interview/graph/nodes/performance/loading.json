@@ -1,0 +1,26 @@
+{
+  "id": "perf-loading",
+  "type": "concept",
+  "name": "Loading Performance",
+  "category": "performance",
+  "levels": ["mid", "senior"],
+  "description": "지연 로딩, 코드 스플리팅, 리소스 힌트를 활용한 초기 로딩 성능 최적화",
+  "key_points": [
+    "이미지 지연 로딩 - loading='lazy' 속성과 Intersection Observer를 활용한 뷰포트 기반 로딩",
+    "라우트 기반 코드 스플리팅 - React.lazy()와 Suspense로 라우트별 번들 분리",
+    "컴포넌트 레벨 지연 로딩 - 무거운 조건부 렌더링 컴포넌트(모달, 에디터, 차트)의 동적 임포트",
+    "preload, prefetch, preconnect - 리소스 힌트를 통한 선제적 리소스 로딩",
+    "fetchpriority 속성 - LCP 이미지에 high 우선순위 지정으로 30% 이상 LCP 개선",
+    "렌더 블로킹 리소스 제거 - CSS 인라이닝, 스크립트 defer/async, 비동기 폰트 로딩",
+    "프리페칭 전략 - 유휴 시간에 다음 페이지 데이터/코드를 미리 로드",
+    "LCP 이미지는 절대 지연 로딩하지 않기 - 가장 중요한 로딩 메트릭에 직접적 악영향"
+  ],
+  "model_answer_summary": "로딩 성능 최적화는 라우트 기반 코드 스플리팅으로 시작하여 가장 큰 번들 크기 절감을 달성합니다. 이미지 지연 로딩은 loading='lazy'로 구현하되 LCP 이미지는 반드시 즉시 로드합니다. preload/prefetch 리소스 힌트와 fetchpriority로 중요 리소스의 로딩 우선순위를 제어하고, 렌더 블로킹 리소스를 제거하여 첫 페인트까지의 시간을 단축합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "이미지, 컴포넌트, 라우트별 지연 로딩 전략과 각각의 트레이드오프를 설명해주세요.",
+    "senior": "preload, prefetch, preconnect, fetchpriority의 차이와 적절한 사용 시나리오를 설명해주세요."
+  },
+  "source_files": ["performance-mid.md#Q2", "performance-mid.md#Q6", "performance-mid.md#Q8", "performance-mid-2.md#Q15", "performance-senior.md#Q9"],
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "a11y-semantic",
+  "type": "concept",
+  "name": "Semantic Accessibility",
+  "category": "accessibility",
+  "levels": ["mid"],
+  "description": "시맨틱 HTML을 활용한 기본적인 접근성 보장",
+  "key_points": [
+    "시맨틱 요소(header, nav, main, article, section)는 자동으로 접근성 트리에 랜드마크 역할 부여",
+    "헤딩 계층 구조(h1-h6)는 스크린 리더 사용자의 페이지 탐색 핵심 수단",
+    "alt 텍스트는 이미지의 목적과 맥락을 전달해야 하며, 장식 이미지는 빈 alt 사용",
+    "목록(ul, ol, dl)은 스크린 리더가 항목 수를 미리 알려주어 탐색 효율성 향상",
+    "table 요소의 caption, th, scope로 데이터 테이블의 구조를 명확히 전달",
+    "시맨틱 HTML은 ARIA 없이도 기본적인 접근성을 자동으로 제공하는 기반",
+    "랜드마크 영역을 통해 스크린 리더 사용자가 페이지 섹션 간 빠르게 이동 가능",
+    "figure와 figcaption으로 이미지와 설명의 관계를 프로그래밍적으로 연결"
+  ],
+  "model_answer_summary": "시맨틱 HTML은 접근성의 기초로, 올바른 HTML 요소를 사용하면 추가 ARIA 없이도 보조 기술에 구조와 의미를 전달합니다. 헤딩 계층, 랜드마크 영역, 적절한 alt 텍스트가 스크린 리더 사용자의 페이지 탐색과 이해를 크게 향상시킵니다.",
+  "difficulty_range": { "min": "intermediate", "max": "intermediate" },
+  "sample_questions": {
+    "mid": "시맨틱 HTML이 스크린 리더 사용자 경험에 미치는 구체적인 영향은?"
+  },
+  "source_files": ["accessibility-mid.md#Q7", "accessibility-mid.md#Q10"],
+  "references": []
+}

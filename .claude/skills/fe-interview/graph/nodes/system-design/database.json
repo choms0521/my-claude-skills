@@ -1,0 +1,25 @@
+{
+  "id": "sd-database",
+  "type": "concept",
+  "name": "Database & Storage Patterns",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "샤딩, 복제, CAP 정리, SQL/NoSQL 선택 등 데이터베이스 패턴",
+  "key_points": [
+    "CAP 정리: 분산 시스템에서 일관성(Consistency), 가용성(Availability), 분할 내성(Partition tolerance) 중 2개만 보장",
+    "샤딩(Sharding): 데이터를 여러 데이터베이스에 분산 저장 - 해시 기반, 범위 기반, 지리적 샤딩",
+    "복제(Replication): Master-Slave 읽기 분산, Master-Master 쓰기 분산 - 각각의 일관성 트레이드오프",
+    "SQL vs NoSQL: 관계형 데이터는 SQL, 유연한 스키마와 수평 확장이 필요하면 NoSQL",
+    "최종적 일관성(Eventual Consistency): 분산 시스템에서 즉각 일관성을 포기하고 가용성 확보",
+    "인덱싱 전략: B-Tree, Hash Index, Full-Text Index - 쿼리 패턴에 따른 선택",
+    "프론트엔드 관점: IndexedDB, localStorage 등 클라이언트 스토리지와 서버 DB 동기화 전략",
+    "데이터 정규화 vs 비정규화: 읽기 성능과 데이터 일관성의 트레이드오프"
+  ],
+  "model_answer_summary": "데이터베이스 설계는 CAP 정리를 이해하고 일관성과 가용성의 트레이드오프를 결정하는 것에서 시작합니다. 샤딩과 복제로 확장성을 확보하고, SQL/NoSQL을 데이터 특성에 맞게 선택합니다. 프론트엔드 개발자는 클라이언트 스토리지와 서버 DB의 동기화, 최종적 일관성 환경에서의 UI 설계를 이해해야 합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "CAP 정리가 프론트엔드 시스템 설계에 미치는 영향과 최종적 일관성 환경에서의 UI 설계 전략은?"
+  },
+  "source_files": [],
+  "references": []
+}

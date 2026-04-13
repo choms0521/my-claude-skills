@@ -1,0 +1,25 @@
+{
+  "id": "arch-dx",
+  "type": "concept",
+  "name": "Developer Experience",
+  "category": "architecture",
+  "levels": ["senior"],
+  "description": "코드 리뷰, 온보딩, 개발 도구, 문서화 등 개발자 경험 최적화",
+  "key_points": [
+    "코드 리뷰 프로세스: PR 크기 제한, 리뷰 체크리스트, CODEOWNERS로 적합한 리뷰어 자동 배정",
+    "온보딩 자동화: 프로젝트 셋업 스크립트, 개발 환경 표준화(devcontainer, nix)",
+    "린트/포맷팅 자동화: ESLint, Prettier를 pre-commit 훅과 CI에서 강제",
+    "문서화: ADR(Architecture Decision Records)로 의사결정 맥락을 기록",
+    "개발 서버 최적화: Vite, Turbopack으로 HMR 속도 개선하여 피드백 루프 단축",
+    "공유 패키지(@company/eslint-config, @company/test-utils)로 팀 간 일관성 확보",
+    "에러 메시지 품질: 명확한 에러 메시지와 해결 가이드로 디버깅 시간 단축",
+    "내부 CLI 도구로 반복적인 작업(컴포넌트 생성, 배포, 설정)을 자동화"
+  ],
+  "model_answer_summary": "개발자 경험은 코드 리뷰 프로세스, 자동화된 온보딩, 린트/포맷팅 강제, ADR 기반 문서화를 포함합니다. 빠른 개발 서버와 공유 설정 패키지로 팀 생산성을 높이고, 내부 CLI 도구로 반복 작업을 자동화하여 개발자가 본질적인 작업에 집중하도록 합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "대규모 프론트엔드 팀의 개발자 경험을 개선하기 위한 도구, 프로세스, 문화적 접근 방법은?"
+  },
+  "source_files": ["architecture-senior-2.md#Q15", "architecture-senior-2.md#Q20"],
+  "references": []
+}

@@ -1,0 +1,28 @@
+{
+  "id": "js-build-tools",
+  "type": "concept",
+  "name": "Build Tools & Optimization",
+  "category": "javascript",
+  "levels": ["senior"],
+  "description": "트리 쉐이킹, 코드 스플리팅, 번들러 동작 원리, 소스맵, 모노레포 빌드 전략",
+  "key_points": [
+    "트리 쉐이킹: ESM 정적 분석으로 미사용 export 제거 - sideEffects: false 설정 필수",
+    "코드 스플리팅: 동적 import()로 번들을 청크로 분리, 라우트 기반 스플리팅이 가장 효과적",
+    "번들러 비교: Webpack(기능 풍부), Vite(빠른 개발 서버, ESM 기반), esbuild(Go 기반 고속), Rollup(라이브러리 최적)",
+    "소스맵: 빌드된 코드와 원본 소스 간 매핑 - 프로덕션에서는 비공개 업로드가 모범 사례",
+    "CommonJS require()와 동적 프로퍼티 접근이 트리 쉐이킹을 방해하는 원리",
+    "React.lazy와 Suspense를 활용한 컴포넌트 레벨 코드 스플리팅",
+    "모노레포 빌드 도구: Turborepo/Nx의 태스크 그래프와 캐싱 전략",
+    "번들 분석 도구(webpack-bundle-analyzer)를 통한 번들 크기 최적화"
+  ],
+  "model_answer_summary": "트리 쉐이킹은 ESM의 정적 분석을 기반으로 미사용 코드를 제거하며, package.json의 sideEffects 필드가 핵심 설정입니다. 코드 스플리팅은 동적 import()로 번들을 청크로 나누어 초기 로딩을 줄이고, 라우트 기반 스플리팅이 가장 효과적입니다. 소스맵은 프로덕션 디버깅의 핵심이지만 공개 배포하면 소스 코드가 노출되므로, Sentry 등 에러 모니터링 서비스에 비공개로 업로드하는 것이 모범 사례입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "트리 쉐이킹과 코드 스플리팅의 동작 원리를 설명하고, 트리 쉐이킹이 실패하는 코드 패턴과 해결 방법을 설명해주세요."
+  },
+  "source_files": ["javascript-senior.md#Q8", "javascript-senior.md#Q9", "javascript-senior-2.md#Q18"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking",
+    "https://webpack.js.org/guides/tree-shaking/"
+  ]
+}

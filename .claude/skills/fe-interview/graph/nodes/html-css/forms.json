@@ -1,0 +1,27 @@
+{
+  "id": "html-forms",
+  "type": "concept",
+  "name": "Forms & Validation",
+  "category": "html-css",
+  "levels": ["junior", "mid"],
+  "description": "HTML 폼 요소와 브라우저 내장 유효성 검사, 그리고 접근성을 고려한 폼 설계 방법",
+  "key_points": [
+    "주요 input type별 특성과 모바일 키보드 최적화 (email, tel, number, date, url 등)",
+    "내장 유효성 검사 속성 (required, pattern, minlength, maxlength, min, max, step)",
+    "Constraint Validation API (setCustomValidity, checkValidity, reportValidity)",
+    "novalidate와 formnovalidate를 활용한 유효성 검사 제어",
+    "label 요소와 접근성 — for 속성 또는 래핑 방식의 연결",
+    "form의 action, method, enctype 속성과 제출 메커니즘",
+    "HTML5 details/summary/dialog 요소의 내장 동작과 접근성 지원",
+    "autocomplete 속성의 역할과 보안 고려사항",
+    "실시간 유효성 검사와 submit 시점 검사의 UX 트레이드오프"
+  ],
+  "model_answer_summary": "HTML 폼은 사용자 입력을 수집하는 핵심 메커니즘으로, 적절한 input type 사용으로 모바일 키보드 최적화와 자동 유효성 검사를 제공받을 수 있습니다. required, pattern 등의 선언적 속성과 Constraint Validation API를 조합하여 JavaScript 최소화 상태에서도 견고한 폼 검증이 가능하며, label 연결과 에러 메시지의 접근성 처리가 필수입니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "HTML 폼의 주요 input type과 내장 유효성 검사 속성에 대해 설명해주세요.",
+    "mid": "Constraint Validation API를 사용한 커스텀 유효성 검사와 접근성을 고려한 에러 처리 방법을 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q7", "html-css-junior-2.md#Q20"],
+  "references": []
+}

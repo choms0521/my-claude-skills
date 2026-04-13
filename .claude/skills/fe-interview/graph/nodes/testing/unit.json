@@ -1,0 +1,26 @@
+{
+  "id": "testing-unit",
+  "type": "concept",
+  "name": "Unit Testing",
+  "category": "testing",
+  "levels": ["mid", "senior"],
+  "description": "개별 함수와 모듈을 격리하여 테스트하는 가장 기본적인 테스트 레벨",
+  "key_points": [
+    "단위 테스트는 단일 동작을 검증하며, 밀리초 단위로 실행되고, 결정론적이어야 함",
+    "Jest는 Babel/ts-jest 기반 트랜스폼이 필요하고, Vitest는 Vite 설정을 그대로 활용하여 별도 설정 불필요",
+    "describe/it/expect/beforeEach 등 두 프레임워크의 API가 거의 동일하여 마이그레이션이 용이",
+    "각 테스트 파일은 별도 워커 프로세스에서 실행되어 강력한 격리성 제공",
+    "AAA 패턴(Arrange-Act-Assert)으로 테스트 구조를 명확하게 작성",
+    "외부 시스템(DB, 네트워크, 파일)에 의존하지 않는 순수한 격리 테스트 작성이 핵심",
+    "테스트 대상의 공개 인터페이스만 테스트하고, 구현 세부사항은 테스트하지 않는 것이 원칙",
+    "Vitest의 HMR 기반 watch 모드는 Vite 프로젝트에서 Jest 대비 유의미한 속도 향상 제공"
+  ],
+  "model_answer_summary": "단위 테스트는 개별 함수, 모듈, 컴포넌트를 의존성으로부터 격리하여 단일 동작을 검증합니다. Jest는 오랜 생태계와 풍부한 플러그인을 갖춘 표준이고, Vitest는 Vite 설정을 재사용하여 빠른 속도와 제로 설정을 제공합니다. 좋은 단위 테스트는 빠르고, 결정론적이며, 외부 시스템에 의존하지 않습니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Jest와 Vitest의 핵심 차이점은 무엇이며, 프로젝트에서 어떤 기준으로 선택하나요?",
+    "senior": "수백 명의 엔지니어가 참여하는 대규모 코드베이스에서 단위 테스트 전략을 어떻게 설계하고 유지하나요?"
+  },
+  "source_files": ["testing-mid.md#Q1", "testing-senior.md#Q1"],
+  "references": []
+}

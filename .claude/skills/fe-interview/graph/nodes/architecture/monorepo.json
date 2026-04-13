@@ -1,0 +1,25 @@
+{
+  "id": "arch-monorepo",
+  "type": "concept",
+  "name": "Monorepo Architecture",
+  "category": "architecture",
+  "levels": ["senior"],
+  "description": "Turborepo, Nx를 활용한 모노레포 관리와 태스크 오케스트레이션",
+  "key_points": [
+    "Turborepo: 최소 설정, 기존 package.json 스크립트 위에 작동하는 빠른 태스크 러너",
+    "Nx: 풍부한 플러그인, 코드 제너레이터, 프로젝트 그래프 분석을 갖춘 풀 빌드 시스템",
+    "컨텐츠 해싱 기반 캐시로 입력이 변경되지 않은 태스크의 출력을 즉시 재현",
+    "원격 캐시(Vercel, Nx Cloud)로 팀 전체가 빌드 캐시를 공유하여 CI 시간 단축",
+    "태스크 그래프로 의존성 순서를 파악하고 독립 태스크를 병렬 실행",
+    "Affected 명령으로 변경된 패키지와 그 의존자만 빌드/테스트하여 CI 효율화",
+    "pnpm workspace로 의존성 호이스팅 제어와 엄격한 패키지 격리",
+    "모노레포 채택 기준: 팀 간 코드 공유 빈도, 공통 라이브러리 수, 일관된 도구 체인 필요성"
+  ],
+  "model_answer_summary": "모노레포는 여러 패키지를 단일 저장소에서 관리하며, Turborepo(가벼운 태스크 러너)와 Nx(풀 빌드 시스템) 중 선택합니다. 콘텐츠 해싱 캐시, 원격 캐시 공유, Affected 명령으로 빌드 효율을 극대화하고, pnpm workspace로 의존성을 관리합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "Turborepo와 Nx의 접근 방식 차이와 각각이 적합한 프로젝트 유형은?"
+  },
+  "source_files": ["architecture-senior.md#Q2"],
+  "references": []
+}

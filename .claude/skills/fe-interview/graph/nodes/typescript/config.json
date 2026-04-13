@@ -1,0 +1,25 @@
+{
+  "id": "ts-config",
+  "type": "concept",
+  "name": "TypeScript Configuration",
+  "category": "typescript",
+  "levels": ["mid"],
+  "description": "tsconfig.json 설정과 strict 모드, 모듈 해상도, 프로젝트 참조 등 TypeScript 프로젝트 구성",
+  "key_points": [
+    "strict 모드 옵션 - strictNullChecks, noImplicitAny, strictFunctionTypes 등 개별 플래그의 역할",
+    "모듈 해상도(module resolution) - node, node16, bundler 전략의 차이와 선택 기준",
+    "경로 별칭(path aliases) - paths와 baseUrl을 활용한 import 경로 간소화",
+    "프로젝트 참조(project references) - 대규모 코드베이스에서의 incremental 빌드 최적화",
+    "target과 lib 설정 - 출력 JavaScript 버전과 사용 가능한 API 타입 정의",
+    "declaration과 declarationMap - .d.ts 파일 생성과 소스맵 연결",
+    "isolatedModules 옵션 - 단일 파일 트랜스파일 호환성(esbuild, SWC 등)",
+    "skipLibCheck과 타입 체크 성능 - node_modules 타입 검사 건너뛰기의 트레이드오프"
+  ],
+  "model_answer_summary": "TypeScript 설정은 tsconfig.json을 통해 관리되며, strict 모드 활성화가 타입 안전성의 기본입니다. 모듈 해상도 전략은 런타임 환경에 맞춰 선택하고, 프로젝트 참조로 대규모 코드베이스의 빌드 성능을 최적화합니다. isolatedModules는 esbuild, SWC 같은 단일 파일 트랜스파일러와의 호환성을 보장하며, 적절한 target/lib 설정으로 출력 코드와 사용 가능한 API를 제어합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "intermediate" },
+  "sample_questions": {
+    "mid": "TypeScript의 strict 모드가 활성화하는 개별 옵션들과 각각의 역할을 설명해주세요."
+  },
+  "source_files": ["typescript-mid-2.md#Q20", "typescript-senior.md#Q6", "typescript-senior.md#Q8"],
+  "references": []
+}

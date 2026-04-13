@@ -1,0 +1,25 @@
+{
+  "id": "nextjs-deployment",
+  "type": "concept",
+  "name": "Next.js Deployment",
+  "category": "nextjs",
+  "levels": ["senior"],
+  "description": "Vercel, 셀프 호스팅, Edge Runtime, Docker 배포 전략과 런타임 선택",
+  "key_points": [
+    "Vercel 배포 - 자동 최적화, Edge/Serverless 함수 분리, 프리뷰 배포, ISR 네이티브 지원",
+    "셀프 호스팅 - standalone 출력 모드로 최소 Docker 이미지 생성, node server.js로 실행",
+    "Edge Runtime vs Node.js Runtime - WinterCG Web API vs 전체 Node.js, 콜드 스타트와 API 제약 비교",
+    "미들웨어의 Edge 실행 - 모든 요청을 최소 지연으로 인터셉트, JWT 검증 등에 적합",
+    "runtime 선택 - export const runtime = 'edge' | 'nodejs'로 라우트별 런타임 지정",
+    "Multi-Zone 아키텍처 - 여러 Next.js 앱을 단일 도메인에서 독립 배포",
+    "OpenTelemetry 통합 - 분산 트레이싱으로 서버 컴포넌트와 데이터 페칭 성능 모니터링",
+    "배포 전략 - Blue-Green, Canary 배포, Feature Flags를 활용한 점진적 롤아웃"
+  ],
+  "model_answer_summary": "Next.js 배포는 Vercel의 자동 최적화 배포와 standalone 모드의 셀프 호스팅 Docker 배포로 나뉩니다. Edge Runtime은 1ms 미만 콜드 스타트로 인증과 리다이렉트에 최적이지만 Node.js API가 제한되고, Node.js Runtime은 전체 npm 생태계를 지원합니다. 미들웨어는 Edge에서, 페이지/API는 필요에 따라 런타임을 선택하는 하이브리드 전략이 일반적입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "Edge Runtime과 Node.js Runtime의 차이를 설명하고, 각각 어떤 경우에 사용해야 하는지 설명해주세요."
+  },
+  "source_files": ["nextjs-senior.md#Q6", "nextjs-senior.md#Q7", "nextjs-senior.md#Q9", "nextjs-senior.md#Q10"],
+  "references": []
+}

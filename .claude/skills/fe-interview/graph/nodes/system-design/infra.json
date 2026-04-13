@@ -1,0 +1,25 @@
+{
+  "id": "sd-infra",
+  "type": "concept",
+  "name": "Infrastructure Fundamentals",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "로드 밸런서, CDN, DNS, 리버스 프록시 등 인프라 기본 개념",
+  "key_points": [
+    "로드 밸런서: L4(TCP/UDP)와 L7(HTTP) 수준 분산 - Round Robin, Least Connections, IP Hash 알고리즘",
+    "CDN(Content Delivery Network): 지리적으로 분산된 엣지 서버에서 정적 자산 제공으로 지연 시간 최소화",
+    "DNS(Domain Name System): 도메인을 IP 주소로 해석, DNS 라운드 로빈으로 기본적인 트래픽 분산",
+    "리버스 프록시: 클라이언트와 서버 사이에서 요청 라우팅, SSL 종료, 캐싱, 압축 수행 (Nginx, Cloudflare)",
+    "수평 확장(Horizontal Scaling): 서버 인스턴스 추가로 처리량 증가, 수직 확장보다 유연",
+    "CDN 캐시 무효화: 배포 시 해시 기반 파일명(main.abc123.js)으로 자동 버스트",
+    "Multi-CDN 전략으로 가용성과 성능 극대화 - 장애 시 자동 페일오버",
+    "프론트엔드 개발자가 알아야 할 인프라: CDN 설정, 캐시 헤더, CORS 프록시, SSL 인증서"
+  ],
+  "model_answer_summary": "프론트엔드 인프라의 핵심은 CDN을 통한 정적 자산 배포, 로드 밸런서를 통한 트래픽 분산, DNS를 통한 도메인 해석입니다. 리버스 프록시가 SSL 종료와 캐싱을 담당하고, 수평 확장으로 처리량을 늘립니다. 프론트엔드 개발자는 CDN 캐시 무효화, 캐시 헤더, CORS 프록시 설정을 이해해야 합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "프론트엔드 애플리케이션 배포에서 CDN, 로드 밸런서, 리버스 프록시의 역할과 설정 전략은?"
+  },
+  "source_files": [],
+  "references": []
+}

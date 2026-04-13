@@ -1,0 +1,25 @@
+{
+  "id": "ts-declaration",
+  "type": "concept",
+  "name": "Declaration Files",
+  "category": "typescript",
+  "levels": ["senior"],
+  "description": ".d.ts 선언 파일, 앰비언트 모듈, DefinitelyTyped, 선언 병합을 다루는 고급 모듈 타이핑",
+  "key_points": [
+    ".d.ts 파일의 역할 - 런타임 코드 없이 타입 정보만 제공하는 선언 파일",
+    "앰비언트 모듈 선언(ambient modules) - declare module로 타입이 없는 패키지에 타입 추가",
+    "DefinitelyTyped와 @types 패키지 - 커뮤니티 관리 타입 선언 저장소",
+    "triple-slash 디렉티브 - 레거시 타입 참조 방식과 현대적 대안",
+    "선언 병합(declaration merging) - 동일 이름의 interface, namespace, enum 병합 규칙",
+    "모듈 보강(module augmentation) - 서드파티 모듈의 기존 타입을 확장하는 기법",
+    "글로벌 타입 확장 - Window, ProcessEnv 등 전역 인터페이스에 프로퍼티 추가",
+    "declare global과 namespace의 사용 - 전역 스코프 타입 선언 패턴"
+  ],
+  "model_answer_summary": "선언 파일(.d.ts)은 JavaScript 라이브러리에 타입 정보를 제공하는 TypeScript의 핵심 메커니즘입니다. DefinitelyTyped를 통해 커뮤니티 타입을 사용하고, 앰비언트 모듈 선언으로 타입이 없는 패키지를 처리합니다. 선언 병합과 모듈 보강으로 서드파티 타입을 안전하게 확장하며, declare global로 Window 같은 전역 인터페이스에 커스텀 프로퍼티를 추가할 수 있습니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "선언 병합과 모듈 보강의 차이를 설명하고, 서드파티 라이브러리 타입을 확장하는 방법을 보여주세요."
+  },
+  "source_files": ["typescript-mid.md#Q6", "typescript-mid.md#Q7", "typescript-senior-2.md#Q19"],
+  "references": []
+}
