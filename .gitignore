@@ -29,6 +29,9 @@ agent_code_review.md
 # Copilot review cycle state
 .copilot-review-state.json
 
+# Interview reports
+fe-interview-report-*.md
+
 # Logs
 *.log
 npm-debug.log*
