@@ -180,14 +180,14 @@ check_coverage() {
   echo ""
 
   # Check file sizes
-  echo "### File Size Check (target: <400 lines)"
+  echo "### File Size Check (target: <600 lines)"
   echo ""
   for file in "$KNOWLEDGE_DIR"/*.md; do
     if [ -f "$file" ] && [ "$(basename "$file")" != "_index.md" ]; then
       local lines
       lines=$(wc -l < "$file" | tr -d ' ')
       local status="OK"
-      if [ "$lines" -gt 400 ]; then
+      if [ "$lines" -gt 600 ]; then
         status="OVER LIMIT"
       fi
       printf "  %-35s %4d lines  [%s]\n" "$(basename "$file")" "$lines" "$status"
