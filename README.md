@@ -23,7 +23,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **multi-review** | 3개 LLM(Claude, Codex, Gemini) 병렬 코드 리뷰 + 종합 + 사용자 승인 후 수정 | `/multi-review [파일 \| --workspace \| --staged]` |
 | **check-github-copilot-review** | GitHub Copilot 리뷰 코멘트 자동 처리 (코드 수정/기각 + 댓글 + resolve + 커밋·푸시, 최대 3사이클 자동 폴링) | `/check-github-copilot-review [PR URL \| PR번호] [--reset]` |
 | **mp3-downloader** | YouTube/YouTube Music에서 MP3 다운로드 (yt-dlp+ffmpeg 기반, 자동 의존성 설치, 디렉토리 자동 생성) | `/mp3-downloader <url> [--out <dir>]` |
-| **fe-interview** | 프론트엔드 면접 코치 — Knowledge Graph 기반 3명 면접관, S/A/B/C/D 등급, 합의 평가, 개선 로드맵. 테스트 모드(dry-run/tester agent) 지원 | `/fe-interview [--mode graph\|classic] [--test dry-run\|agent:junior\|agent:mid\|agent:senior] [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` |
+| **fe-interview** | 프론트엔드 면접 코치 — Knowledge Graph 기반 3명 면접관, S/A/B/C/D 등급, 합의 평가, 개선 로드맵. 테스트 모드(Graph Mode 전용) 지원 | `/fe-interview [--mode graph\|classic] [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` 테스트: `/fe-interview --test dry-run\|agent:*` (Graph Mode 전용) |
 
 ## 스킬 사용
 
