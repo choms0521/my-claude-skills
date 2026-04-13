@@ -23,7 +23,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **multi-review** | 3개 LLM(Claude, Codex, Gemini) 병렬 코드 리뷰 + 종합 + 사용자 승인 후 수정 | `/multi-review [파일 \| --workspace \| --staged]` |
 | **check-github-copilot-review** | GitHub Copilot 리뷰 코멘트 자동 처리 (코드 수정/기각 + 댓글 + resolve + 커밋·푸시, 최대 3사이클 자동 폴링) | `/check-github-copilot-review [PR URL \| PR번호] [--reset]` |
 | **mp3-downloader** | YouTube/YouTube Music에서 MP3 다운로드 (yt-dlp+ffmpeg 기반, 자동 의존성 설치, 디렉토리 자동 생성) | `/mp3-downloader <url> [--out <dir>]` |
-| **fe-interview** | 프론트엔드 면접 코치 — Knowledge Graph 기반 3명 면접관, S/A/B/C/D 등급, 합의 평가, 개선 로드맵. 테스트 모드(Graph Mode 전용) 지원 | `/fe-interview [--mode graph\|classic] [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` 테스트: `/fe-interview --test dry-run\|agent:*` (Graph Mode 전용) |
+| **fe-interview** | 프론트엔드 면접 코치 — Knowledge Graph 기반 적응형 면접. 3명 면접관(CTO/팀리드/시니어), S/A/B/C/D 등급, 합의 평가, 개선 로드맵 | `/fe-interview [--mode graph\|classic] [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` |
 
 ## 스킬 사용
 
@@ -62,7 +62,7 @@ Claude Code에서 슬래시 커맨드로 호출:
 # 영상 설명에서 트랙 링크 추출 후 다운로드
 /mp3-downloader --extract-from-description https://www.youtube.com/watch?v=xxxxx
 
-# 프론트엔드 면접 연습 (기본 - 연차 입력 후 시작)
+# 프론트엔드 면접 연습 (기본 - 연차 입력 후 시작, Graph Mode)
 /fe-interview
 
 # 이력서 기반 면접 연습
@@ -71,13 +71,17 @@ Claude Code에서 슬래시 커맨드로 호출:
 # 시니어 레벨 짧은 세션
 /fe-interview --level senior --length short
 
-# 테스트 모드 - Dry-run (질문 시퀀스/면접관 배분 검증, ~1분)
+# Classic Mode — knowledge/ 파일 기반 질문 (그래프 없이)
+/fe-interview --mode classic --level mid
+
+# 테스트 모드 (Graph Mode 전용)
+# Dry-run: 질문 시퀀스/면접관 배분 검증 (~1분)
 /fe-interview --test dry-run --level mid --length short
 
-# 테스트 모드 - Tester Agent (AI가 주니어로 답변, 등급 C-D 검증)
+# Tester Agent: AI가 주니어로 답변, 등급 C-D 나오는지 검증
 /fe-interview --test agent:junior --length short
 
-# 테스트 모드 - Tester Agent (AI가 시니어로 답변, 등급 A-S 검증)
+# Tester Agent: AI가 시니어로 답변, 등급 A-S 나오는지 검증
 /fe-interview --test agent:senior --length short
 ```
 
@@ -135,6 +139,9 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.
 
 # mp3-downloader만 설치
 ln -sfn /path/to/my-claude-skills/.claude/skills/mp3-downloader ~/.claude/skills/mp3-downloader
+
+# fe-interview만 설치
+ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/fe-interview
 ```
 
 ### 스킬 파일 직접 복사 (심볼릭 링크 대신)
@@ -146,9 +153,94 @@ cp -r /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.cl
 
 ### 설치 확인
 
-설치 후 Claude Code에서 `/check-github-copilot-review` 또는 `/multi-review`를 입력하면 스킬이 로드됩니다.
+설치 후 Claude Code에서 `/fe-interview`, `/multi-review`, `/check-github-copilot-review` 등을 입력하면 스킬이 로드됩니다.
 
 > **참고:** 심볼릭 링크 방식은 이 저장소를 `git pull`하면 자동으로 최신 스킬이 반영됩니다.
+
+## fe-interview 스킬 상세
+
+### 개요
+
+Knowledge Graph 기반 적응형 프론트엔드 면접 코치입니다. 121개 개념 노드와 161개 엣지로 구성된 지식 그래프를 탐색하며, 3명의 면접관이 협력하여 면접을 진행합니다.
+
+### 면접관 페르소나
+
+| 면접관 | 역할 | 담당 영역 |
+|--------|------|-----------|
+| CTO | 아키텍처·시스템 설계 관점 평가 | System Design, Architecture, Performance |
+| 팀리드 | 실무 협업·코드 품질 관점 평가 | React, Testing, Accessibility, Next.js |
+| 시니어 개발자 | 기초·심화 기술 관점 평가 | JavaScript, HTML/CSS, TypeScript, Security |
+
+### 두 가지 모드
+
+- **Graph Mode** (기본): `_graph.json` 지식 그래프를 탐색하며 동적 질문 생성. 적응형 난이도 조절, 꼬리질문, 크로스 토픽 질문 지원
+- **Classic Mode** (`--mode classic`): `knowledge/` 디렉토리의 마크다운 파일에서 직접 질문. 그래프 없이 간단하게 사용
+
+### 세션 길이
+
+| 길이 | 질문 수 | 예상 소요 시간 |
+|------|---------|---------------|
+| short | 5-7문제 | ~20분 |
+| medium (기본) | 10-12문제 | ~40분 |
+| long | 15-18문제 | ~60분 |
+
+### 평가 체계
+
+각 질문에 대해 S/A/B/C/D 등급으로 평가하고, 세션 종료 후 3명 면접관이 합의하여 종합 리포트를 생성합니다:
+- 카테고리별 강점/약점 분석
+- 개선 우선순위 로드맵
+- 추천 학습 자료
+
+### 테스트 모드 (Graph Mode 전용)
+
+스킬의 질문 품질과 평가 정확도를 검증하기 위한 자동화 모드입니다:
+
+- **Dry-run** (`--test dry-run`): 답변 없이 질문 시퀀스, 면접관 배분, 그래프 탐색 경로만 검증 (~1분)
+- **Tester Agent** (`--test agent:junior|mid|senior`): AI가 지정된 레벨로 답변하며 전체 프로세스 검증 (~10-20분)
+
+### 파일 구조
+
+```
+.claude/skills/fe-interview/
+├── SKILL.md                    # 스킬 정의 (891줄)
+├── graph/
+│   ├── _graph.json             # 지식 그래프 (121노드, 161엣지)
+│   ├── nodes/**/*.json         # 노드별 상세 (11개 카테고리)
+│   ├── roles/*.json            # 면접관 역할 정의
+│   └── history/session-log.json # 세션 이력 (로컬 전용)
+├── knowledge/                  # 카테고리×레벨별 질문 파일 (39개)
+└── scripts/
+    ├── graph-cli.py            # 그래프 관리 CLI
+    └── update_knowledge.sh     # 질문 현황 확인
+```
+
+### fe-interview 단독 설치
+
+저장소를 클론하지 않고 fe-interview만 설치하는 3가지 방법입니다.
+
+**방법 1: Installer 문서로 자동 설치 (저장소 클론 불필요)**
+
+[`fe-interview-installer.md`](fe-interview-installer.md) 파일에 스킬의 모든 소스가 포함되어 있습니다. Claude Code에 아래 프롬프트를 입력하세요:
+
+```
+fe-interview-installer.md 파일을 읽고 그 안의 지시대로 fe-interview 스킬을 설치해줘
+```
+
+또는 installer 파일의 내용을 Claude Code에 직접 붙여넣어도 됩니다. SKILL.md, 그래프 데이터, knowledge 파일까지 한 번에 설치됩니다.
+
+**방법 2: 심볼릭 링크 (저장소 클론 후)**
+
+```bash
+ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/fe-interview
+```
+
+**방법 3: 직접 복사**
+
+```bash
+cp -r /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/
+```
+
+> **참고:** fe-interview는 `graph/`, `knowledge/`, `scripts/` 하위 디렉토리를 모두 포함하므로 SKILL.md만 복사하면 동작하지 않습니다. 디렉토리 전체를 복사하세요.
 
 ## 스킬 추가 방법
 
