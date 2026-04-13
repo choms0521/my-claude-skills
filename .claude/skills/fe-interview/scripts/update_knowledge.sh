@@ -104,7 +104,7 @@ summarize_fe_handbook() {
           local topic
           topic=$(basename "$subdir")
           local sub_count
-          sub_count=$(find "$subdir" -name "*.md" -o -name "*.mdx" 2>/dev/null | wc -l | tr -d ' ')
+          sub_count=$(find "$subdir" -name "*.md" -o -name "*.mdx" -o -name "*.json" 2>/dev/null | wc -l | tr -d ' ')
           if [ "$sub_count" -gt 0 ]; then
             echo "  - $topic: $sub_count files"
           fi
@@ -180,7 +180,7 @@ check_coverage() {
   echo ""
 
   # Check file sizes
-  echo "### File Size Check (target: <600 lines)"
+  echo "### File Size Check (target: <= 600 lines)"
   echo ""
   for file in "$KNOWLEDGE_DIR"/*.md; do
     if [ -f "$file" ] && [ "$(basename "$file")" != "_index.md" ]; then
