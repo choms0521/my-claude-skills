@@ -81,7 +81,7 @@ The critical difference from regular type guards is the return type. A type guar
 
 Assertion functions are particularly useful in test setup code (asserting that a value is defined before using it in a test), input validation at API boundaries, and configuration validation at startup. They are also common in utility libraries that wrap invariant checks — the popular `invariant` package can be typed as an assertion function.
 
-One important limitation: assertion functions must be arrow functions or regular function declarations — they cannot be inline type assertions. Also, the `asserts` return type tells TypeScript to trust your runtime check, so you must ensure your implementation actually throws when the condition is not met. TypeScript does not verify that your function's implementation correctly corresponds to its `asserts` type annotation.
+One important limitation: the `asserts` return type annotation must be used in a function signature (including regular functions, arrow functions, and methods) — it cannot be used as an inline type assertion. Also, the `asserts` return type tells TypeScript to trust your runtime check, so you must ensure your implementation actually throws when the condition is not met. TypeScript does not verify that your function's implementation correctly corresponds to its `asserts` type annotation.
 
 ### Key Points
 - Assertion functions use `asserts condition` or `asserts arg is Type` in their return type

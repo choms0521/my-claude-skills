@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # update_knowledge.sh - Helper script for syncing frontend interview knowledge from GitHub repos
-# Usage: ./update_knowledge.sh [--summary | --clone | --help]
+# Usage: ./update_knowledge.sh [--summary | --clone | --check | --help]
 #
 # This is a HELPER tool, not a fully automated pipeline.
 # It clones/pulls source repos and outputs a structured summary.
