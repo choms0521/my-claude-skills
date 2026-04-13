@@ -83,7 +83,7 @@
 ## Knowledge Graph (v2)
 
 v2에서는 `graph/` 디렉토리에 지식 그래프가 추가되었습니다:
-- `graph/_graph.json` — 114개 노드 + 140개 엣지 (세션 시작 시 로드)
+- `graph/_graph.json` — 121개 노드 + 161개 엣지 (세션 시작 시 로드)
 - `graph/nodes/**/*.json` — 노드별 상세 파일 (필요 시 로드)
 - `graph/roles/*.json` — 3명 면접관 역할 정의
 

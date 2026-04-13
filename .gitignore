@@ -31,6 +31,10 @@ agent_code_review.md
 
 # Interview reports
 fe-interview-report-*.md
+fe-interview-dryrun-*.md
+
+# Interview session history (runtime state)
+.claude/skills/fe-interview/graph/history/session-log.json
 
 # Logs
 *.log
