@@ -218,15 +218,13 @@ Knowledge Graph 기반 적응형 프론트엔드 면접 코치입니다. 121개 
 
 저장소를 클론하지 않고 fe-interview만 설치하는 3가지 방법입니다.
 
-**방법 1: Installer 문서로 자동 설치 (저장소 클론 불필요)**
+**방법 1: Installer 문서로 자동 설치**
 
-[`fe-interview-installer.md`](fe-interview-installer.md) 파일에 스킬의 모든 소스가 포함되어 있습니다. Claude Code에 아래 프롬프트를 입력하세요:
+[`fe-interview-installer.md`](fe-interview-installer.md)를 Claude Code에 전달하면 저장소 클론부터 전역 심볼릭 링크 설치까지 자동으로 처리됩니다:
 
 ```
 fe-interview-installer.md 파일을 읽고 그 안의 지시대로 fe-interview 스킬을 설치해줘
 ```
-
-또는 installer 파일의 내용을 Claude Code에 직접 붙여넣어도 됩니다. SKILL.md, 그래프 데이터, knowledge 파일까지 한 번에 설치됩니다.
 
 **방법 2: 심볼릭 링크 (저장소 클론 후)**
 
