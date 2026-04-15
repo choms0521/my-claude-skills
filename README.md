@@ -328,6 +328,6 @@ mkdir -p ~/.claude/skills/music-generator && curl -fsSL -o ~/.claude/skills/musi
 - (선택) OMC CLI — Gemini 디스패치에 사용 (`omc ask gemini`)
 - (선택) [Gemini CLI](https://github.com/google/gemini-cli) — `npm install -g @google/gemini-cli` (OMC를 통해 호출)
 - (자동 설치) `yt-dlp`, `ffmpeg` — mp3-downloader 스킬에 필요 (미설치 시 스크립트가 자동 설치 시도)
-- (선택) [mmx CLI](https://www.minimaxi.com/cli) — music-generator 스킬에 필수
+- (선택) [mmx CLI](https://www.minimaxi.com/cli) — music-generator 스킬 사용 시 필수
 
 Codex/Gemini CLI가 미설치된 경우 Claude만 사용하여 동작합니다.

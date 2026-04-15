@@ -103,8 +103,8 @@ which mmx
 
 - 곡 제목에서 파일명 생성
 - 공백 → 하이픈(`-`)
-- 특수문자(따옴표, 슬래시, 콜론 등) → 제거
-- 한국어/일본어 → 허용 (파일시스템 지원)
+- ASCII 특수문자(따옴표, 슬래시, 콜론, 물음표 등) → 제거
+- 한국어/일본어 문자 및 CJK 구두점(・, 、 등) → 허용 (파일시스템 지원)
 - 영문은 소문자로 변환
 - 길이 상한: 80자
 - 확장자: `.mp3`
@@ -114,9 +114,9 @@ which mmx
 **BPM/Tempo 우선순위:** `--bpm`(숫자)이 `--tempo`(자연어)보다 우선합니다. 둘 다 제공 시 `--bpm`만 사용하고 `--tempo`는 생략합니다.
 
 **예시:**
-- "Summer Diary" → `./summer-diary.mp3`
-- "여름빛 다이어리" → `./여름빛-다이어리.mp3`
-- "ナツイロ・ダイアリー" → `./ナツイロ・ダイアリー.mp3`
+- "Summer Diary" → `~/Music/summer-diary.mp3`
+- "여름빛 다이어리" → `~/Music/여름빛-다이어리.mp3`
+- "ナツイロ・ダイアリー" → `~/Music/ナツイロ・ダイアリー.mp3`
 
 ### 5. CLI 조립 예시
 
@@ -147,7 +147,7 @@ mmx music generate \
   --key "G major" \
   --instruments "synth, electric guitar, bass, drums" \
   --structure "intro-verse-prechorus-chorus-rap-verse-prechorus-chorus-bridge-chorus-outro" \
-  --out ./natsuyro-diary.mp3
+  --out ~/Music/natsuiro-diary.mp3
 
 # 3. 임시 파일 삭제
 rm -f /tmp/mmx-lyrics-1713160800.txt
@@ -162,7 +162,7 @@ mmx music generate \
   --mood "calm, relaxing" \
   --tempo "slow" \
   --instruments "piano, vinyl crackle, soft drums" \
-  --out ./study-beats.mp3
+  --out ~/Music/study-beats.mp3
 ```
 
 ### 6. 실행 및 결과 안내
@@ -391,7 +391,7 @@ BPM 85의 느린 템포로, 공부나 작업할 때 배경음악으로 좋습니
 
 **가사 작성 규칙:**
 - 구조 태그 포함: `[Intro]`, `[Verse 1]`, `[Pre-Chorus]`, `[Chorus]`, `[Verse 2]`, `[Rap]`, `[Bridge]`, `[Outro]` 등
-- **듀엣/다중 보컬 시**: 구조 태그 대신 `[Female]`, `[Male]`, `[Both]` 태그를 사용하여 파트를 명확히 구분. mmx가 보컬 음색을 전환하는 데 이 태그가 중요함
+- **듀엣/다중 보컬 시**: 구조 태그와 함께 `[Female]`, `[Male]`, `[Both]` 태그를 병행하여 파트를 명확히 구분 (예: `[Verse 1][Female]`, `[Chorus][Both]`). mmx가 보컬 음색을 전환하는 데 이 태그가 중요함
 - 장르와 분위기에 맞는 가사 스타일
 - 보컬 스타일에 맞는 파트 분배 (그룹인 경우)
 - `--structure`가 지정되었으면 해당 구조에 맞춤
@@ -441,7 +441,7 @@ Direct Mode와 동일한 절차로 CLI를 구성하고 실행합니다:
 # 에러 발생 시에도 cleanup 보장 (타임스탬프 기반 특정 파일만 삭제)
 LYRICS_TMP="/tmp/mmx-lyrics-$(date +%s%N).txt"
 # ... 가사 파일 생성 ...
-mmx music generate ... --lyrics-file "$LYRICS_TMP" --out ./output.mp3
+mmx music generate ... --lyrics-file "$LYRICS_TMP" --out ~/Music/output.mp3
 rm -f "$LYRICS_TMP"
 ```
 
