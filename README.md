@@ -245,6 +245,30 @@ cp -r /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/
 
 > **참고:** fe-interview는 `graph/`, `knowledge/`, `scripts/` 하위 디렉토리를 모두 포함하므로 SKILL.md만 복사하면 동작하지 않습니다. 디렉토리 전체를 복사하세요.
 
+## persona-builder 단독 설치
+
+persona-builder는 SKILL.md 단일 파일로 구성되어 있어 curl 한 줄로 설치할 수 있습니다.
+
+**방법 1: curl로 바로 설치**
+
+```bash
+mkdir -p ~/.claude/skills/persona-builder && \
+curl -fsSL -o ~/.claude/skills/persona-builder/SKILL.md \
+  "https://raw.githubusercontent.com/choms0521/my-claude-skills/main/.claude/skills/persona-builder/SKILL.md"
+```
+
+**방법 2: Installer 문서로 자동 설치**
+
+[`persona-builder-installer.md`](persona-builder-installer.md)를 Claude Code에 전달하면 자동으로 설치됩니다:
+
+```
+persona-builder-installer.md 파일을 읽고 그 안의 지시대로 persona-builder 스킬을 설치해줘
+```
+
+**업데이트:** 같은 curl 명령을 다시 실행하면 최신 버전으로 덮어씁니다.
+
+**제거:** `rm -rf ~/.claude/skills/persona-builder`
+
 ## 스킬 추가 방법
 
 1. `.claude/skills/<새-스킬명>/SKILL.md` 파일 생성
