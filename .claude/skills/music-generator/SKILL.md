@@ -124,10 +124,11 @@ which mmx
 
 ### 5. CLI 조립 예시
 
-**가사 작성 시 보컬 디렉션 포함 규칙:**
-- 각 섹션의 구조 태그 뒤에 `(vocal direction)` 형식으로 부르는 방법/스타일/감정을 명시
-- 이 디렉션은 mmx가 보컬 표현을 결정하는 데 활용됨
-- `--prompt`에도 전체적인 보컬 흐름과 감정 변화를 자연어로 포함
+**가사 파일과 보컬 디렉션 분리 규칙 (중요):**
+- **가사 파일(`--lyrics-file`)에는 구조 태그(`[Verse 1]`, `[Chorus]` 등)와 순수 가사만 포함**
+- `(vocal direction)` 형식의 보컬 지시사항을 가사 파일에 넣으면 **mmx가 해당 텍스트를 가사로 인식하여 그대로 노래로 부름** (버그 아님, 사양)
+- 보컬 표현/감정 변화/섹션별 보컬 흐름은 모두 **`--prompt`에 자연어로 통합**하여 전달
+- `--prompt`에서 섹션별 보컬 변화를 시간 순서대로 구체적으로 기술 (예: "Verse는 속삭이듯 시작하여, Pre-Chorus에서 감정이 고조되고, Chorus에서 파워풀한 벨팅으로 폭발")
 
 **예시 1: 여성 솔로 - 이별 발라드**
 ```bash
@@ -136,27 +137,27 @@ lyrics_file="$(mktemp /tmp/mmx-lyrics-XXXXXX.txt)"
 chmod 600 "$lyrics_file"
 trap 'rm -f "$lyrics_file"' EXIT
 
-# 2. 가사를 임시 파일에 저장 (보컬 디렉션 포함)
+# 2. 가사를 임시 파일에 저장 (구조 태그 + 순수 가사만)
 cat > "$lyrics_file" << 'LYRICS_EOF'
-[Intro] (soft humming, barely audible, like whispering to oneself)
+[Intro]
 Mm... mm...
 
-[Verse 1] (gentle and restrained, suppressing emotions, breathy tone)
+[Verse 1]
 텅 빈 방 안에 너의 향기만 남아
 창밖에 비가 내리네 우리처럼
 
-[Pre-Chorus] (gradually building emotion, voice trembling slightly)
+[Pre-Chorus]
 돌아올 수 없는 걸 알면서도
 자꾸만 너를 부르게 돼
 
-[Chorus] (powerful belt with raw emotion, tears in voice, full chest voice)
+[Chorus]
 비가 내리면 생각나 너의 미소가
 지울 수 없는 기억들이 나를 적셔
 LYRICS_EOF
 
-# 3. mmx CLI 호출
+# 3. mmx CLI 호출 (보컬 디렉션은 --prompt에 통합)
 mmx music generate \
-  --prompt "Emotional K-POP ballad with clear, crystalline female vocals. Starts soft and breathy in verse, builds to powerful emotional belt in chorus with raw vulnerability. Piano-driven arrangement with strings swelling in chorus. The vocal journey goes from whispered restraint to full emotional release." \
+  --prompt "Emotional K-POP ballad with clear, crystalline female vocals. Intro: soft humming, barely audible, like whispering to oneself. Verse: gentle and restrained, suppressing emotions with breathy tone. Pre-Chorus: gradually building emotion, voice trembling slightly. Chorus: powerful belt with raw emotion, tears in voice, full chest voice erupting. Piano-driven arrangement with strings swelling in chorus. The vocal journey goes from whispered restraint to full emotional release." \
   --lyrics-file "$lyrics_file" \
   --vocals "clear bright female soprano, emotional range from soft whisper to powerful belt" \
   --genre "K-POP Ballad" \
@@ -175,21 +176,21 @@ chmod 600 "$lyrics_file"
 trap 'rm -f "$lyrics_file"' EXIT
 
 cat > "$lyrics_file" << 'LYRICS_EOF'
-[Verse 1][Female] (sweet and playful, light staccato delivery, smiling voice)
+[Verse 1][Female]
 오늘따라 하늘이 예뻐서
 너에게 전화를 걸었어
 
-[Verse 2][Male] (warm and gentle, soft low register, tender)
+[Verse 2][Male]
 네 목소리만 들으면 괜찮아져
 세상이 다 환해지는 것 같아
 
-[Chorus][Both] (joyful harmony, female takes melody, male supports with warm lower harmony)
+[Chorus][Both]
 너와 나 이 순간이 영원하길
 손잡고 걸어가는 이 길 위에서
 LYRICS_EOF
 
 mmx music generate \
-  --prompt "Romantic K-POP duet. Sweet clear female soprano alternates with warm male tenor in verses. They harmonize together in chorus — female on melody, male on lower harmony. Bright acoustic arrangement with playful energy. Vocal chemistry should feel natural and intimate." \
+  --prompt "Romantic K-POP duet. Verse 1 (Female): sweet and playful, light staccato delivery with smiling voice. Verse 2 (Male): warm and gentle, soft low register, tender tone. Chorus (Both): joyful harmony, female takes melody while male supports with warm lower harmony. Bright acoustic arrangement with playful energy. Vocal chemistry should feel natural and intimate." \
   --lyrics-file "$lyrics_file" \
   --vocals "duet with harmonies, alternating sweet female soprano and warm male tenor, harmonizing in chorus" \
   --genre "K-POP Acoustic Pop" \
@@ -505,6 +506,8 @@ BPM 85의 느린 템포로, 공부나 작업할 때 배경음악으로 좋습니
 **가사 작성 규칙:**
 - 구조 태그 포함: `[Intro]`, `[Verse 1]`, `[Pre-Chorus]`, `[Chorus]`, `[Verse 2]`, `[Rap]`, `[Bridge]`, `[Outro]` 등
 - **듀엣/다중 보컬 시**: 구조 태그와 함께 `[Female]`, `[Male]`, `[Both]` 태그를 병행하여 파트를 명확히 구분 (예: `[Verse 1][Female]`, `[Chorus][Both]`). mmx가 보컬 음색을 전환하는 데 이 태그가 중요함
+- **가사 파일에 보컬 디렉션(`(vocal direction)`)을 절대 포함하지 않음** — mmx가 해당 텍스트를 가사로 인식하여 그대로 노래로 부름
+- 보컬 표현/감정 변화는 `--prompt`에 섹션별 흐름으로 통합하여 전달
 - 장르와 분위기에 맞는 가사 스타일
 - 보컬 스타일에 맞는 파트 분배 (그룹인 경우)
 - `--structure`가 지정되었으면 해당 구조에 맞춤
