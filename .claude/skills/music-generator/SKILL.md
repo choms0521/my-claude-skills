@@ -1,7 +1,7 @@
 ---
 name: music-generator
 description: mmx music generate CLI를 사용하여 노래를 생성하는 스킬. 가사 직접 제공 또는 인터뷰 기반 작곡 지원.
-triggers: ["music-generator", "music generate", "make music", "create song", "노래 만들어", "작곡", "음악 생성", "배경음악", "instrumental"]
+triggers: ["music-generator"]
 argument-hint: "[가사 텍스트] [--instrumental] [--genre <genre>] [--bpm <number>] [--key <key>] [--mood <mood>] [--vocals <text>] [--tempo <text>] [--instruments <text>] [--structure <text>] [--out <path>]"
 ---
 
