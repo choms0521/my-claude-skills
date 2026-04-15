@@ -24,6 +24,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **check-github-copilot-review** | GitHub Copilot 리뷰 코멘트 자동 처리 (코드 수정/기각 + 댓글 + resolve + 커밋·푸시, 최대 3사이클 자동 폴링) | `/check-github-copilot-review [PR URL \| PR번호] [--reset]` |
 | **mp3-downloader** | YouTube/YouTube Music에서 MP3 다운로드 (yt-dlp+ffmpeg 기반, 자동 의존성 설치, 디렉토리 자동 생성) | `/mp3-downloader <url> [--out <dir>]` |
 | **fe-interview** | 프론트엔드 면접 코치 — Knowledge Graph 기반 적응형 면접. 3명 면접관(CTO/팀리드/시니어), S/A/B/C/D 등급, 합의 평가, 개선 로드맵 | `/fe-interview [--mode graph\|classic] [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` |
+| **persona-builder** | 봇 페르소나 정의 — 5개 차원(말투/감정 톤/대화 성향/입장-세계관/호칭) 인터뷰 후 Personality Config 생성. Tester Agent 샘플 대화 검증 포함 | `/persona-builder [--scope workspace\|global] [--remove] [--quick]` |
 
 ## 스킬 사용
 
@@ -126,6 +127,7 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/multi-review ~/.claude/skills/m
 ln -sfn /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.claude/skills/check-github-copilot-review
 ln -sfn /path/to/my-claude-skills/.claude/skills/mp3-downloader ~/.claude/skills/mp3-downloader
 ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/fe-interview
+ln -sfn /path/to/my-claude-skills/.claude/skills/persona-builder ~/.claude/skills/persona-builder
 ```
 
 ### 개별 스킬 설치
@@ -142,6 +144,9 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/mp3-downloader ~/.claude/skills
 
 # fe-interview만 설치
 ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/fe-interview
+
+# persona-builder만 설치
+ln -sfn /path/to/my-claude-skills/.claude/skills/persona-builder ~/.claude/skills/persona-builder
 ```
 
 ### 스킬 파일 직접 복사 (심볼릭 링크 대신)
@@ -239,6 +244,30 @@ cp -r /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/
 ```
 
 > **참고:** fe-interview는 `graph/`, `knowledge/`, `scripts/` 하위 디렉토리를 모두 포함하므로 SKILL.md만 복사하면 동작하지 않습니다. 디렉토리 전체를 복사하세요.
+
+## persona-builder 단독 설치
+
+persona-builder는 SKILL.md 단일 파일로 구성되어 있어 curl 한 줄로 설치할 수 있습니다.
+
+**방법 1: curl로 바로 설치**
+
+```bash
+mkdir -p ~/.claude/skills/persona-builder && \
+curl -fsSL -o ~/.claude/skills/persona-builder/SKILL.md \
+  "https://raw.githubusercontent.com/choms0521/my-claude-skills/main/.claude/skills/persona-builder/SKILL.md"
+```
+
+**방법 2: Installer 문서로 자동 설치**
+
+[`persona-builder-installer.md`](persona-builder-installer.md)를 Claude Code에 전달하면 자동으로 설치됩니다:
+
+```
+persona-builder-installer.md 파일을 읽고 그 안의 지시대로 persona-builder 스킬을 설치해줘
+```
+
+**업데이트:** 같은 curl 명령을 다시 실행하면 최신 버전으로 덮어씁니다.
+
+**제거:** `rm -rf ~/.claude/skills/persona-builder`
 
 ## 스킬 추가 방법
 
