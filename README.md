@@ -257,12 +257,14 @@ curl -fsSL -o ~/.claude/skills/persona-builder/SKILL.md \
   "https://raw.githubusercontent.com/choms0521/my-claude-skills/main/.claude/skills/persona-builder/SKILL.md"
 ```
 
-**방법 2: Installer 문서로 자동 설치**
+**방법 2: Claude Code에 붙여넣기**
 
-[`persona-builder-installer.md`](persona-builder-installer.md)를 Claude Code에 전달하면 자동으로 설치됩니다:
+아래 텍스트를 Claude Code에 그대로 붙여넣으면 자동으로 설치됩니다:
 
 ```
-persona-builder-installer.md 파일을 읽고 그 안의 지시대로 persona-builder 스킬을 설치해줘
+아래 명령어를 실행해서 persona-builder 스킬을 설치해줘:
+mkdir -p ~/.claude/skills/persona-builder && curl -fsSL -o ~/.claude/skills/persona-builder/SKILL.md "https://raw.githubusercontent.com/choms0521/my-claude-skills/main/.claude/skills/persona-builder/SKILL.md"
+설치 후 ls ~/.claude/skills/persona-builder/SKILL.md 로 확인해줘
 ```
 
 **업데이트:** 같은 curl 명령을 다시 실행하면 최신 버전으로 덮어씁니다.
