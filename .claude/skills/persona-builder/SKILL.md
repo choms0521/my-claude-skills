@@ -2,12 +2,12 @@
 name: persona-builder
 description: Socratic interview to define (or remove) your bot's persona — speaking style, emotional tone, interaction habits, and worldview. Generates a personality config ready to apply to CLAUDE.md or bot-character.md. Supports --remove to delete existing persona.
 triggers: ["persona-builder"]
-argument-hint: "[--scope workspace|global] [--remove] [--resume] [--quick]"
+argument-hint: "[--scope workspace|global] [--remove] [--quick]"
 ---
 
 # Persona Builder — 봇 페르소나 정의 스킬
 
-장군의 봇이 어떤 말투로, 어떤 감정으로, 어떤 자세로 대화를 이끌지를 정의합니다.
+장군님의 봇이 어떤 말투로, 어떤 감정으로, 어떤 자세로 대화를 이끌지를 정의합니다.
 인터뷰 방식으로 5개 차원을 순차 탐색하며, 완료 후 tester agent가 샘플 대화를 생성해 검증합니다.
 
 ## 동작 흐름
@@ -44,8 +44,11 @@ Interview (5차원 순차 질문)
 3. 삭제 전 **"정말 삭제할까요?"** 확인을 요청합니다
 4. 삭제 완료 후 알려줍니다
 
-**global 삭제 시:** `~/.claude/CLAUDE.md`에서 `## Persona` 섹션을 찾아 삭제합니다.
-**workspace 삭제 시:** `{cwd}/.claude/bot-character.md`에서 Bot Persona 섹션만 포함하고 있으면 파일 자체를 삭제합니다. 다른 내용이 함께 있으면 Bot Persona 섹션만 삭제하고 파일은 유지합니다.
+**global 삭제 시:** `~/.claude/CLAUDE.md`에서 `<!-- PERSONA_START -->` ~ `<!-- PERSONA_END -->` 태그 범위를 삭제합니다.
+**workspace 삭제 시:** `{cwd}/.claude/bot-character.md`에서 `<!-- PERSONA_START -->` ~ `<!-- PERSONA_END -->` 태그 범위를 삭제합니다.
+
+global/workspace 모두 동일하게 태그로 감싸진 페르소나 블록만 삭제하며, 헤딩 이름(`## Persona` 등) 기준으로 삭제하지 않습니다.
+workspace 파일에 태그 범위 외 다른 내용이 없으면 파일 자체를 삭제합니다.
 
 ## 5개 성격 차원
 
@@ -257,6 +260,9 @@ Tester Agent가 위 Personality Config를 바탕으로 **샘플 대화 3개**를
 
 ## 입장/세계관
 <2~3문장 설명>
+
+## 호칭
+<1~2문장 설명>
 <!-- PERSONA_END -->
 ```
 
@@ -268,7 +274,6 @@ Tester Agent가 위 Personality Config를 바탕으로 **샘플 대화 3개**를
 
 - `--scope workspace|global` — 적용 범위 선택 (기본: global)
 - `--remove` — 적용된 페르소나 삭제
-- `--resume` — 이전 interview를 이어서 진행합니다. (향후 추가 예정 — 상태 저장 메커니즘 미구현)
 - `--quick` — 힌트 없이 질문만 표시, 빠르게 진행합니다.
 
 ## 출력 규칙
