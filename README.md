@@ -25,6 +25,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **mp3-downloader** | YouTube/YouTube Music에서 MP3 다운로드 (yt-dlp+ffmpeg 기반, 자동 의존성 설치, 디렉토리 자동 생성) | `/mp3-downloader <url> [--out <dir>]` |
 | **fe-interview** | 프론트엔드 면접 코치 — Knowledge Graph 기반 적응형 면접. 3명 면접관(CTO/팀리드/시니어), S/A/B/C/D 등급, 합의 평가, 개선 로드맵 | `/fe-interview [--mode graph\|classic] [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` |
 | **persona-builder** | 봇 페르소나 정의 — 5개 차원(말투/감정 톤/대화 성향/입장-세계관/호칭) 인터뷰 후 Personality Config 생성. Tester Agent 샘플 대화 검증 포함 | `/persona-builder [--scope workspace\|global] [--remove] [--quick]` |
+| **music-generator** | mmx CLI 기반 음악 생성 — Easy/Expert 인터뷰 모드로 초보자도 쉽게 작곡. 노래 프리뷰, 가사 자동 생성, 듀엣/그룹 보컬 지원 | `/music-generator [가사 텍스트] [--instrumental] [--genre <genre>] [--mood <mood>] [--out <path>] ...` *(대표 옵션 일부)* |
 
 ## 스킬 사용
 
@@ -74,6 +75,15 @@ Claude Code에서 슬래시 커맨드로 호출:
 
 # Classic Mode — knowledge/ 파일 기반 질문 (그래프 없이)
 /fe-interview --mode classic --level mid
+
+# 노래 만들기 (인터뷰 모드 - Easy/Expert 선택)
+/music-generator
+
+# 가사 직접 제공 (Direct Mode)
+/music-generator [Verse 1] 오늘도 너를 떠올려... --genre "K-POP Ballad"
+
+# 인스트루멘탈 (배경음악)
+/music-generator --instrumental --genre "Lo-fi Hip Hop" --mood "calm"
 
 # 테스트 모드 (Graph Mode 전용)
 # Dry-run: 질문 시퀀스/면접관 배분 검증 (~1분)
@@ -128,6 +138,7 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/check-github-copilot-review ~/.
 ln -sfn /path/to/my-claude-skills/.claude/skills/mp3-downloader ~/.claude/skills/mp3-downloader
 ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/fe-interview
 ln -sfn /path/to/my-claude-skills/.claude/skills/persona-builder ~/.claude/skills/persona-builder
+ln -sfn /path/to/my-claude-skills/.claude/skills/music-generator ~/.claude/skills/music-generator
 ```
 
 ### 개별 스킬 설치
@@ -147,6 +158,9 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/f
 
 # persona-builder만 설치
 ln -sfn /path/to/my-claude-skills/.claude/skills/persona-builder ~/.claude/skills/persona-builder
+
+# music-generator만 설치
+ln -sfn /path/to/my-claude-skills/.claude/skills/music-generator ~/.claude/skills/music-generator
 ```
 
 ### 스킬 파일 직접 복사 (심볼릭 링크 대신)
@@ -271,6 +285,34 @@ mkdir -p ~/.claude/skills/persona-builder && curl -fsSL -o ~/.claude/skills/pers
 
 **제거:** `rm -rf ~/.claude/skills/persona-builder`
 
+## music-generator 단독 설치
+
+music-generator는 SKILL.md 단일 파일로 구성되어 있어 curl 한 줄로 설치할 수 있습니다.
+
+> **사전 요구사항:** [mmx CLI](https://www.minimaxi.com/cli)가 설치되어 있어야 합니다. (`npm install -g mmx` 또는 공식 문서 참조)
+
+**방법 1: curl로 바로 설치**
+
+```bash
+mkdir -p ~/.claude/skills/music-generator && \
+curl -fsSL -o ~/.claude/skills/music-generator/SKILL.md \
+  "https://raw.githubusercontent.com/choms0521/my-claude-skills/main/.claude/skills/music-generator/SKILL.md"
+```
+
+**방법 2: Claude Code에 붙여넣기**
+
+아래 텍스트를 Claude Code에 그대로 붙여넣으면 자동으로 설치됩니다:
+
+```
+아래 명령어를 실행해서 music-generator 스킬을 설치해줘:
+mkdir -p ~/.claude/skills/music-generator && curl -fsSL -o ~/.claude/skills/music-generator/SKILL.md "https://raw.githubusercontent.com/choms0521/my-claude-skills/main/.claude/skills/music-generator/SKILL.md"
+설치 후 ls ~/.claude/skills/music-generator/SKILL.md 로 확인해줘
+```
+
+**업데이트:** 같은 curl 명령을 다시 실행하면 최신 버전으로 덮어씁니다.
+
+**제거:** `rm -rf ~/.claude/skills/music-generator`
+
 ## 스킬 추가 방법
 
 1. `.claude/skills/<새-스킬명>/SKILL.md` 파일 생성
@@ -286,5 +328,6 @@ mkdir -p ~/.claude/skills/persona-builder && curl -fsSL -o ~/.claude/skills/pers
 - (선택) OMC CLI — Gemini 디스패치에 사용 (`omc ask gemini`)
 - (선택) [Gemini CLI](https://github.com/google/gemini-cli) — `npm install -g @google/gemini-cli` (OMC를 통해 호출)
 - (자동 설치) `yt-dlp`, `ffmpeg` — mp3-downloader 스킬에 필요 (미설치 시 스크립트가 자동 설치 시도)
+- (선택) [mmx CLI](https://www.minimaxi.com/cli) — music-generator 스킬 사용 시 필수
 
 Codex/Gemini CLI가 미설치된 경우 Claude만 사용하여 동작합니다.
