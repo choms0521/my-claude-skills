@@ -36,6 +36,9 @@ fe-interview-dryrun-*.md
 # Interview session history (runtime state)
 .claude/skills/fe-interview/graph/history/session-log.json
 
+# Generated music files
+*.mp3
+
 # Logs
 *.log
 npm-debug.log*
