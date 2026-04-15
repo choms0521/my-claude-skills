@@ -2,7 +2,7 @@
 name: music-generator
 description: mmx music generate CLI를 사용하여 노래를 생성하는 스킬. 가사 직접 제공 또는 인터뷰 기반 작곡 지원.
 triggers: ["music-generator"]
-argument-hint: "[가사 텍스트] [--instrumental] [--genre <genre>] [--bpm <number>] [--key <key>] [--mood <mood>] [--vocals <text>] [--tempo <text>] [--instruments <text>] [--structure <text>] [--out <path>]"
+argument-hint: "[가사 텍스트] [--instrumental] [--genre <genre>] [--bpm <number>] [--key <key>] [--mood <mood>] [--vocals <text>] [--tempo <text>] [--instruments <text>] [--structure <text>] [--avoid <text>] [--references <text>] [--use-case <text>] [--extra <text>] [--out <path>]"
 ---
 
 # Music Generator Skill
@@ -126,8 +126,13 @@ which mmx
 
 **예시 1: 가사 + 메타 정보 제공**
 ```bash
-# 1. 가사를 임시 파일에 저장
-cat > /tmp/mmx-lyrics-1713160800.txt << 'LYRICS_EOF'
+# 1. 안전한 임시 파일 생성 + cleanup 보장
+lyrics_file="$(mktemp /tmp/mmx-lyrics-XXXXXX.txt)"
+chmod 600 "$lyrics_file"
+trap 'rm -f "$lyrics_file"' EXIT
+
+# 2. 가사를 임시 파일에 저장
+cat > "$lyrics_file" << 'LYRICS_EOF'
 [Intro]
 Se! No! ナツイロ~!
 
@@ -140,10 +145,10 @@ Se! No! ナツイロ~!
 五つの色で 描く ストーリー
 LYRICS_EOF
 
-# 2. mmx CLI 호출
+# 3. mmx CLI 호출 (trap에 의해 종료 시 자동 cleanup)
 mmx music generate \
   --prompt "K-POP / J-POP summer pop, 5-member girl group with bright vocals, main vocalist HARU with powerful high notes, rapper SORA with dynamic flow, synth-pop arrangement" \
-  --lyrics-file /tmp/mmx-lyrics-1713160800.txt \
+  --lyrics-file "$lyrics_file" \
   --vocals "bright female group vocals with harmonies, one rapper section" \
   --genre "K-POP / J-POP Summer Pop" \
   --mood "upbeat, bright, nostalgic" \
@@ -152,9 +157,6 @@ mmx music generate \
   --instruments "synth, electric guitar, bass, drums" \
   --structure "intro-verse-prechorus-chorus-rap-verse-prechorus-chorus-bridge-chorus-outro" \
   --out ~/Music/natsuiro-diary.mp3
-
-# 3. 임시 파일 삭제
-rm -f /tmp/mmx-lyrics-1713160800.txt
 ```
 
 **예시 2: Instrumental**
@@ -420,12 +422,13 @@ BPM 85의 느린 템포로, 공부나 작업할 때 배경음악으로 좋습니
 Direct Mode와 동일한 절차로 CLI를 구성하고 실행합니다:
 
 1. `--prompt` 조합 (필수) — 인터뷰 결과에서 장르 + 분위기 + 보컬 특성을 자연어 문장으로
-2. 가사 → `/tmp/mmx-lyrics-{timestamp}.txt` 임시 파일 (instrumental이 아닌 경우)
-3. 인터뷰 답변 → 각 mmx CLI 옵션에 매핑
-4. CLI 명령어 조립 → 사용자에게 보여주기
-5. mmx 실행
-6. 임시 파일 삭제 (성공/실패 무관)
-7. 결과 안내
+2. 가사 파일이 필요하면(instrumental 제외) `mktemp`로 임시 파일 생성 (예: `lyrics_file="$(mktemp /tmp/mmx-lyrics-XXXXXX.txt)"`)
+3. 생성 직후 `chmod 600 "$lyrics_file"` 적용, `trap 'rm -f "$lyrics_file"' EXIT`로 cleanup 보장
+4. 인터뷰로 수집한 가사를 해당 임시 파일에 저장
+5. 인터뷰 답변 → 각 mmx CLI 옵션에 매핑
+6. CLI 명령어 조립 → 사용자에게 보여주기
+7. mmx 실행
+8. 결과 안내 (`trap`에 의해 임시 파일 자동 정리)
 
 ---
 
