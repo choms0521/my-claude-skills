@@ -67,14 +67,18 @@ which mmx
 --prompt "Male-female duet K-POP song. Two distinct singers alternating verses: sweet clear female soprano voice and warm youthful male tenor voice. They sing together in chorus with harmonies."
 ```
 
-### 2. 가사 전달 (--lyrics-file 필수)
+### 2. 가사 전달 (보컬 곡 전용, --lyrics-file 필수)
 
-가사는 **항상 임시 파일을 통해 --lyrics-file로 전달**합니다. `--lyrics`로 직접 전달하지 않습니다 (셸 이스케이프 위험).
+**instrumental 모드에서는 이 단계를 건너뜁니다.**
+
+보컬 곡의 가사는 **항상 임시 파일을 통해 --lyrics-file로 전달**합니다. `--lyrics`로 직접 전달하지 않습니다 (셸 이스케이프 위험).
 
 **절차:**
-1. 가사를 `/tmp/mmx-lyrics-{timestamp}.txt`에 저장
-2. `--lyrics-file /tmp/mmx-lyrics-{timestamp}.txt`로 전달
-3. mmx 실행 완료 후 (성공/실패 무관) 임시 파일 삭제
+1. `mktemp`로 예측 불가능한 임시 파일을 생성 (예: `lyrics_file="$(mktemp /tmp/mmx-lyrics-XXXXXX.txt)"`)
+2. 필요 시 `chmod 600 "$lyrics_file"`로 권한을 소유자 읽기/쓰기 전용으로 제한
+3. 생성한 임시 파일에 가사를 저장
+4. `--lyrics-file "$lyrics_file"`로 전달
+5. mmx 실행 완료 후 (성공/실패 무관) 임시 파일 삭제
 
 ### 3. CLI 옵션 매핑
 
@@ -435,14 +439,15 @@ Direct Mode와 동일한 절차로 CLI를 구성하고 실행합니다:
 | 생성 실패 | mmx exit code != 0 (위 케이스에 해당하지 않음) | 에러 메시지 표시 + "설정을 변경하여 다시 시도하시겠습니까?" |
 | 임시 파일 생성 실패 | 파일 쓰기 에러 | "/tmp 디렉토리 권한을 확인해주세요." 안내 |
 
-**중요:** 어떤 에러가 발생하더라도 임시 가사 파일(`/tmp/mmx-lyrics-*.txt`)은 반드시 삭제합니다.
+**중요:** 임시 가사 파일은 셸 종료 시 자동 삭제되도록 `trap`으로 처리합니다.
 
 ```bash
-# 에러 발생 시에도 cleanup 보장 (타임스탬프 기반 특정 파일만 삭제)
-LYRICS_TMP="/tmp/mmx-lyrics-$(date +%s%N).txt"
+# EXIT/INT/TERM에서 cleanup 보장
+LYRICS_TMP="$(mktemp /tmp/mmx-lyrics-XXXXXX.txt)"
+chmod 600 "$LYRICS_TMP"
+trap 'rm -f "$LYRICS_TMP"' EXIT INT TERM
 # ... 가사 파일 생성 ...
 mmx music generate ... --lyrics-file "$LYRICS_TMP" --out ~/Music/output.mp3
-rm -f "$LYRICS_TMP"
 ```
 
 ---
@@ -454,7 +459,7 @@ rm -f "$LYRICS_TMP"
 - 기본 비트레이트: 256000 bps
 - 출력 경로: `~/Music` (기본 출력 디렉토리, 없으면 자동 생성)
 - 파일명: 곡 제목 기반 자동 생성
-- 가사 전달: 항상 `--lyrics-file` (임시 파일 경유)
+- 가사 전달: 보컬 곡일 때는 항상 `--lyrics-file` 사용 (임시 파일 경유, instrumental 시 생략)
 - `--lyrics-optimizer` 미사용: Claude가 인터뷰 결과를 반영하여 직접 작사하는 것이 문맥 이해도와 품질 면에서 우수
 
 ---
