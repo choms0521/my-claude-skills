@@ -24,7 +24,7 @@ Interview (4차원 순차 질문)
 
 | 모드 | 설명 | 파일 경로 |
 |------|------|----------|
-| `--scope workspace` | 현재 프로젝트에만 적용 | `{project}/.claude/bot-character.md` |
+| `--scope workspace` | 현재 프로젝트에만 적용 | `{cwd}/.claude/bot-character.md` |
 | `--scope global` | 모든 프로젝트에 적용 (기본) | `~/.claude/CLAUDE.md` |
 
 `--scope workspace`를 선택하면 프로젝트별 서로 다른 페르소나를 설정할 수 있사옵니다.
@@ -40,12 +40,12 @@ Interview (4차원 순차 질문)
 
 **동작:**
 1. scope를 확인합니다 (기본: global)
-2. 해당 파일에서 `## Persona` 또는 `# Bot Persona` 섹션을 찾아 삭제합니다
+2. 해당 파일에서 `<!-- PERSONA_START -->` ~ `<!-- PERSONA_END -->` 태그로 감싸진 섹션을 찾아 삭제합니다
 3. 삭제 전 **"정말 삭제할까요?"** 확인을 요청합니다
 4. 삭제 완료 후 알려줍니다
 
 **global 삭제 시:** `~/.claude/CLAUDE.md`에서 `## Persona` 섹션을 찾아 삭제합니다.
-**workspace 삭제 시:** `{cwd}/.claude/bot-character.md` 파일 자체를 삭제합니다 (내용이 그 섹션뿐인 경우).
+**workspace 삭제 시:** `{cwd}/.claude/bot-character.md`에서 Bot Persona 섹션만 포함하고 있으면 파일 자체를 삭제합니다. 다른 내용이 함께 있으면 Bot Persona 섹션만 삭제하고 파일은 유지합니다.
 
 ## 4개 성격 차원
 
@@ -151,10 +151,13 @@ Interview (4차원 순차 질문)
 
 4개 차원의 답변을 종합하여 Personality Config를 생성합니다.
 
-### 출력 형식 (CLAUDE.md 주입용)
+### 출력 형식 — `--scope global` 전용 (CLAUDE.md 주입용)
 
 ```markdown
+<!-- PERSONA_START -->
 ## Persona
+
+> 이 섹션은 다른 대화 스타일 규칙(communication-style.md 등)보다 우선합니다.
 
 ### 말투
 <2~3문장 설명>
@@ -167,6 +170,7 @@ Interview (4차원 순차 질문)
 
 ### 입장/세계관
 <2~3문장 설명>
+<!-- PERSONA_END -->
 ```
 
 총 **~300~600자** 정도가 되도록 작성합니다. 장군님이 "너무 길면 안 돼"라는 요구를 반영하여, 각 차원당 2~3문장으로 유지합니다.
@@ -201,16 +205,23 @@ Tester Agent가 위 Personality Config를 바탕으로 **샘플 대화 3개**를
 
 ### 적용 규칙
 
-**기존 스타일 관련:** 기존 communication-style.md나 CLAUDE.md 내 기존 대화 스타일 설정은 **무시하고 새로 추가된 스타일로 적용**합니다. 둘 다 존재하면 새로 생성된 personality가 우선합니다.
+**기존 스타일 충돌 처리:**
+- `--scope global` 적용 시: `~/.claude/CLAUDE.md`에 기존 `<!-- PERSONA_START -->` ~ `<!-- PERSONA_END -->` 섹션이 있으면 교체합니다. 없으면 파일 끝에 추가합니다.
+- 새 Persona 섹션 내에 "이 섹션은 다른 대화 스타일 규칙보다 우선합니다"라는 우선순위 지시문을 포함하여, 기존 communication-style.md 등과 충돌 시 Persona가 우선되도록 합니다.
+
+**스코프 우선순위:** 봇은 항상 `{cwd}/.claude/bot-character.md`를 먼저 확인하고, 없을 경우에만 `~/.claude/CLAUDE.md`의 Persona 섹션을 참조합니다.
 
 **파일 경로:**
 - `--scope workspace` (프로젝트별): `{cwd}/.claude/bot-character.md` 에 전체 config를 작성합니다. 파일이 없으면 생성합니다.
-- `--scope global` (기본값): `~/.claude/CLAUDE.md` 에 `## Persona` 섹션을 추가합니다. 이미 있으면 교체합니다.
+- `--scope global` (기본값): `~/.claude/CLAUDE.md` 에 `<!-- PERSONA_START -->` ~ `<!-- PERSONA_END -->` 섹션을 추가합니다. 이미 있으면 교체합니다.
 
-### Personality Config 출력 형식
+### Personality Config 출력 형식 — `--scope workspace` 전용 (bot-character.md용)
 
 ```markdown
+<!-- PERSONA_START -->
 # Bot Persona — {timestamp}
+
+> 이 파일의 페르소나 설정은 글로벌 CLAUDE.md의 대화 스타일 규칙보다 우선합니다.
 
 ## 말투
 <2~3문장 설명>
@@ -223,6 +234,7 @@ Tester Agent가 위 Personality Config를 바탕으로 **샘플 대화 3개**를
 
 ## 입장/세계관
 <2~3문장 설명>
+<!-- PERSONA_END -->
 ```
 
 총 **~300~600자** 정도가 되도록 작성합니다. 각 차원당 2~3문장으로 유지합니다.
@@ -233,7 +245,7 @@ Tester Agent가 위 Personality Config를 바탕으로 **샘플 대화 3개**를
 
 - `--scope workspace|global` — 적용 범위 선택 (기본: global)
 - `--remove` — 적용된 페르소나 삭제
-- `--resume` — 이전 interview를 이어서 진행합니다.
+- `--resume` — 이전 interview를 이어서 진행합니다. (향후 추가 예정 — 상태 저장 메커니즘 미구현)
 - `--quick` — 힌트 없이 질문만 표시, 빠르게 진행합니다.
 
 ## 출력 규칙
