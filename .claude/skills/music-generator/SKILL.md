@@ -67,6 +67,7 @@ python3 -c "import numpy"  # 신호 분석 연산
 - 장르 + 분위기 + 보컬 특성 + 멤버 정보(있는 경우)를 자연어 문장으로 조합
 - 멤버/보컬 정보가 있으면 그룹 구성, 포지션, 특징을 자연어로 녹여냄
 - **듀엣/다중 보컬 시**: "Two distinct singers alternating", "Male-female duet" 등 보컬 구분을 prompt 첫 부분에 명시적으로 강조
+- **코드 진행**: 섹션별 코드 진행을 prompt 내에 포함하여 전달 (상세는 "코드 진행 생성 규칙" 참조)
 
 **예시 (솔로/그룹):**
 ```
@@ -140,6 +141,7 @@ python3 -c "import numpy"  # 신호 분석 연산
 - `(vocal direction)` 형식의 보컬 지시사항을 가사 파일에 넣으면 **mmx가 해당 텍스트를 가사로 인식하여 그대로 노래로 부름** (버그 아님, 사양)
 - 보컬 표현/감정 변화/섹션별 보컬 흐름은 모두 **`--prompt`에 자연어로 통합**하여 전달
 - `--prompt`에서 섹션별 보컬 변화를 시간 순서대로 구체적으로 기술 (예: "Verse는 속삭이듯 시작하여, Pre-Chorus에서 감정이 고조되고, Chorus에서 파워풀한 벨팅으로 폭발")
+- **코드 진행도 `--prompt`에 포함하여 전달** (가사 파일에 넣지 않음). 형식: `Chord progression: Verse: C - G - Am - F, Chorus: F - G - C - Am → F - G - C` 등
 
 **예시 1: 여성 솔로 - 이별 발라드**
 ```bash
@@ -168,7 +170,7 @@ LYRICS_EOF
 
 # 3. mmx CLI 호출 (보컬 디렉션은 --prompt에 통합)
 mmx music generate \
-  --prompt "Emotional K-POP ballad with clear, crystalline female vocals. Intro: soft humming, barely audible, like whispering to oneself. Verse: gentle and restrained, suppressing emotions with breathy tone. Pre-Chorus: gradually building emotion, voice trembling slightly. Chorus: powerful belt with raw emotion, tears in voice, full chest voice erupting. Piano-driven arrangement with strings swelling in chorus. The vocal journey goes from whispered restraint to full emotional release." \
+  --prompt "Emotional K-POP ballad with clear, crystalline female vocals. Intro: soft humming, barely audible, like whispering to oneself. Verse: gentle and restrained, suppressing emotions with breathy tone. Pre-Chorus: gradually building emotion, voice trembling slightly. Chorus: powerful belt with raw emotion, tears in voice, full chest voice erupting. Piano-driven arrangement with strings swelling in chorus. The vocal journey goes from whispered restraint to full emotional release. Chord progression: Intro: Am - F, Verse: Am - F - C - G, Pre-Chorus: Dm - G - Em - Am, Chorus: F - G - Am - C → F - G - Am, Bridge: F - C - Dm - Am - G." \
   --lyrics-file "$lyrics_file" \
   --vocals "clear bright female soprano, emotional range from soft whisper to powerful belt" \
   --genre "K-POP Ballad" \
@@ -201,7 +203,7 @@ cat > "$lyrics_file" << 'LYRICS_EOF'
 LYRICS_EOF
 
 mmx music generate \
-  --prompt "Romantic K-POP duet. Verse 1 (Female): sweet and playful, light staccato delivery with smiling voice. Verse 2 (Male): warm and gentle, soft low register, tender tone. Chorus (Both): joyful harmony, female takes melody while male supports with warm lower harmony. Bright acoustic arrangement with playful energy. Vocal chemistry should feel natural and intimate." \
+  --prompt "Romantic K-POP duet. Verse 1 (Female): sweet and playful, light staccato delivery with smiling voice. Verse 2 (Male): warm and gentle, soft low register, tender tone. Chorus (Both): joyful harmony, female takes melody while male supports with warm lower harmony. Bright acoustic arrangement with playful energy. Vocal chemistry should feel natural and intimate. Chord progression: Verse: G - D - Em - C, Chorus: C - D - G - Em → C - D - G." \
   --lyrics-file "$lyrics_file" \
   --vocals "duet with harmonies, alternating sweet female soprano and warm male tenor, harmonizing in chorus" \
   --genre "K-POP Acoustic Pop" \
@@ -526,6 +528,37 @@ BPM 85의 느린 템포로, 공부나 작업할 때 배경음악으로 좋습니
 - 장르와 분위기에 맞는 가사 스타일
 - 보컬 스타일에 맞는 파트 분배 (그룹인 경우)
 - `--structure`가 지정되었으면 해당 구조에 맞춤
+
+**코드 진행 생성 규칙:**
+
+가사 작성 시 각 섹션에 어울리는 코드 진행(chord progression)을 함께 설계합니다. 코드 진행은 **가사 파일에 포함하지 않고**, `--prompt`에 자연어로 전달합니다.
+
+- **생성 시점**: 가사 작성과 동시에 섹션별 코드 진행을 설계
+- **전달 방식**: `--prompt` 내에 `Chord progression:` 접두어로 포함
+- **형식**: `Chord progression: Verse: C - G - Am - F, Pre-Chorus: Dm - G - Em - Am, Chorus: F - G - C - Am → F - G - C, Bridge: Am - F - C - G`
+- **가사 파일에 절대 포함하지 않음** — mmx가 코드 기호를 가사 텍스트로 인식하여 그대로 노래로 부름
+
+코드 진행 설계 원칙:
+- Key에 맞는 다이어토닉 코드를 기본으로 사용
+- Verse: 안정적이고 반복적인 진행 (예: I - V - vi - IV)
+- Pre-Chorus: 텐션을 쌓는 진행 (예: ii - V - iii - vi)
+- Chorus: 감정적 해방감을 주는 진행 (예: IV - V - I - vi)
+- Bridge: Verse/Chorus와 대비되는 진행 (예: vi - IV - I - V)
+- 장르별 관용적 코드 진행 활용 (팝: I-V-vi-IV, 블루스: I-IV-V, 재즈: ii-V-I 등)
+- 사용자가 Key를 지정하지 않았으면 AI가 분위기에 맞는 Key를 선택하고 코드 진행 설계
+
+**프리뷰에 코드 진행 표시:**
+
+Stage 3 프리뷰의 상세 설정 보기에 코드 진행을 포함합니다:
+```
+<details>
+<summary>상세 설정 보기</summary>
+
+- 장르(--genre): K-POP Ballad
+- ...기존 항목...
+- 코드 진행: Verse: C - G - Am - F | Pre-Chorus: Dm - G - Em - Am | Chorus: F - G - C - Am → F - G - C | Bridge: Am - F - C - G
+</details>
+```
 
 **듀엣/다중 보컬 시 추가 필수 설정:**
 - `--vocals`: "duet with harmonies, alternating male and female verses" 등 교대 구조를 명시
