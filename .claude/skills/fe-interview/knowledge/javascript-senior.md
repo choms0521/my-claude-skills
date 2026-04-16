@@ -456,7 +456,7 @@ store.emit('change', { value: 42 });
 unsub(); // remove listener
 ```
 
-Real-world use: custom event buses in React apps, RxJS Observables, Node.js EventEmitter, Vue's reactivity system.
+Real-world use: custom event buses in React apps, RxJS Observables, Node.js EventEmitter, MobX autorun, Vue's reactivity system.
 
 **Mediator Pattern:**
 

@@ -562,7 +562,7 @@ Practical use cases:
 
 **Validation**: enforce type constraints or schema validation on object writes (shown above).
 
-**Reactive data** — Vue 3's reactivity system uses Proxy to detect property access and mutation to automatically trigger UI updates:
+**Reactive data** — Vue 3, MobX, and Valtio use Proxy to detect property access and mutation to automatically trigger UI updates:
 ```javascript
 function reactive(obj) {
   return new Proxy(obj, {
