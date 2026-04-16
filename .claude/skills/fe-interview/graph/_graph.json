@@ -2269,7 +2269,7 @@
       "type": "applies_to",
       "weight": 0.7,
       "min_level": "senior",
-      "cross_question_seed": "Proxy가 Vue/MobX의 반응형 시스템에서 어떻게 활용되며 React 상태 관리와의 차이는?"
+      "cross_question_seed": "Proxy가 MobX/Valtio의 반응형 시스템에서 어떻게 활용되며 React 상태 관리와의 차이는?"
     },
     {
       "from": "js-memory",

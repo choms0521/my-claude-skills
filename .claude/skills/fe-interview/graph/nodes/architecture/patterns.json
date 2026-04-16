@@ -7,7 +7,7 @@
   "description": "MVC, MVVM, Flux, Clean Architecture 등 프론트엔드 아키텍처 패턴",
   "key_points": [
     "MVC: Model-View-Controller 분리, 양방향 데이터 흐름으로 복잡도 증가 가능",
-    "MVVM: View와 ViewModel 간 데이터 바인딩으로 UI 로직 분리 (Vue, Angular 계열)",
+    "MVVM: View와 ViewModel 간 데이터 바인딩으로 UI 로직 분리 (Angular 계열)",
     "Flux/Redux: 단방향 데이터 흐름으로 예측 가능한 상태 관리 - React 생태계 표준",
     "Clean Architecture: 의존성 규칙(안쪽→바깥쪽)으로 비즈니스 로직과 프레임워크 분리",
     "Hexagonal Architecture(포트와 어댑터): 외부 의존성을 어댑터로 추상화하여 테스트 용이성 확보",
