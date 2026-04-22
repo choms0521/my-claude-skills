@@ -25,7 +25,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **mp3-downloader** | YouTube/YouTube Music에서 MP3 다운로드 (yt-dlp+ffmpeg 기반, 자동 의존성 설치, 디렉토리 자동 생성) | `/mp3-downloader <url> [--out <dir>]` |
 | **fe-interview** | 프론트엔드 면접 코치 — Knowledge Graph 기반 적응형 면접. 3명 면접관(CTO/팀리드/시니어), S/A/B/C/D 등급, 합의 평가, 개선 로드맵 | `/fe-interview [--mode graph\|classic] [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` |
 | **persona-builder** | 봇 페르소나 정의 — 5개 차원(말투/감정 톤/대화 성향/입장-세계관/호칭) 인터뷰 후 Personality Config 생성. Tester Agent 샘플 대화 검증 포함 | `/persona-builder [--scope workspace\|global] [--remove] [--quick]` |
-| **music-generator** | mmx CLI 기반 음악 생성 — Easy/Expert 인터뷰 모드로 초보자도 쉽게 작곡. 노래 프리뷰, 가사 자동 생성, 듀엣/그룹 보컬 지원, 참고곡 웹 검색 분석 | `/music-generator [가사 텍스트] [--instrumental] [--genre <genre>] [--mood <mood>] [--out <path>] ...` *(대표 옵션 일부)* |
+| **music-generator** | mmx CLI 기반 음악 생성 — 음악 설계(코드 진행/전조/다이나믹스/리듬/편곡) 우선 체계. Easy/Expert 인터뷰, 가사 자동 생성, 듀엣/그룹 보컬, 참고곡 분석 지원 | `/music-generator [가사 텍스트] [--instrumental] [--genre <genre>] [--mood <mood>] [--out <path>] ...` *(대표 옵션 일부)* |
 
 ## 스킬 사용
 
