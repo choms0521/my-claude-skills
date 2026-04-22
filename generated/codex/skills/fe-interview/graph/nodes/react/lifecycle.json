@@ -1,0 +1,26 @@
+{
+  "id": "react-lifecycle",
+  "type": "concept",
+  "name": "Component Lifecycle",
+  "category": "react",
+  "levels": ["junior", "mid"],
+  "description": "React 컴포넌트의 마운트, 업데이트, 언마운트 생명주기와 함수형 컴포넌트에서 useEffect를 통한 생명주기 관리",
+  "key_points": [
+    "마운트(Mount) 단계: 컴포넌트가 DOM에 삽입되는 과정",
+    "업데이트(Update) 단계: props/state 변경에 의한 리렌더링",
+    "언마운트(Unmount) 단계: 컴포넌트가 DOM에서 제거되는 과정",
+    "클래스 컴포넌트의 생명주기 메서드(componentDidMount, componentDidUpdate, componentWillUnmount)",
+    "useEffect로 생명주기를 대체하는 패턴과 차이점",
+    "useEffect cleanup 함수의 실행 타이밍과 메모리 누수 방지",
+    "React.StrictMode에서 이중 실행되는 이유와 사이드 이펙트 검증",
+    "useLayoutEffect와 useEffect의 실행 시점 차이"
+  ],
+  "model_answer_summary": "React 컴포넌트는 마운트, 업데이트, 언마운트의 생명주기를 거칩니다. 클래스 컴포넌트에서는 componentDidMount 등의 메서드로 관리하던 것을 함수형 컴포넌트에서는 useEffect 훅으로 대체합니다. useEffect의 의존성 배열과 cleanup 함수를 올바르게 사용하는 것이 메모리 누수 방지와 안정적인 사이드 이펙트 관리의 핵심입니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "React 컴포넌트의 생명주기(마운트, 업데이트, 언마운트)를 설명해주세요.",
+    "mid": "useEffect의 cleanup 함수는 언제 실행되며, 왜 중요한가요?"
+  },
+  "source_files": ["react-junior.md#Q4", "react-junior-2.md#Q12", "react-junior-2.md#Q16"],
+  "references": []
+}

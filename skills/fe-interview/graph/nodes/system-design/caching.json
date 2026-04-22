@@ -1,0 +1,25 @@
+{
+  "id": "sd-caching",
+  "type": "concept",
+  "name": "Caching Architecture",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "Cache-Aside, Write-Through, 캐시 무효화 등 캐싱 아키텍처 패턴",
+  "key_points": [
+    "Cache-Aside(Lazy Loading): 캐시 미스 시 DB에서 로드 후 캐시에 저장 - 가장 일반적인 패턴",
+    "Write-Through: 쓰기 시 캐시와 DB에 동시 기록 - 일관성 보장, 쓰기 지연 발생",
+    "Write-Behind(Write-Back): 캐시에만 먼저 쓰고 비동기로 DB 기록 - 빠르지만 데이터 유실 위험",
+    "캐시 무효화: TTL 기반, 이벤트 기반, 버전 기반 - '캐시 무효화는 CS에서 가장 어려운 문제 중 하나'",
+    "Redis와 Memcached: Redis는 데이터 구조 지원, 영속성 옵션; Memcached는 단순 키-값에 최적",
+    "프론트엔드 캐싱 계층: 브라우저 HTTP 캐시 → Service Worker 캐시 → CDN → 서버 캐시 → DB",
+    "Stale-While-Revalidate: 캐시된 데이터를 즉시 반환하고 백그라운드에서 갱신 - HTTP와 SWR 라이브러리 모두 활용",
+    "캐시 스탬피드 방지: 캐시 만료 시 대량 요청이 DB를 동시에 타격하는 것을 Lock이나 사전 갱신으로 방지"
+  ],
+  "model_answer_summary": "캐싱 아키텍처는 Cache-Aside, Write-Through, Write-Behind 패턴 중 데이터 특성에 맞게 선택합니다. 프론트엔드는 브라우저 HTTP 캐시, Service Worker, CDN, 서버 캐시의 다층 구조를 이해해야 합니다. Stale-While-Revalidate 패턴으로 사용자 체감 성능을 개선하고, 캐시 무효화 전략이 시스템 신뢰도의 핵심입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "프론트엔드에서 서버까지의 다층 캐싱 전략과 각 계층에서의 캐시 무효화 방법은?"
+  },
+  "source_files": [],
+  "references": []
+}

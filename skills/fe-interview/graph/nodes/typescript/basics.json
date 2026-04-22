@@ -1,0 +1,25 @@
+{
+  "id": "ts-basics",
+  "type": "concept",
+  "name": "TypeScript Fundamentals",
+  "category": "typescript",
+  "levels": ["mid"],
+  "description": "TypeScript의 기본 타입 시스템과 핵심 문법 요소를 다루는 기초 개념",
+  "key_points": [
+    "타입 어노테이션과 타입 추론 - 명시적 선언 vs TypeScript 컴파일러의 자동 추론",
+    "interface와 type alias의 차이 - 선언 병합 가능 여부와 사용 시나리오",
+    "union 타입과 intersection 타입 - 'or' 관계와 'and' 관계의 타입 조합",
+    "enum과 const enum의 차이 - 런타임 객체 생성 여부와 트리셰이킹 영향",
+    "리터럴 타입과 const assertion - 값을 타입으로 좁히는 기법",
+    "any, unknown, never, void 타입의 차이와 적절한 사용 시점",
+    "optional 프로퍼티와 nullable 타입 - strictNullChecks와의 관계",
+    "TypeScript의 구조적 타이핑(structural typing) - 이름이 아닌 형태로 호환성 결정"
+  ],
+  "model_answer_summary": "TypeScript는 JavaScript에 정적 타입 시스템을 추가하여 컴파일 시점에 오류를 발견할 수 있게 합니다. interface와 type alias로 객체 형태를 정의하고, union/intersection으로 타입을 조합하며, 구조적 타이핑에 기반해 타입 호환성을 판단합니다. any 대신 unknown을 사용하고, strictNullChecks를 활성화하여 null 안전성을 확보하는 것이 모범 사례입니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "mid": "interface와 type alias의 차이점은 무엇이며, 각각 어떤 상황에서 사용하는 것이 적합한가요?"
+  },
+  "source_files": ["typescript-mid.md#Q2", "typescript-mid.md#Q5", "typescript-mid-2.md#Q20"],
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "sd-realtime",
+  "type": "concept",
+  "name": "Real-Time Collaboration",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "CRDT, OT, WebSocket을 활용한 실시간 협업 에디터 설계",
+  "key_points": [
+    "Operational Transformation(OT): 서버가 동시 편집 작업의 순서를 결정하고 변환",
+    "CRDT(Conflict-free Replicated Data Types): 서버 없이도 충돌 없는 병합 가능한 데이터 구조",
+    "Yjs는 가장 성숙한 CRDT 라이브러리로 텍스트, 배열, 맵 등 다양한 데이터 타입 지원",
+    "WebSocket으로 실시간 양방향 통신, SSE는 서버→클라이언트 단방향에 적합",
+    "Presence 기능: 다른 사용자의 커서 위치, 선택 영역을 실시간으로 표시",
+    "충돌 해결: OT는 서버 중앙 집중, CRDT는 분산형 - 각각 트레이드오프 존재",
+    "Undo/Redo는 Command 패턴으로 구현하고 협업 환경에서는 사용자별 로컬 Undo 필요",
+    "오프라인 지원: CRDT는 오프라인 편집 후 재연결 시 자동 병합에 자연스러움"
+  ],
+  "model_answer_summary": "실시간 협업은 OT(서버 중앙 집중 충돌 해결)와 CRDT(분산형 충돌 없는 병합) 중 하나를 선택하여 구현합니다. Yjs는 대표적인 CRDT 라이브러리이며, WebSocket으로 실시간 동기화하고 Presence로 다른 사용자의 상태를 표시합니다. 오프라인 지원과 Undo/Redo는 별도 설계가 필요합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "실시간 협업 에디터를 설계할 때 OT와 CRDT의 트레이드오프와 각각의 적합한 시나리오는?"
+  },
+  "source_files": ["system-design-senior.md#Q3", "system-design-senior-2.md#Q20"],
+  "references": []
+}

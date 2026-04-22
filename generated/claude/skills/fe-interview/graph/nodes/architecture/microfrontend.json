@@ -1,0 +1,25 @@
+{
+  "id": "arch-microfrontend",
+  "type": "concept",
+  "name": "Micro-Frontend",
+  "category": "architecture",
+  "levels": ["senior"],
+  "description": "Module Federation, Import Maps, Web Components 기반 마이크로 프론트엔드",
+  "key_points": [
+    "마이크로 프론트엔드는 50명 이상 엔지니어, 독립 배포가 필요한 조직에 적합",
+    "Module Federation: webpack/Vite에서 공유 의존성 중복 제거와 런타임 모듈 로딩",
+    "Import Maps: 네이티브 ESM 기반, 모듈 스펙시파이어를 URL로 매핑",
+    "Iframe: 완전한 격리(JS, CSS) 제공하지만 통합 UX와 접근성에 불리",
+    "Web Components: 프레임워크 무관 컴포넌트 패키징, 리프 컴포넌트에 적합",
+    "공유 의존성 설정 필수 - React를 싱글턴으로 선언하지 않으면 번들 중복으로 수백 KB 추가",
+    "크로스 앱 통신: 공유 이벤트 버스, URL, 커스텀 엘리먼트 속성 활용 (공유 store 지양)",
+    "디자인 시스템 거버넌스로 마이크로 프론트엔드 간 시각적 일관성 유지"
+  ],
+  "model_answer_summary": "마이크로 프론트엔드는 독립 팀이 각자의 프론트엔드 조각을 독립적으로 배포하는 아키텍처입니다. Module Federation이 가장 실용적이며, 공유 의존성 중복 제거가 필수입니다. 조직적 필요성이 명확할 때만 도입하고, 디자인 시스템 거버넌스로 UX 일관성을 유지해야 합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "마이크로 프론트엔드의 구현 방식(Module Federation, Import Maps, Iframe)별 트레이드오프와 도입 판단 기준은?"
+  },
+  "source_files": ["architecture-senior.md#Q1"],
+  "references": []
+}

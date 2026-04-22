@@ -1,0 +1,31 @@
+{
+  "id": "react-styling",
+  "type": "concept",
+  "name": "React 스타일링",
+  "category": "react",
+  "levels": ["junior", "mid"],
+  "description": "React 컴포넌트 스타일링 전략 - inline styles, CSS Modules, styled-components, Tailwind CSS, CSS-in-JS 런타임 비용과 선택 기준",
+  "key_points": [
+    "React의 inline styles - JavaScript 객체로 스타일 지정, camelCase 프로퍼티명 사용",
+    "CSS Modules의 로컬 스코프 - 클래스명 충돌 방지와 컴포넌트 단위 스타일 격리",
+    "styled-components/Emotion의 CSS-in-JS 접근 - 동적 스타일링과 props 기반 스타일 변화",
+    "CSS-in-JS의 런타임 비용 - 스타일 직렬화, CSSOM 삽입이 성능에 미치는 영향",
+    "제로 런타임 CSS-in-JS 대안 - vanilla-extract, Linaria, Panda CSS의 빌드 타임 추출",
+    "Tailwind CSS의 유틸리티 퍼스트 접근과 React 컴포넌트에서의 활용 패턴",
+    "className vs style prop의 차이와 각각의 적절한 사용 시점",
+    "조건부 클래스 적용 - classnames/clsx 라이브러리 활용",
+    "CSS-in-JS vs CSS Modules vs Tailwind 선택 기준과 트레이드오프",
+    "React 컴포넌트의 테마(theme) 구현 전략 - CSS Variables, ThemeProvider 패턴"
+  ],
+  "model_answer_summary": "React에서 스타일링은 inline styles(JavaScript 객체), CSS Modules(로컬 스코프 CSS), CSS-in-JS(styled-components, Emotion), 유틸리티 CSS(Tailwind) 등 다양한 방식이 있습니다. CSS Modules는 빌드 타임에 고유한 클래스명을 생성하여 충돌을 방지합니다. styled-components는 props 기반 동적 스타일링이 강점이지만 런타임 비용이 있어, 대안으로 vanilla-extract 같은 제로 런타임 방식이 떠오르고 있습니다. Tailwind CSS는 유틸리티 클래스로 빠른 개발이 가능하며 번들 크기가 작습니다. 프로젝트의 규모, 팀 선호도, 성능 요구사항에 따라 적절한 방식을 선택해야 합니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "React에서 컴포넌트를 스타일링하는 방법들을 나열하고, CSS Modules와 inline styles의 차이를 설명해주세요.",
+    "mid": "CSS-in-JS(styled-components)와 CSS Modules의 장단점을 비교하고, 프로젝트에서 스타일링 방식을 선택할 때 고려하는 기준을 설명해주세요."
+  },
+  "source_files": [],
+  "references": [
+    "https://react.dev/learn#adding-styles",
+    "https://styled-components.com/docs/basics"
+  ]
+}

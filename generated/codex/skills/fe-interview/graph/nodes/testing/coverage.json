@@ -1,0 +1,26 @@
+{
+  "id": "testing-coverage",
+  "type": "concept",
+  "name": "Test Coverage & Strategy",
+  "category": "testing",
+  "levels": ["mid", "senior"],
+  "description": "테스트 커버리지 메트릭과 전략적 테스트 범위 결정",
+  "key_points": [
+    "커버리지 유형: 라인, 브랜치, 함수, 구문 - 각각 다른 관점에서 테스트 충분성 측정",
+    "브랜치 커버리지가 라인 커버리지보다 의미 있는 지표 - 조건 분기 누락 감지",
+    "100% 커버리지가 목표가 아닌 이유: 높은 커버리지가 좋은 테스트를 보장하지 않음",
+    "무엇을 테스트할지 결정: 비즈니스 로직 > 유틸리티 > UI > 설정 파일 순으로 우선순위",
+    "Flaky 테스트 관리: 불안정률 추적, 1% 이상이면 격리 후 수정",
+    "CI에서 커버리지 게이트 설정: PR에서 커버리지 하락 방지",
+    "커버리지 트렌드 모니터링이 스냅샷보다 중요 - 시간에 따른 추세 관찰",
+    "Lighthouse CI와 연동한 성능 테스트로 성능 회귀도 테스트 범위에 포함"
+  ],
+  "model_answer_summary": "테스트 커버리지는 라인, 브랜치, 함수, 구문 등 여러 메트릭으로 측정되며, 브랜치 커버리지가 가장 의미 있습니다. 100% 달성보다는 비즈니스 로직에 집중하고, CI에서 커버리지 하락을 방지하며, 트렌드를 모니터링하는 것이 효과적인 전략입니다. Flaky 테스트 관리도 커버리지만큼 중요합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "라인 커버리지와 브랜치 커버리지의 차이와 각각의 한계는?",
+    "senior": "테스트 스위트의 건강 지표(실행 시간, 불안정률, 커버리지 트렌드)를 어떻게 모니터링하고 개선하나요?"
+  },
+  "source_files": ["testing-mid.md#Q6", "testing-senior.md#Q1", "testing-senior.md#Q6", "testing-senior.md#Q10"],
+  "references": []
+}

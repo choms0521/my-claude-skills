@@ -1,0 +1,27 @@
+{
+  "id": "js-dom",
+  "type": "concept",
+  "name": "DOM Manipulation",
+  "category": "javascript",
+  "levels": ["junior"],
+  "description": "DOM 선택, 생성, 수정, 삭제와 관련된 기본 API 및 조작 패턴",
+  "key_points": [
+    "querySelector/querySelectorAll: CSS 선택자를 활용한 가장 유연한 요소 선택",
+    "createElement/appendChild: 프로그래밍 방식으로 DOM 요소 생성 및 삽입",
+    "textContent vs innerHTML: 보안(XSS 방지)을 위해 textContent 우선 사용",
+    "classList API: add, remove, toggle, contains로 클래스 조작",
+    "dataset: data-* 속성을 통한 커스텀 데이터 저장과 접근",
+    "라이브 HTMLCollection vs 정적 NodeList의 차이",
+    "DocumentFragment를 활용한 대량 DOM 삽입 최적화",
+    "insertAdjacentHTML/insertAdjacentElement를 통한 정밀한 위치 삽입"
+  ],
+  "model_answer_summary": "DOM(Document Object Model)은 HTML 문서를 트리 구조의 객체로 표현하며, JavaScript로 요소를 선택, 생성, 수정, 삭제할 수 있습니다. querySelector가 가장 유연한 선택 방법이고, textContent은 XSS 위험 없이 안전하게 텍스트를 설정합니다. classList API로 클래스를 조작하고, 대량 요소 삽입 시 DocumentFragment를 사용하면 리플로우를 최소화할 수 있습니다.",
+  "difficulty_range": { "min": "basic", "max": "basic" },
+  "sample_questions": {
+    "junior": "DOM이 무엇이고, 요소를 선택하고 수정하는 주요 방법들을 설명해주세요."
+  },
+  "source_files": ["javascript-junior.md#Q8"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model"
+  ]
+}

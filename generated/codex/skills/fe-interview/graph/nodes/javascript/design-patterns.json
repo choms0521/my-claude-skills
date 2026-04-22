@@ -1,0 +1,28 @@
+{
+  "id": "js-design-patterns",
+  "type": "concept",
+  "name": "Design Patterns in JS",
+  "category": "javascript",
+  "levels": ["senior"],
+  "description": "Observer, Mediator, Strategy, Factory, Singleton, Decorator 등 JavaScript에서의 디자인 패턴",
+  "key_points": [
+    "Observer 패턴: 이벤트 에미터, 반응형 시스템의 기반 - 일대다 의존성으로 상태 변경 시 자동 알림",
+    "Mediator 패턴: 중앙 중재자를 통해 컴포넌트 간 직접 의존성을 N*M에서 N+M으로 줄임 (Redux 스토어)",
+    "Strategy 패턴: 알고리즘을 캡슐화하여 런타임에 교체 가능 - 유효성 검사, 정렬, 인증 전략",
+    "Factory 패턴: 객체 생성 로직을 캡슐화하여 생성과 사용을 분리",
+    "Singleton 패턴: 모듈 시스템을 활용한 자연스러운 싱글턴 구현",
+    "Decorator 패턴: TC39 Stage 3 데코레이터 제안과 클래스 메서드 확장",
+    "JavaScript에서는 함수가 일급 시민이므로 클래스 계층 없이 간결하게 패턴 구현 가능",
+    "프레임워크에서의 패턴 활용: Observer(RxJS/MobX), Mediator(Redux), Strategy(validation 라이브러리)"
+  ],
+  "model_answer_summary": "JavaScript 디자인 패턴은 언어의 동적 특성과 일급 함수를 활용하여 전통적 OOP보다 간결하게 구현됩니다. Observer 패턴은 이벤트 시스템과 반응형 프로그래밍의 기반이고, Mediator는 Redux처럼 중앙 통신 허브로 컴포넌트 결합도를 낮추며, Strategy는 유효성 검사나 인증 같은 교체 가능한 알고리즘에 활용됩니다. TC39 Stage 3 Decorator 제안은 AOP(관점 지향 프로그래밍)를 네이티브로 지원합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "Observer, Mediator, Strategy 패턴을 JavaScript로 구현하고, 실제 프론트엔드 프레임워크에서 어떻게 활용되는지 설명해주세요."
+  },
+  "source_files": ["javascript-senior.md#Q7", "javascript-senior-2.md#Q17"],
+  "references": [
+    "https://www.patterns.dev/vanilla/observer-pattern",
+    "https://www.patterns.dev/vanilla/mediator-pattern"
+  ]
+}

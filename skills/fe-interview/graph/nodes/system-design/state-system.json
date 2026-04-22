@@ -1,0 +1,25 @@
+{
+  "id": "sd-state-system",
+  "type": "concept",
+  "name": "State Management System",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "Flux, Pub/Sub, Observable 패턴 기반 상태 관리 시스템 설계",
+  "key_points": [
+    "Flux 패턴: 단방향 데이터 흐름(Action → Dispatcher → Store → View)으로 예측 가능성 확보",
+    "Pub/Sub 패턴으로 상태 변경을 구독하는 느슨한 결합 구조",
+    "불변 상태 업데이트: Immer 또는 스프레드 연산자로 참조 비교 기반 최적화",
+    "셀렉터 패턴으로 파생 데이터를 메모이제이션하여 불필요한 리렌더링 방지",
+    "DevTools 통합: 시간 여행 디버깅, 액션 로깅으로 상태 변화 추적",
+    "서버 상태(React Query)와 클라이언트 상태(Zustand, Jotai)의 분리가 현대 패턴",
+    "Atom 기반 상태 관리(Jotai, Recoil): 세밀한 구독으로 필요한 컴포넌트만 리렌더링",
+    "대규모 앱에서 상태 정규화와 ID 기반 참조로 데이터 일관성 유지"
+  ],
+  "model_answer_summary": "상태 관리 시스템은 Flux의 단방향 데이터 흐름, 불변 업데이트, 셀렉터 기반 메모이제이션을 핵심으로 합니다. 서버 상태와 클라이언트 상태를 분리하고, Atom 기반 도구로 세밀한 구독을 구현하며, DevTools로 시간 여행 디버깅을 지원하는 것이 현대적인 설계입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "프론트엔드 상태 관리 시스템을 처음부터 설계한다면 어떤 패턴과 구조를 선택하나요?"
+  },
+  "source_files": ["system-design-senior.md#Q7"],
+  "references": []
+}

@@ -1,0 +1,26 @@
+{
+  "id": "react-state-mgmt",
+  "type": "concept",
+  "name": "State Management",
+  "category": "react",
+  "levels": ["mid", "senior"],
+  "description": "React 애플리케이션에서 전역 상태, 서버 상태, 로컬 상태를 효과적으로 관리하기 위한 전략과 라이브러리 비교",
+  "key_points": [
+    "Context API의 동작 원리와 리렌더링 문제",
+    "Redux의 아키텍처(Store, Action, Reducer)와 미들웨어 패턴",
+    "Zustand의 경량 접근법과 Redux 대비 장점",
+    "Jotai/Recoil의 atomic 상태 관리 패러다임",
+    "서버 상태(React Query/TanStack Query)와 클라이언트 상태의 분리 전략",
+    "상태 관리 라이브러리 선택 기준과 트레이드오프",
+    "Prop drilling 문제와 해결 방안 비교",
+    "Proxy 기반 상태 관리(MobX, Valtio)의 원리"
+  ],
+  "model_answer_summary": "React 상태 관리는 로컬 상태(useState), 전역 상태(Context, Redux, Zustand), 서버 상태(TanStack Query)로 구분하여 접근해야 합니다. Context API는 간단한 전역 상태에 적합하지만 값이 변경될 때 모든 구독 컴포넌트가 리렌더링되는 한계가 있어, 복잡한 상태에는 전용 라이브러리가 유리합니다. 최근에는 서버 상태와 클라이언트 상태를 명확히 분리하는 패턴이 주류로 자리잡고 있습니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Context API와 외부 상태 관리 라이브러리를 각각 언제 사용해야 하나요?",
+    "senior": "Redux, Zustand, Jotai의 아키텍처를 비교하고, 프로젝트 특성에 따른 선택 기준을 설명해주세요."
+  },
+  "source_files": ["react-junior-2.md#Q14", "react-mid.md#Q3", "react-mid-2.md#Q15", "react-mid-2.md#Q16", "react-senior.md#Q4"],
+  "references": []
+}

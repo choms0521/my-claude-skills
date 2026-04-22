@@ -1,0 +1,26 @@
+{
+  "id": "react-patterns",
+  "type": "concept",
+  "name": "React Patterns",
+  "category": "react",
+  "levels": ["mid", "senior"],
+  "description": "React에서 재사용 가능하고 유지보수 가능한 컴포넌트를 설계하기 위한 다양한 디자인 패턴과 합성 전략",
+  "key_points": [
+    "Higher-Order Component(HOC) 패턴의 원리와 사용 사례",
+    "Render Props 패턴과 로직 재사용",
+    "Compound Components 패턴으로 유연한 UI 구성",
+    "Controlled vs Uncontrolled 컴포넌트 패턴",
+    "Composition(합성) 패턴과 children prop 활용",
+    "Headless 컴포넌트 패턴과 디자인 시스템 적용",
+    "HOC/Render Props에서 Custom Hooks로의 전환 이유와 장단점",
+    "Provider 패턴과 의존성 주입"
+  ],
+  "model_answer_summary": "React 패턴은 로직 재사용과 컴포넌트 설계의 핵심입니다. HOC와 Render Props는 클래스 컴포넌트 시대의 주요 패턴이었으나, Custom Hooks의 등장으로 대부분 대체되었습니다. Compound Components는 관련 컴포넌트 그룹을 유연하게 구성할 때, Headless 컴포넌트는 로직과 UI를 분리하여 디자인 시스템에서 활용됩니다. 프로젝트 요구사항에 맞는 패턴 선택이 중요합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Render Props 패턴과 HOC 패턴을 비교하고, 각각의 사용 시점을 설명해주세요.",
+    "senior": "HOC와 Render Props 패턴이 Custom Hooks로 대체된 기술적 이유와 각 패턴이 여전히 유효한 사례를 설명해주세요."
+  },
+  "source_files": ["react-junior.md#Q8", "react-junior-2.md#Q18", "react-mid-2.md#Q11", "react-mid-2.md#Q12", "react-mid-2.md#Q13", "react-mid-2.md#Q14"],
+  "references": []
+}

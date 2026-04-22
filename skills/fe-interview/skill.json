@@ -1,0 +1,24 @@
+{
+  "name": "fe-interview",
+  "description": "Frontend developer interview coach - knowledge graph-based adaptive interviews with 3 interviewer personas, S/A/B/C/D grading, consensus evaluation, and improvement roadmap",
+  "triggers": [
+    "fe-interview",
+    "fe interview",
+    "frontend interview",
+    "프론트엔드 면접"
+  ],
+  "argumentHint": "[--mode graph|classic] [--test dry-run|agent:junior|agent:mid|agent:senior] [--resume <file_path>] [--level junior|mid|senior] [--length short|medium|long]",
+  "source": {
+    "claude": ".claude/skills/fe-interview/SKILL.md"
+  },
+  "assets": [
+    "graph",
+    "knowledge",
+    "scripts"
+  ],
+  "runtimeSupport": {
+    "claude": "full",
+    "codex": "full"
+  },
+  "codexFindings": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "css-animations",
+  "type": "concept",
+  "name": "Animations & Transitions",
+  "category": "html-css",
+  "levels": ["mid"],
+  "description": "CSS transition과 animation의 차이, 성능 최적화를 위한 GPU 가속, 그리고 will-change 활용",
+  "key_points": [
+    "transition과 animation의 차이 — 상태 변화 보간 vs 다단계 키프레임 시퀀스",
+    "@keyframes 정의와 animation 속성 (duration, timing-function, delay, iteration-count, fill-mode)",
+    "timing function의 종류와 특성 — ease, linear, ease-in-out, cubic-bezier, steps",
+    "transform과 opacity만 애니메이션하는 이유 — Composite 단계만 트리거하여 60fps 보장",
+    "will-change 속성의 올바른 사용 — GPU 레이어 프로모션 힌트와 남용 시 메모리 문제",
+    "렌더링 파이프라인 이해 — Style → Layout → Paint → Composite 단계별 비용",
+    "prefers-reduced-motion 미디어 쿼리를 활용한 접근성 대응",
+    "CSS 애니메이션 vs JavaScript 애니메이션(requestAnimationFrame, Web Animations API)의 사용 기준"
+  ],
+  "model_answer_summary": "CSS transition은 두 상태 간의 보간이고, animation은 @keyframes로 정의된 다단계 시퀀스입니다. 성능을 위해 transform과 opacity만 애니메이션해야 하는데, 이 속성들은 렌더링 파이프라인의 Composite 단계만 트리거하여 GPU 가속으로 60fps를 달성할 수 있기 때문입니다. will-change로 레이어 프로모션을 힌트하되 남용은 메모리 낭비를 초래합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "intermediate" },
+  "sample_questions": {
+    "mid": "CSS 애니메이션에서 transform/opacity만 사용해야 하는 이유와 렌더링 파이프라인의 관계를 설명해주세요."
+  },
+  "source_files": ["html-css-mid.md#Q2"],
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "arch-testing-strategy",
+  "type": "concept",
+  "name": "Testing Strategy",
+  "category": "architecture",
+  "levels": ["senior"],
+  "description": "테스트 피라미드, 테스팅 트로피, Shift-Left 등 조직 수준 테스트 전략",
+  "key_points": [
+    "테스트 피라미드: 많은 단위 테스트, 적당한 통합 테스트, 소수 E2E - 비용/속도/신뢰도 균형",
+    "테스팅 트로피(Kent C. Dodds): 통합 테스트에 더 많은 비중을 두어 실제 사용자 시나리오 검증",
+    "Shift-Left: 테스트를 개발 초기에 통합하여 버그 발견 비용 최소화",
+    "Contract Testing: 프론트/백엔드 간 API 계약을 독립적으로 검증하여 E2E 의존성 감소",
+    "Visual Regression: Chromatic, Percy로 시각적 회귀를 자동 탐지",
+    "테스트 오너십: CODEOWNERS로 팀별 테스트 책임을 명확히 할당",
+    "CI 게이팅: 단위(커밋) → 통합(PR) → E2E(머지) 순으로 빠른 피드백 우선",
+    "테스트 인프라를 제품처럼 운영: 실행 시간, 불안정률, 커버리지 트렌드 대시보드"
+  ],
+  "model_answer_summary": "조직 수준의 테스트 전략은 테스트 피라미드를 기본으로 하되, 통합 테스트 비중을 높이는 트로피 모델도 고려합니다. Shift-Left로 초기 버그를 잡고, Contract Testing으로 API 검증을 독립화하며, CI 게이팅과 테스트 인프라 모니터링으로 지속적 품질을 보장합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "테스트 피라미드와 테스팅 트로피의 차이, 그리고 조직 규모에 따른 테스트 전략 설계는?"
+  },
+  "source_files": ["architecture-senior.md#Q6"],
+  "references": []
+}

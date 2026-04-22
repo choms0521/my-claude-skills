@@ -1,0 +1,26 @@
+{
+  "id": "testing-mocking",
+  "type": "concept",
+  "name": "Mocking & Test Doubles",
+  "category": "testing",
+  "levels": ["mid", "senior"],
+  "description": "Mock, Stub, Spy, Fake 등 테스트 더블의 종류와 전략적 활용",
+  "key_points": [
+    "모듈 모킹: jest.mock()/vi.mock()으로 모듈 전체 또는 특정 export를 대체",
+    "MSW(Mock Service Worker)로 HTTP 수준 API 인터셉트 - 실제 요청 코드 경로 테스트 가능",
+    "타이머 모킹: jest.useFakeTimers()/vi.useFakeTimers()로 setTimeout, setInterval 제어",
+    "Spy는 호출 여부와 인자를 관찰, Mock은 반환값을 제어, Stub은 단순 대체, Fake는 간소화된 구현",
+    "모듈 모킹은 파일 상단으로 호이스팅되므로 초기화 시점 주의 필요",
+    "의존성 주입(DI) 패턴으로 모킹 필요성을 줄이고 테스트 용이성 향상",
+    "과도한 모킹은 구현 세부사항에 결합되어 리팩토링 시 테스트가 깨지는 원인",
+    "WebSocket, 타이머, 랜덤 등 비결정적 요소의 모킹 전략이 테스트 안정성의 핵심"
+  ],
+  "model_answer_summary": "테스트 더블은 실제 의존성을 제어 가능한 대체물로 교체하여 테스트를 격리하고 결정론적으로 만듭니다. MSW는 HTTP 수준에서 API를 인터셉트하여 가장 현실적인 테스트를 제공하고, 모듈 모킹은 빠르지만 구현에 결합될 수 있습니다. 적절한 모킹 전략은 테스트 신뢰도와 유지보수성의 균형점입니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Jest/Vitest에서 모듈 모킹, API 모킹, 타이머 모킹의 각각의 사용 시나리오는?",
+    "senior": "대규모 애플리케이션에서 테스트 더블의 과도한 사용을 줄이는 아키텍처 전략은?"
+  },
+  "source_files": ["testing-mid.md#Q3", "testing-mid.md#Q7", "testing-senior.md#Q9"],
+  "references": []
+}

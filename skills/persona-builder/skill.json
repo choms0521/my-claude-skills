@@ -1,0 +1,16 @@
+{
+  "name": "persona-builder",
+  "description": "Socratic interview to define (or remove) your bot's persona — speaking style, emotional tone, interaction habits, and worldview. Generates a personality config ready to apply to the active runtime's instruction file. Supports --remove to delete existing persona.",
+  "triggers": [
+    "persona-builder"
+  ],
+  "argumentHint": "[--scope workspace|global] [--remove] [--quick]",
+  "source": {
+    "claude": ".claude/skills/persona-builder/SKILL.md"
+  },
+  "runtimeSupport": {
+    "claude": "full",
+    "codex": "full"
+  },
+  "codexFindings": []
+}

@@ -1,0 +1,26 @@
+{
+  "id": "sec-cors",
+  "type": "concept",
+  "name": "CORS & Same-Origin Policy",
+  "category": "security",
+  "levels": ["mid", "senior"],
+  "description": "동일 출처 정책과 CORS 설정의 이해",
+  "key_points": [
+    "Same-Origin Policy: 프로토콜, 호스트, 포트가 모두 일치해야 동일 출처로 간주",
+    "CORS Preflight: 비단순 요청(PUT, DELETE, 커스텀 헤더) 시 OPTIONS 요청으로 사전 확인",
+    "Access-Control-Allow-Origin: 허용할 출처를 명시, '*'는 credentials 포함 요청에서 사용 불가",
+    "Access-Control-Allow-Credentials: true로 쿠키/인증 헤더 포함 크로스 오리진 요청 허용",
+    "CORS 미설정 시 흔한 오류와 디버깅 방법 - DevTools Network 탭에서 확인",
+    "프록시 서버로 개발 환경에서 CORS 우회 - Vite/webpack dev server 프록시 설정",
+    "Access-Control-Allow-Origin을 '*'로 설정하는 것은 공개 API에만 적합, 인증 필요한 API에는 위험",
+    "CORS는 브라우저 보안 정책이며, 서버 간 통신에는 적용되지 않음"
+  ],
+  "model_answer_summary": "Same-Origin Policy는 프로토콜, 호스트, 포트가 일치해야 리소스 접근을 허용하는 브라우저 보안 정책입니다. CORS는 서버가 HTTP 헤더로 크로스 오리진 접근을 선택적으로 허용하는 메커니즘으로, Preflight 요청과 적절한 헤더 설정이 핵심입니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "CORS가 무엇이며, Preflight 요청이 발생하는 조건과 처리 방법은?",
+    "senior": "CORS 미설정으로 인한 일반적인 문제들과 프로덕션 환경에서의 안전한 CORS 정책 설계는?"
+  },
+  "source_files": ["security-senior.md#Q3"],
+  "references": []
+}

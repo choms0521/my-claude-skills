@@ -1,0 +1,25 @@
+{
+  "id": "ts-advanced",
+  "type": "concept",
+  "name": "Advanced TypeScript",
+  "category": "typescript",
+  "levels": ["senior"],
+  "description": "타입 레벨 프로그래밍, HKT 에뮬레이션, Effect 시스템 등 TypeScript의 고급 타입 시스템 활용",
+  "key_points": [
+    "타입 레벨 프로그래밍 - 조건부 타입, 매핑 타입, 재귀 타입으로 컴파일 시점 연산 수행",
+    "Higher-Kinded Types 에뮬레이션 - URI 키 맵과 인덱스 조회를 통한 타입 생성자 추상화",
+    "Effect-TS의 Effect<Success, Error, Requirements> 타입 - 성공, 에러, 의존성을 타입으로 추적",
+    "satisfies 연산자 - 타입 호환성 검증과 추론된 타입 유지를 동시에 달성",
+    "선언 병합(declaration merging) - interface 확장으로 서드파티 타입 보강",
+    "모듈 보강(module augmentation) - 외부 모듈의 타입을 안전하게 확장",
+    "타입 인스턴스화 깊이 제한 - 재귀 타입의 실용적 한계와 깊이 카운터 우회 기법",
+    "공변성/반공변성(variance) - 함수 타입 호환성과 strictFunctionTypes의 영향"
+  ],
+  "model_answer_summary": "고급 TypeScript는 타입 시스템을 활용한 컴파일 시점 연산과 복잡한 타입 안전성 패턴을 다룹니다. 조건부 타입과 재귀 타입으로 타입 레벨 프로그래밍이 가능하며, tRPC, Prisma, Zod 같은 라이브러리가 이를 활용합니다. HKT 에뮬레이션으로 함수형 프로그래밍 패턴을 구현하고, Effect-TS는 에러와 의존성을 타입으로 추적하는 새로운 패러다임을 제공합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "TypeScript의 타입 레벨 프로그래밍이란 무엇이며, tRPC나 Zod 같은 라이브러리에서 어떻게 활용되나요?"
+  },
+  "source_files": ["typescript-senior.md#Q3", "typescript-senior.md#Q4", "typescript-senior.md#Q5", "typescript-senior-2.md#Q11", "typescript-senior-2.md#Q12"],
+  "references": []
+}

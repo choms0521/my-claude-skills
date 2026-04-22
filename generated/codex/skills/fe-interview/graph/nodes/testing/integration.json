@@ -1,0 +1,26 @@
+{
+  "id": "testing-integration",
+  "type": "concept",
+  "name": "Integration Testing",
+  "category": "testing",
+  "levels": ["mid", "senior"],
+  "description": "여러 모듈과 서비스 간의 상호작용을 검증하는 통합 테스트",
+  "key_points": [
+    "Contract Testing(Pact)으로 프론트엔드-백엔드 API 호환성을 독립적으로 검증",
+    "Consumer-Driven Contract: 프론트엔드가 기대하는 요청/응답을 계약으로 기록하고 백엔드가 검증",
+    "MSW로 HTTP 레벨에서 API를 인터셉트하여 실제 요청 코드 경로까지 테스트",
+    "Pact Broker로 계약 파일을 중앙 관리하고 'can I deploy' 검증 자동화",
+    "통합 테스트는 PR마다 실행하여 5분 이내 피드백 제공이 목표",
+    "팀 간 경계를 넘는 통합 테스트는 명확한 오너십(CODEOWNERS)이 필수",
+    "테스트 데이터베이스와 시드 데이터로 결정론적 환경 구성",
+    "E2E보다 빠르면서 단위 테스트보다 높은 신뢰도를 제공하는 균형점"
+  ],
+  "model_answer_summary": "통합 테스트는 여러 모듈과 서비스 간의 상호작용이 올바르게 동작하는지 검증합니다. Contract Testing(Pact)을 활용하면 프론트엔드와 백엔드가 동시에 실행되지 않아도 API 호환성을 검증할 수 있습니다. MSW로 HTTP 수준의 API 모킹이 가능하며, CI에서 PR마다 실행하여 빠른 피드백을 제공합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "MSW를 사용한 API 모킹과 모듈 모킹의 차이점과 각각의 장단점은?",
+    "senior": "Contract Testing이 E2E 테스트보다 API 통합 검증에 적합한 경우는 언제인가요?"
+  },
+  "source_files": ["testing-mid.md#Q9", "testing-senior.md#Q3"],
+  "references": []
+}

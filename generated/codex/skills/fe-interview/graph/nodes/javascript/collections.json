@@ -1,0 +1,29 @@
+{
+  "id": "js-collections",
+  "type": "concept",
+  "name": "Collections & Iteration",
+  "category": "javascript",
+  "levels": ["junior", "mid"],
+  "description": "배열 메서드, Map/Set, WeakMap/WeakSet, 이터러블/이터레이터 프로토콜",
+  "key_points": [
+    "map, filter, reduce: 선언적 배열 변환의 핵심 고차 함수",
+    "Set은 고유값 컬렉션으로 O(1) has() 조회, 배열 중복 제거에 활용",
+    "Map은 모든 타입을 키로 사용 가능, 삽입 순서 보장, size 프로퍼티 제공",
+    "WeakMap/WeakSet은 약한 참조로 GC를 허용 - 캐시와 프라이빗 데이터에 활용",
+    "이터러블 프로토콜: Symbol.iterator를 구현하면 for...of, 스프레드, 구조분해 사용 가능",
+    "for...of(이터러블)와 for...in(열거 가능한 프로퍼티)의 차이",
+    "Array.from()과 스프레드 연산자를 통한 이터러블 → 배열 변환",
+    "flatMap을 활용한 매핑과 평탄화 동시 처리"
+  ],
+  "model_answer_summary": "JavaScript는 배열의 map/filter/reduce 고차 함수로 선언적 데이터 변환을 지원하며, Map과 Set은 각각 유연한 키-값 저장소와 고유값 컬렉션을 제공합니다. WeakMap과 WeakSet은 약한 참조를 통해 GC를 허용하여 메모리 누수를 방지합니다. 이터러블 프로토콜(Symbol.iterator)을 구현하면 for...of, 스프레드, 구조분해 등의 언어 기능을 활용할 수 있습니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "map, filter, reduce의 차이점을 설명하고, 각각 언제 사용하는지 예시를 들어주세요.",
+    "mid": "Map과 Set은 일반 객체/배열과 어떻게 다르며, WeakMap은 언제 사용해야 하나요?"
+  },
+  "source_files": ["javascript-junior.md#Q7", "javascript-junior-2.md#Q17", "javascript-mid.md#Q6", "javascript-mid-2.md#Q13"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols"
+  ]
+}

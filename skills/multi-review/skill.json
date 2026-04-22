@@ -1,0 +1,15 @@
+{
+  "name": "multi-review",
+  "description": "Parallel multi-LLM code review (Claude + Codex + Gemini) with per-provider files, synthesis, and user-approved fix",
+  "triggers": ["multi-review", "multi review"],
+  "argumentHint": "[file paths | --workspace | --staged | (no args = git branch diff)]",
+  "source": {
+    "claude": ".claude/skills/multi-review/SKILL.md"
+  },
+  "assets": [],
+  "runtimeSupport": {
+    "claude": "full",
+    "codex": "full"
+  },
+  "codexFindings": []
+}

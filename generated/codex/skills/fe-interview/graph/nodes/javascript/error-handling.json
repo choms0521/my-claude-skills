@@ -1,0 +1,28 @@
+{
+  "id": "js-error-handling",
+  "type": "concept",
+  "name": "Error Handling",
+  "category": "javascript",
+  "levels": ["mid", "senior"],
+  "description": "try/catch, 커스텀 에러, 비동기 에러 처리, 글로벌 에러 핸들링 전략",
+  "key_points": [
+    "Error 객체를 throw해야 스택 트레이스를 보존 - 문자열 throw 지양",
+    "커스텀 에러 클래스: Error를 상속하여 도메인별 에러 타입 생성",
+    "Promise 체인에서 .catch()로 에러 전파, async/await에서 try/catch 사용",
+    "미처리 Promise 거부(unhandledrejection)는 Node.js 15+에서 프로세스 크래시 유발",
+    "글로벌 에러 핸들러: window.onerror, unhandledrejection, process.on('uncaughtException')",
+    "ES2022 Error cause 프로퍼티를 통한 에러 체이닝",
+    "에러를 삼키지 않기 - 빈 catch 블록 지양, 컨텍스트 추가 후 재throw",
+    "다계층 애플리케이션에서의 에러 처리 전략 (API → 서비스 → 데이터 계층)"
+  ],
+  "model_answer_summary": "JavaScript에서는 항상 Error 객체를 throw하여 스택 트레이스를 보존해야 하며, 커스텀 에러 클래스를 만들어 선택적 catch가 가능합니다. 비동기 코드에서는 Promise .catch()나 async/await의 try/catch로 에러를 처리하고, 미처리 거부는 프로세스를 크래시시킬 수 있으므로 반드시 처리해야 합니다. 글로벌 에러 핸들러는 최후의 안전망으로 등록하되, 각 계층에서 적절한 에러 처리와 복구 전략을 수립해야 합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "JavaScript에서 동기/비동기 에러 처리의 모범 사례를 설명해주세요.",
+    "senior": "다계층 프론트엔드 애플리케이션에서의 에러 처리 아키텍처를 설계하고, Error Boundary와의 관계를 설명해주세요."
+  },
+  "source_files": ["javascript-mid.md#Q10"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "testing-e2e",
+  "type": "concept",
+  "name": "E2E Testing",
+  "category": "testing",
+  "levels": ["mid", "senior"],
+  "description": "Playwright, Cypress를 활용한 실제 사용자 플로우 기반 엔드투엔드 테스트",
+  "key_points": [
+    "Playwright는 멀티 브라우저(Chromium, Firefox, WebKit) 지원과 병렬 실행이 강점",
+    "Cypress는 단일 브라우저 중심이지만 시간 여행 디버깅과 직관적인 API 제공",
+    "Page Object Model 패턴으로 페이지별 상호작용 로직을 캡슐화하여 유지보수성 향상",
+    "테스트 픽스처로 인증 상태, 테스트 데이터 등 사전 조건을 재사용 가능하게 관리",
+    "Visual Regression 테스트로 기능 테스트가 감지하지 못하는 시각적 회귀 탐지",
+    "CI에서는 E2E를 main 머지 시에만 실행하여 빠른 피드백 루프 유지",
+    "Flaky 테스트는 1% 이상 불안정률이면 격리 후 수정하여 신뢰도 유지",
+    "크리티컬 사용자 경로(로그인, 결제, 핵심 기능)에 집중하여 E2E 범위 결정"
+  ],
+  "model_answer_summary": "E2E 테스트는 실제 브라우저에서 사용자 플로우를 재현하여 전체 시스템의 통합 동작을 검증합니다. Playwright는 멀티 브라우저와 병렬 실행에 강점이 있고, Cypress는 직관적 디버깅이 강점입니다. 크리티컬 경로에 집중하고, Visual Regression을 결합하며, CI 게이팅 전략으로 속도와 신뢰도를 균형 있게 관리해야 합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Playwright와 Cypress의 핵심 차이점과 각각의 적합한 사용 시나리오는?",
+    "senior": "Visual Regression 테스트를 CI 워크플로에 효과적으로 통합하는 방법은?"
+  },
+  "source_files": ["testing-mid.md#Q10", "testing-senior.md#Q2"],
+  "references": []
+}

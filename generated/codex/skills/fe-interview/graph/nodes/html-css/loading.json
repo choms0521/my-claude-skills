@@ -1,0 +1,26 @@
+{
+  "id": "html-loading",
+  "type": "concept",
+  "name": "Resource Loading",
+  "category": "html-css",
+  "levels": ["junior", "mid"],
+  "description": "브라우저의 리소스 로딩 전략과 Critical Rendering Path 최적화 방법",
+  "key_points": [
+    "script 태그의 async와 defer 속성 차이 — 파싱 차단 여부와 실행 순서 보장",
+    "Critical Rendering Path의 단계 (DOM → CSSOM → Render Tree → Layout → Paint)",
+    "렌더링 차단 리소스(CSS)와 파서 차단 리소스(JS)의 구분",
+    "preload, prefetch, preconnect 리소스 힌트의 용도와 차이",
+    "Progressive Rendering 기법 — 서버 사이드 렌더링, 점진적 HTML 전송",
+    "이미지 lazy loading (loading='lazy' 속성)과 Intersection Observer 활용",
+    "DOMContentLoaded vs load 이벤트의 차이와 활용 시점",
+    "link rel='stylesheet'의 위치가 렌더링에 미치는 영향 (head vs body)"
+  ],
+  "model_answer_summary": "브라우저는 HTML을 파싱하며 DOM을 구축하고, CSS로 CSSOM을 만든 후 Render Tree를 생성하여 화면에 그립니다. script async/defer로 JS 로딩을 최적화하고, preload/prefetch로 리소스 우선순위를 제어하며, progressive rendering으로 사용자에게 빠른 첫 화면을 제공할 수 있습니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "script 태그의 async와 defer 속성의 차이를 설명해주세요.",
+    "mid": "Critical Rendering Path를 최적화하기 위한 리소스 로딩 전략을 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q1"],
+  "references": []
+}

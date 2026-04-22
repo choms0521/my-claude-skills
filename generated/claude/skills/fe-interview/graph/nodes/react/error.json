@@ -1,0 +1,26 @@
+{
+  "id": "react-error",
+  "type": "concept",
+  "name": "Error Handling in React",
+  "category": "react",
+  "levels": ["mid", "senior"],
+  "description": "React 애플리케이션에서의 에러 처리 전략, Error Boundary 구현, Suspense 연동 및 프로덕션 에러 모니터링",
+  "key_points": [
+    "Error Boundary의 동작 원리와 componentDidCatch/getDerivedStateFromError",
+    "Error Boundary가 잡을 수 있는 에러와 잡을 수 없는 에러 구분",
+    "함수형 컴포넌트에서 Error Boundary를 직접 구현할 수 없는 이유",
+    "Suspense와 Error Boundary의 조합 패턴",
+    "이벤트 핸들러와 비동기 코드에서의 에러 처리 전략",
+    "react-error-boundary 라이브러리 활용과 복구(reset) 패턴",
+    "프로덕션 에러 모니터링 시스템(Sentry 등) 연동",
+    "선언적 에러 처리와 명령적 에러 처리의 차이"
+  ],
+  "model_answer_summary": "React의 Error Boundary는 하위 컴포넌트 트리에서 발생하는 렌더링 에러를 잡아 폴백 UI를 표시하는 선언적 에러 처리 메커니즘입니다. 클래스 컴포넌트의 getDerivedStateFromError와 componentDidCatch로 구현하며, 이벤트 핸들러나 비동기 에러는 별도로 처리해야 합니다. 프로덕션에서는 Sentry 같은 모니터링 도구와 연동하여 에러를 추적하고 복구하는 전략이 필수적입니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Error Boundary란 무엇이며, 어떻게 구현하나요?",
+    "senior": "프로덕션 환경에서 React Error Boundary와 에러 모니터링 시스템을 어떻게 연동하고, 에러 복구 전략을 설계하나요?"
+  },
+  "source_files": ["react-mid.md#Q5"],
+  "references": []
+}

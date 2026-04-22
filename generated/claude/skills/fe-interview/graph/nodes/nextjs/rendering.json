@@ -1,0 +1,26 @@
+{
+  "id": "nextjs-rendering",
+  "type": "concept",
+  "name": "Next.js Rendering Modes",
+  "category": "nextjs",
+  "levels": ["mid", "senior"],
+  "description": "Next.js의 App Router와 Pages Router에서 지원하는 다양한 렌더링 모드와 Partial Prerendering",
+  "key_points": [
+    "App Router vs Pages Router - RSC 기반 새로운 패러다임과 기존 getServerSideProps/getStaticProps 비교",
+    "SSR(Server-Side Rendering) - 요청마다 서버에서 HTML 생성, 동적 개인화 콘텐츠에 적합",
+    "SSG(Static Site Generation) - 빌드 시 HTML 생성, CDN 제공으로 최고의 TTFB",
+    "ISR(Incremental Static Regeneration) - 정적 생성 + revalidate 주기로 콘텐츠 갱신",
+    "Streaming SSR - Suspense 경계 단위로 점진적 HTML 전송, 느린 데이터도 논블로킹",
+    "Partial Prerendering(PPR) - 정적 셸을 빌드 타임에 생성하고 동적 홀은 스트리밍으로 채움",
+    "App Router의 기본 서버 컴포넌트 - 'use client' 없으면 서버에서만 렌더링, JS 번들 크기 제로",
+    "loading.tsx와 Suspense의 관계 - 자동 페이지 레벨 Suspense 경계 생성"
+  ],
+  "model_answer_summary": "Next.js는 SSR, SSG, ISR, Streaming SSR, PPR 등 다양한 렌더링 모드를 제공합니다. App Router는 React Server Components를 기본으로 사용하여 클라이언트 JS를 최소화하고, Suspense 경계를 스트리밍 단위로 활용합니다. PPR은 정적 셸과 동적 콘텐츠를 한 페이지에서 결합하여 성능과 데이터 신선도를 동시에 달성하는 미래 방향입니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Next.js App Router와 Pages Router의 핵심 차이점과 데이터 페칭 방식을 비교해주세요.",
+    "senior": "Partial Prerendering(PPR)의 기술적 동작 원리와 ISR과의 차이를 설명해주세요."
+  },
+  "source_files": ["nextjs-mid.md#Q1", "nextjs-mid.md#Q3", "nextjs-mid.md#Q4", "nextjs-senior.md#Q1", "nextjs-senior.md#Q2"],
+  "references": []
+}

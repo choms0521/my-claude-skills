@@ -1,0 +1,25 @@
+{
+  "id": "sec-headers",
+  "type": "concept",
+  "name": "Security Headers",
+  "category": "security",
+  "levels": ["senior"],
+  "description": "CSP, X-Frame-Options, Permissions Policy 등 보안 HTTP 헤더",
+  "key_points": [
+    "CSP(Content Security Policy): 스크립트, 스타일, 이미지 등 리소스의 허용 소스를 제한하여 XSS 방어",
+    "CSP nonce: 요청마다 랜덤 토큰을 생성하여 신뢰할 수 있는 인라인 스크립트만 허용",
+    "CSP Report-Only 모드로 정책 적용 전 위반 사항을 모니터링하고 점진적 배포",
+    "X-Frame-Options / frame-ancestors: 클릭재킹 방어를 위한 iframe 임베딩 제한",
+    "X-Content-Type-Options: nosniff로 MIME 타입 스니핑 방지",
+    "Referrer-Policy: 외부 사이트로 전송되는 Referer 정보를 제어",
+    "Permissions-Policy: 카메라, 마이크, 지오로케이션 등 브라우저 기능 사용을 제한",
+    "COEP, COOP, CORP 헤더로 Cross-Origin Isolation 설정 - SharedArrayBuffer 등 고급 기능 활성화"
+  ],
+  "model_answer_summary": "보안 HTTP 헤더는 브라우저 수준에서 공격 표면을 줄이는 핵심 방어 수단입니다. CSP로 리소스 소스를 제한하고, nonce로 인라인 스크립트를 안전하게 허용하며, Permissions-Policy로 브라우저 기능 접근을 통제합니다. Report-Only 모드로 안전하게 점진 배포합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "CSP를 기존 애플리케이션에 안전하게 배포하는 전략과 주요 보안 헤더의 역할은?"
+  },
+  "source_files": ["security-senior.md#Q2", "security-senior.md#Q8", "security-senior-2.md#Q16", "security-senior-2.md#Q17"],
+  "references": []
+}

@@ -1,0 +1,28 @@
+{
+  "id": "react-hooks",
+  "type": "concept",
+  "name": "React Hooks",
+  "category": "react",
+  "levels": ["junior", "mid", "senior"],
+  "description": "React 16.8에서 도입된 함수형 컴포넌트에서 상태와 생명주기를 관리하는 API로, 클래스 컴포넌트 없이도 React의 모든 기능을 사용할 수 있게 해주는 핵심 메커니즘",
+  "key_points": [
+    "useState의 동작 원리와 배치 업데이트(React 18 자동 배칭)",
+    "useEffect의 의존성 배열과 cleanup 함수의 실행 타이밍",
+    "useRef의 DOM 접근 외 용도 (mutable container, 이전 값 저장)",
+    "useMemo/useCallback의 올바른 사용 시점과 오용 시 성능 저하",
+    "커스텀 훅 설계 원칙과 재사용 패턴",
+    "Rules of Hooks - 조건문/반복문 안에서 사용 불가한 기술적 이유 (linked list 구조)",
+    "useReducer로 복잡한 상태 로직 관리하기",
+    "stale closure 문제의 원인과 해결 방법",
+    "useId, useSyncExternalStore 등 React 18 신규 훅"
+  ],
+  "model_answer_summary": "React Hooks는 함수형 컴포넌트에서 상태 관리와 사이드 이펙트 처리를 가능하게 하는 API입니다. 내부적으로 linked list 구조로 관리되기 때문에 호출 순서가 보장되어야 하며, 이것이 Rules of Hooks의 기술적 근거입니다. useState, useEffect를 기본으로 useRef, useMemo, useCallback 등이 다양한 최적화와 참조 관리를 담당하며, 커스텀 훅을 통해 로직을 재사용 가능한 단위로 추출할 수 있습니다.",
+  "difficulty_range": { "min": "basic", "max": "advanced" },
+  "sample_questions": {
+    "junior": "useState와 useEffect의 기본 동작을 설명해주세요.",
+    "mid": "커스텀 훅을 만들 때 고려해야 할 설계 원칙은 무엇인가요?",
+    "senior": "React Hooks의 내부 구현(linked list)과 Rules of Hooks의 기술적 이유를 설명해주세요."
+  },
+  "source_files": ["react-junior.md#Q4", "react-junior.md#Q10", "react-junior-2.md#Q13", "react-mid.md#Q1", "react-mid.md#Q2", "react-mid-2.md#Q19", "react-mid-2.md#Q20", "react-senior-2.md#Q20"],
+  "references": []
+}

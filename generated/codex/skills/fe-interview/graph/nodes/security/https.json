@@ -1,0 +1,25 @@
+{
+  "id": "sec-https",
+  "type": "concept",
+  "name": "HTTPS & Transport Security",
+  "category": "security",
+  "levels": ["senior"],
+  "description": "TLS, HSTS, 인증서 관리 등 전송 계층 보안",
+  "key_points": [
+    "TLS(Transport Layer Security): 클라이언트-서버 간 데이터를 암호화하여 도청과 변조 방지",
+    "HSTS(HTTP Strict Transport Security): 브라우저에 HTTPS만 사용하도록 강제하는 헤더",
+    "Mixed Content: HTTPS 페이지에서 HTTP 리소스 로드 시 브라우저가 차단 또는 경고",
+    "Certificate Transparency: 인증서 발급을 공개 로그에 기록하여 잘못된 인증서 탐지",
+    "Let's Encrypt로 무료 TLS 인증서 자동 갱신 설정",
+    "TLS 1.3은 핸드셰이크 라운드트립을 줄이고 취약한 암호 스위트를 제거",
+    "프론트엔드에서 HTTPS 강제: meta 태그 upgrade-insecure-requests, CSP upgrade-insecure-requests",
+    "개발 환경에서도 HTTPS 사용 권장 - mkcert로 로컬 인증서 생성"
+  ],
+  "model_answer_summary": "HTTPS는 TLS로 데이터를 암호화하여 전송 중 도청과 변조를 방지합니다. HSTS 헤더로 HTTPS를 강제하고, Mixed Content를 방지하며, TLS 1.3으로 성능을 개선합니다. Certificate Transparency로 인증서 신뢰성을 확보하고, 개발 환경에서도 HTTPS를 사용하는 것이 권장됩니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "HTTPS와 HSTS의 동작 원리, Mixed Content 문제, 그리고 TLS 1.3의 개선사항은?"
+  },
+  "source_files": ["security-senior.md#Q7"],
+  "references": []
+}

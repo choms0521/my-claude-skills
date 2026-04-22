@@ -1,0 +1,25 @@
+{
+  "id": "react-fiber",
+  "type": "concept",
+  "name": "React Fiber & Internals",
+  "category": "react",
+  "levels": ["senior"],
+  "description": "React Fiber 아키텍처의 내부 구조, 동시성 모드, 스케줄러, 우선순위 기반 렌더링 메커니즘",
+  "key_points": [
+    "Fiber 노드의 구조와 작업 단위(unit of work) 개념",
+    "Stack Reconciler에서 Fiber Reconciler로의 전환 배경",
+    "시간 분할(Time Slicing)을 통한 렌더링 중단과 재개",
+    "우선순위 레인(Lane) 시스템과 작업 스케줄링",
+    "Concurrent Mode에서의 렌더링 파이프라인",
+    "더블 버퍼링(Double Buffering): current 트리와 workInProgress 트리",
+    "Effect List와 커밋 단계(Commit Phase)의 동작",
+    "requestIdleCallback 대신 자체 스케줄러를 구현한 이유"
+  ],
+  "model_answer_summary": "React Fiber는 렌더링 작업을 작은 단위로 분할하여 중단과 재개가 가능하도록 재설계된 React의 핵심 아키텍처입니다. 각 Fiber 노드는 컴포넌트의 작업 단위를 나타내며, Lane 시스템으로 우선순위를 관리합니다. 이를 통해 사용자 입력 같은 높은 우선순위 작업이 무거운 렌더링을 중단시킬 수 있어, Concurrent Mode의 기반이 됩니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "React Fiber 아키텍처가 도입된 배경과 동시성 렌더링을 가능하게 하는 내부 메커니즘을 설명해주세요."
+  },
+  "source_files": ["react-senior.md#Q1", "react-senior.md#Q2", "react-senior-2.md#Q19"],
+  "references": []
+}

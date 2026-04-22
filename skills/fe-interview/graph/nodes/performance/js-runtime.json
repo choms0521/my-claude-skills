@@ -1,0 +1,26 @@
+{
+  "id": "perf-js-runtime",
+  "type": "concept",
+  "name": "JS Runtime Performance",
+  "category": "performance",
+  "levels": ["mid", "senior"],
+  "description": "메인 스레드 최적화, Web Workers, requestAnimationFrame/requestIdleCallback을 활용한 JavaScript 런타임 성능",
+  "key_points": [
+    "Long Task 분리 - 50ms 이상 작업을 setTimeout이나 scheduler.yield()로 분할",
+    "Web Workers - 무거운 연산을 별도 스레드에서 실행, postMessage로 통신",
+    "Transferable Objects - ArrayBuffer를 복사 없이 워커로 전송하는 제로카피 패턴",
+    "SharedArrayBuffer와 Atomics - 공유 메모리와 스레드 안전 연산, COOP/COEP 보안 헤더 필요",
+    "requestAnimationFrame - 프레임 단위 애니메이션과 DOM 업데이트 예약",
+    "requestIdleCallback - 유휴 시간에 비필수 작업(분석, 프리페칭) 실행",
+    "debounce와 throttle - 이벤트 핸들러 호출 빈도를 제어하는 두 가지 패턴",
+    "Comlink 라이브러리 - Proxy 기반 RPC로 Web Worker 통신을 async 함수처럼 간소화"
+  ],
+  "model_answer_summary": "메인 스레드는 JavaScript 실행, 레이아웃, 페인트, 사용자 입력을 모두 처리하므로 16ms 프레임 예산 내에서 관리해야 합니다. Long Task를 분할하고, 무거운 연산은 Web Workers로 오프로드합니다. requestAnimationFrame으로 애니메이션을 프레임에 동기화하고, requestIdleCallback으로 비필수 작업을 유휴 시간에 배치합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "debounce와 throttle의 차이와 각각의 적절한 사용 시나리오를 설명해주세요.",
+    "senior": "Web Workers와 SharedArrayBuffer를 활용한 메인 스레드 오프로딩 전략을 설명해주세요."
+  },
+  "source_files": ["performance-mid.md#Q9", "performance-mid-2.md#Q12", "performance-senior.md#Q3", "performance-senior.md#Q7"],
+  "references": []
+}

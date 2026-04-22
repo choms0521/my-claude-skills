@@ -1,0 +1,31 @@
+{
+  "id": "react-refs",
+  "type": "concept",
+  "name": "React Refs & DOM 접근",
+  "category": "react",
+  "levels": ["junior", "mid"],
+  "description": "React에서 DOM 요소에 직접 접근하기 위한 refs 메커니즘, createRef/useRef, forwardRef, callback refs, useImperativeHandle",
+  "key_points": [
+    "useRef 훅으로 렌더링 사이에 값을 유지하는 '탈출구(escape hatch)' 개념",
+    "ref.current를 통한 DOM 요소 직접 접근 - focus(), scrollIntoView() 등",
+    "useRef vs useState - ref 변경은 리렌더링을 트리거하지 않는 차이점",
+    "callback refs 패턴 - DOM 노드가 마운트/언마운트될 때 콜백 실행",
+    "forwardRef로 자식 컴포넌트의 DOM을 부모에게 노출하는 패턴",
+    "useImperativeHandle로 부모에게 노출하는 ref 인터페이스를 제한하는 방법",
+    "String refs가 레거시인 이유와 callback/object refs로의 마이그레이션",
+    "ref를 사용해야 하는 적절한 상황 - DOM 조작, 타이머 ID, 이전 값 저장 등",
+    "ref를 남용하면 안 되는 이유 - React의 선언적 패러다임과의 충돌",
+    "React 19의 ref as prop 지원으로 forwardRef가 불필요해지는 변화"
+  ],
+  "model_answer_summary": "React Refs는 렌더링 사이에 값을 유지하면서도 리렌더링을 트리거하지 않는 '탈출구'입니다. useRef로 생성한 ref 객체의 .current 프로퍼티를 통해 DOM 요소에 직접 접근하여 focus, scroll 등의 명령형 작업을 수행합니다. forwardRef는 자식 컴포넌트의 DOM을 부모에게 전달할 때 사용하며, useImperativeHandle로 노출하는 인터페이스를 제한할 수 있습니다. String refs는 레거시이므로 object/callback refs를 사용해야 합니다. Refs는 DOM 조작, 타이머 관리, 이전 값 저장 등 React의 선언적 모델로 해결할 수 없는 상황에서만 사용하는 것이 바람직합니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "React에서 ref가 무엇이고, 어떤 상황에서 사용해야 하는지 설명해주세요.",
+    "mid": "forwardRef와 useImperativeHandle의 동작 원리를 설명하고, 컴포넌트 라이브러리를 만들 때 이를 어떻게 활용하는지 예를 들어주세요."
+  },
+  "source_files": [],
+  "references": [
+    "https://react.dev/learn/referencing-values-with-refs",
+    "https://react.dev/learn/manipulating-the-dom-with-refs"
+  ]
+}

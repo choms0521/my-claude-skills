@@ -1,0 +1,26 @@
+{
+  "id": "html-meta",
+  "type": "concept",
+  "name": "Meta & Internationalization",
+  "category": "html-css",
+  "levels": ["junior", "mid"],
+  "description": "HTML 메타 태그의 종류와 역할, 다국어 지원, 그리고 data 속성 활용 방법",
+  "key_points": [
+    "charset='UTF-8'의 역할과 head 내 위치의 중요성",
+    "viewport 메타 태그의 필수 설정과 반응형 디자인과의 관계",
+    "SEO 메타 태그 — description, robots, canonical URL의 역할",
+    "Open Graph 태그와 소셜 미디어 공유 카드 제어 (og:title, og:image 등)",
+    "다국어 사이트를 위한 lang 속성과 hreflang 링크 태그",
+    "data-* 커스텀 속성의 용도와 dataset API를 통한 접근",
+    "Content-Security-Policy 메타 태그를 통한 보안 정책 설정",
+    "theme-color 메타 태그와 PWA 관련 메타 태그"
+  ],
+  "model_answer_summary": "HTML 메타 태그는 브라우저, 검색엔진, 소셜 미디어 크롤러에게 문서 정보를 전달합니다. charset은 텍스트 인코딩, viewport는 반응형 렌더링, description은 검색 결과 스니펫, Open Graph는 소셜 공유를 제어합니다. 다국어 지원을 위해 lang 속성과 hreflang을 활용하며, data-* 속성으로 커스텀 데이터를 HTML에 저장할 수 있습니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "주요 HTML 메타 태그의 종류와 역할을 설명해주세요.",
+    "mid": "Open Graph 태그의 동작 원리와 다국어 사이트에서의 hreflang 활용 방법을 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q6"],
+  "references": []
+}

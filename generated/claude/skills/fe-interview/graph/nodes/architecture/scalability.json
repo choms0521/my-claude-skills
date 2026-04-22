@@ -1,0 +1,25 @@
+{
+  "id": "arch-scalability",
+  "type": "concept",
+  "name": "Scalability Patterns",
+  "category": "architecture",
+  "levels": ["senior"],
+  "description": "수평 확장, 마이크로서비스, 이벤트 기반 등 확장성 패턴",
+  "key_points": [
+    "수평 확장: 서버/서비스 인스턴스를 추가하여 처리량 증가 - CDN, 로드 밸런서가 핵심",
+    "수직 확장: 단일 서버의 자원 증가 - 한계가 있으며 단일 장애 지점 위험",
+    "프론트엔드 확장: 코드 스플리팅, 레이지 로딩, 마이크로 프론트엔드로 번들과 팀 확장",
+    "이벤트 기반 아키텍처: 서비스 간 느슨한 결합으로 독립적 확장과 배포 가능",
+    "마이크로서비스 패턴의 프론트엔드 적용: BFF, API Gateway, 서비스 메시",
+    "캐싱 계층 도입: 브라우저 → CDN → 앱 서버 → DB 순의 다층 캐싱으로 부하 분산",
+    "비동기 처리: 메시지 큐를 활용한 Heavy 작업의 백그라운드 처리",
+    "성능 예산 설정: LCP, FID, CLS 등 메트릭 기반으로 확장 시에도 성능 유지"
+  ],
+  "model_answer_summary": "프론트엔드 확장성은 코드 스플리팅과 CDN으로 리소스를 분산하고, 마이크로 프론트엔드로 팀 확장을 지원하며, 다층 캐싱으로 서버 부하를 줄이는 것입니다. 이벤트 기반 아키텍처로 서비스 간 결합을 느슨하게 하고, 성능 예산으로 확장 시에도 사용자 경험을 보장합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "트래픽이 10배 증가하는 프론트엔드 애플리케이션의 확장 전략을 어떻게 설계하나요?"
+  },
+  "source_files": ["architecture-senior-2.md#Q13", "architecture-senior-2.md#Q20"],
+  "references": []
+}

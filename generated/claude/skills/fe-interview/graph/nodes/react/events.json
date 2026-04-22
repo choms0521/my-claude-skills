@@ -1,0 +1,31 @@
+{
+  "id": "react-events",
+  "type": "concept",
+  "name": "React 이벤트 시스템",
+  "category": "react",
+  "levels": ["junior", "mid"],
+  "description": "React의 Synthetic Event 시스템, 이벤트 위임 메커니즘, 이벤트 핸들링 패턴, 네이티브 이벤트와의 차이, capture/bubble phase",
+  "key_points": [
+    "SyntheticEvent - 브라우저 네이티브 이벤트를 래핑하여 크로스 브라우저 호환성을 제공하는 React의 이벤트 객체",
+    "React의 이벤트 위임(Event Delegation) - 루트(React 17+)에서 이벤트를 위임 처리하는 방식",
+    "HTML vs React 이벤트 처리 차이 - camelCase 이벤트명, JSX에서 함수 전달, preventDefault() 명시 호출",
+    "이벤트 핸들러에 인자를 전달하는 패턴 - 화살표 함수, bind, 커링",
+    "이벤트 핸들러를 자식 컴포넌트에 props로 전달하는 패턴과 네이밍 관례(on/handle)",
+    "SyntheticEvent의 이벤트 풀링(React 16 이하)과 React 17+에서의 폐지",
+    "capture phase 이벤트 - onClickCapture 등 캡처 단계에서 이벤트 처리",
+    "e.stopPropagation()과 e.nativeEvent의 차이 - React 이벤트 전파 vs 네이티브 이벤트 전파",
+    "이벤트 핸들러에서 함수가 매 렌더마다 재생성되는 문제와 useCallback 최적화",
+    "React에서 지원하는 이벤트 종류 - 포인터, 키보드, 폼, 포커스 등 카테고리별 이벤트"
+  ],
+  "model_answer_summary": "React는 SyntheticEvent라는 래퍼 객체를 통해 브라우저 간 일관된 이벤트 인터페이스를 제공합니다. HTML의 onclick과 달리 camelCase(onClick)를 사용하고, 문자열이 아닌 함수를 전달합니다. React 17부터 이벤트 위임이 document 대신 root DOM 노드에서 이루어지며, 이벤트 풀링도 폐지되었습니다. e.stopPropagation()은 React 트리 내 전파만 차단하고, 네이티브 이벤트를 다루려면 e.nativeEvent을 사용해야 합니다. 이벤트 핸들러의 불필요한 재생성을 방지하기 위해 useCallback을 활용하고, on/handle 네이밍 관례로 props를 통해 핸들러를 전달합니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "React의 이벤트 처리 방식이 일반 HTML과 어떻게 다른지 설명하고, SyntheticEvent가 무엇인지 설명해주세요.",
+    "mid": "React 17에서 이벤트 위임 방식이 어떻게 변경되었는지 설명하고, stopPropagation이 React 이벤트와 네이티브 이벤트에서 각각 어떻게 동작하는지 설명해주세요."
+  },
+  "source_files": [],
+  "references": [
+    "https://react.dev/learn/responding-to-events",
+    "https://react.dev/reference/react-dom/components/common#react-event-object"
+  ]
+}

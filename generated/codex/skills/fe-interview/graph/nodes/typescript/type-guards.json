@@ -1,0 +1,26 @@
+{
+  "id": "ts-type-guards",
+  "type": "concept",
+  "name": "Type Guards & Narrowing",
+  "category": "typescript",
+  "levels": ["mid", "senior"],
+  "description": "런타임 검사를 통해 TypeScript 컴파일러가 타입을 좁히는 메커니즘과 패턴",
+  "key_points": [
+    "자동 내로잉 - typeof, instanceof, in, 동등성 검사를 통한 자동 타입 좁힘",
+    "판별 유니온(Discriminated Unions) - 공통 리터럴 프로퍼티를 통한 가장 안정적인 내로잉 패턴",
+    "커스텀 타입 가드 함수 - 'value is Type' 반환 타입 서술어로 사용자 정의 내로잉",
+    "assertion 함수 - 'asserts value is Type'으로 함수 호출 후 즉시 타입 좁힘",
+    "never 타입을 활용한 완전성 검사(exhaustive check) - 모든 케이스 처리 보장",
+    "판별 유니온으로 상태 머신 모델링 - API 응답, Redux 액션 등의 타입 안전한 설계",
+    "타입 가드의 신뢰성 한계 - TypeScript는 구현의 정확성을 검증하지 않음",
+    "assertion 함수와 일반 타입 가드의 차이 - boolean 반환 vs void 반환, if문 필요 여부"
+  ],
+  "model_answer_summary": "타입 내로잉은 런타임 검사를 기반으로 TypeScript가 특정 코드 블록 내에서 타입을 좁히는 기능입니다. typeof, instanceof, in 연산자로 자동 내로잉이 가능하며, 판별 유니온은 가장 견고한 패턴입니다. 커스텀 타입 가드와 assertion 함수로 사용자 정의 내로잉을 구현하고, never 타입으로 완전성 검사를 수행하여 새로운 변형 추가 시 모든 처리 누락을 컴파일 시점에 감지할 수 있습니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "TypeScript의 타입 내로잉 메커니즘과 커스텀 타입 가드 작성 방법을 설명해주세요.",
+    "senior": "판별 유니온과 never 타입을 활용한 완전성 검사(exhaustive check) 패턴을 설명해주세요."
+  },
+  "source_files": ["typescript-mid.md#Q3", "typescript-mid.md#Q8", "typescript-mid-2.md#Q13", "typescript-mid-2.md#Q15", "typescript-mid-2.md#Q16"],
+  "references": []
+}
