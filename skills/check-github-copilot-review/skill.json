@@ -1,0 +1,20 @@
+{
+  "name": "check-github-copilot-review",
+  "description": "GitHub Copilot 리뷰 코멘트를 가져와서 코드 수정/기각 후 resolve하고 커밋·푸시하는 스킬 (최대 3사이클 반복)",
+  "triggers": [
+    "copilot review",
+    "copilot 리뷰",
+    "check copilot",
+    "코파일럿 리뷰",
+    "copilot-review"
+  ],
+  "argumentHint": "[PR URL | PR number | (no args = current branch PR)] [--reset]",
+  "source": {
+    "claude": ".claude/skills/check-github-copilot-review/SKILL.md"
+  },
+  "runtimeSupport": {
+    "claude": "full",
+    "codex": "portable"
+  },
+  "codexFindings": []
+}

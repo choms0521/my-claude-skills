@@ -1,0 +1,14 @@
+{
+  "name": "multi-review",
+  "description": "Parallel multi-LLM code review (Claude + Codex + Gemini) with per-provider files, synthesis, and user-approved fix",
+  "triggers": ["multi-review", "multi review"],
+  "argumentHint": "[file paths | --workspace | --staged | (no args = git branch diff)]",
+  "source": {
+    "claude": ".claude/skills/multi-review/SKILL.md"
+  },
+  "runtimeSupport": {
+    "claude": "full",
+    "codex": "adapter-required"
+  },
+  "codexFindings": ["Claude/OMC 전용 에이전트 또는 런타임 호출을 사용합니다."]
+}
