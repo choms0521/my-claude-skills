@@ -1,6 +1,6 @@
 {
   "name": "persona-builder",
-  "description": "Socratic interview to define (or remove) your bot's persona — speaking style, emotional tone, interaction habits, and worldview. Generates a personality config ready to apply to CLAUDE.md or bot-character.md. Supports --remove to delete existing persona.",
+  "description": "Socratic interview to define (or remove) your bot's persona — speaking style, emotional tone, interaction habits, and worldview. Generates a personality config ready to apply to the active runtime's instruction file. Supports --remove to delete existing persona.",
   "triggers": [
     "persona-builder"
   ],
@@ -10,9 +10,7 @@
   },
   "runtimeSupport": {
     "claude": "full",
-    "codex": "runtime-specific"
+    "codex": "full"
   },
-  "codexFindings": [
-    "Claude 전용 설정 파일 경로를 사용합니다 (`~/.claude/...`, `CLAUDE.md`, `bot-character.md`)."
-  ]
+  "codexFindings": []
 }

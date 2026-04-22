@@ -1,0 +1,28 @@
+{
+  "id": "js-event-system",
+  "type": "concept",
+  "name": "Event System",
+  "category": "javascript",
+  "levels": ["junior", "mid"],
+  "description": "DOM 이벤트 전파(버블링/캡처링), 이벤트 위임, 커스텀 이벤트 시스템",
+  "key_points": [
+    "이벤트 전파 3단계: 캡처링 → 타겟 → 버블링 순서로 진행",
+    "이벤트 위임: 부모 요소에 단일 리스너를 등록하여 자식 이벤트를 처리",
+    "event.target vs event.currentTarget의 차이 - 실제 발생 요소 vs 리스너 등록 요소",
+    "event.stopPropagation()과 event.preventDefault()의 역할 차이",
+    "closest()를 활용한 이벤트 위임 패턴에서의 정확한 타겟 식별",
+    "버블링되지 않는 이벤트: focus, blur, scroll (focusin/focusout은 버블링)",
+    "이벤트 위임의 성능 이점: 메모리 절약, 동적 요소 자동 지원, 설정 간소화",
+    "CustomEvent를 사용한 커스텀 이벤트 생성과 dispatch"
+  ],
+  "model_answer_summary": "DOM 이벤트는 캡처링, 타겟, 버블링 3단계로 전파되며, 이벤트 위임은 버블링을 활용해 부모 요소 하나에 리스너를 등록하여 모든 자식 요소의 이벤트를 처리하는 패턴입니다. 이를 통해 메모리 사용을 줄이고, 동적으로 추가되는 요소도 자동으로 이벤트 처리가 가능합니다. event.target.closest()를 사용하면 중첩된 요소에서도 정확한 위임 타겟을 식별할 수 있습니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "이벤트 버블링이 무엇이고, 이벤트 위임이 어떤 이점을 제공하는지 설명해주세요.",
+    "mid": "이벤트 위임을 직접 구현하고, stopPropagation과 preventDefault의 차이를 설명해주세요."
+  },
+  "source_files": ["javascript-mid.md#Q4"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events"
+  ]
+}

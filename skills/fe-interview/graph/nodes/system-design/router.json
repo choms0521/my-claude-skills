@@ -1,0 +1,25 @@
+{
+  "id": "sd-router",
+  "type": "concept",
+  "name": "Client-Side Router",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "History API, 라우트 매칭, 코드 스플리팅을 포함한 클라이언트 라우터 설계",
+  "key_points": [
+    "History API(pushState, popstate)를 사용한 URL 변경 없는 네비게이션",
+    "해시 라우팅(#)은 서버 설정 불필요하지만 SEO에 불리",
+    "라우트 매칭: 정적 경로, 동적 파라미터(:id), 와일드카드(*) 패턴 지원",
+    "코드 스플리팅: 라우트별 lazy loading으로 초기 번들 크기 최적화",
+    "네비게이션 가드로 인증, 권한 체크 등 라우트 전환 전 조건 검사",
+    "중첩 라우트와 레이아웃으로 공통 UI를 라우트 간 공유",
+    "SPA 라우트 변경 시 접근성 고려: 포커스 관리, 페이지 타이틀 업데이트",
+    "라우트 전환 중 데이터 프리페칭으로 사용자 체감 로딩 시간 단축"
+  ],
+  "model_answer_summary": "클라이언트 라우터는 History API 기반 URL 관리, 라우트 매칭 알고리즘, 코드 스플리팅을 조합하여 설계합니다. 네비게이션 가드로 인증을 처리하고, 중첩 라우트로 레이아웃을 공유하며, SPA 전환 시 접근성(포커스, 타이틀)과 데이터 프리페칭을 고려해야 합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "클라이언트 사이드 라우터를 처음부터 설계한다면 어떤 핵심 구성 요소와 패턴을 사용하나요?"
+  },
+  "source_files": ["system-design-senior.md#Q6"],
+  "references": []
+}

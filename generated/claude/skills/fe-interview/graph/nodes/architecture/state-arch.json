@@ -1,0 +1,25 @@
+{
+  "id": "arch-state-arch",
+  "type": "concept",
+  "name": "State Architecture",
+  "category": "architecture",
+  "levels": ["senior"],
+  "description": "Event Sourcing, CQRS, 단방향 데이터 흐름 등 상태 아키텍처",
+  "key_points": [
+    "단방향 데이터 흐름(Unidirectional): Action → Store → View 순환으로 예측 가능성 확보",
+    "Event Sourcing: 상태 변경을 이벤트 목록으로 저장하여 전체 히스토리 추적 가능",
+    "CQRS: 읽기(Query)와 쓰기(Command)를 분리하여 각각 독립적으로 최적화",
+    "Reactive 상태 관리: Observable, Signal 기반으로 상태 변경이 자동으로 UI에 전파",
+    "서버 상태와 클라이언트 상태의 분리: React Query(서버) + Zustand(클라이언트)",
+    "상태 정규화: ID 기반 엔티티 저장으로 중복 방지와 일관된 업데이트",
+    "Optimistic Update 패턴: UI를 먼저 업데이트하고 서버 실패 시 롤백",
+    "상태 머신(XState): 복잡한 상태 전이를 명시적으로 모델링하여 불가능한 상태 방지"
+  ],
+  "model_answer_summary": "프론트엔드 상태 아키텍처는 단방향 데이터 흐름을 기반으로, 서버 상태와 클라이언트 상태를 분리하는 것이 현대적 접근입니다. Event Sourcing과 CQRS는 복잡한 도메인에서 히스토리와 성능을 최적화하며, 상태 머신으로 복잡한 전이를 명시적으로 관리합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "대규모 프론트엔드에서 상태 아키텍처를 설계할 때 Event Sourcing, CQRS, 상태 머신의 적용 시나리오는?"
+  },
+  "source_files": ["architecture-senior.md#Q4", "architecture-senior-2.md#Q11"],
+  "references": []
+}

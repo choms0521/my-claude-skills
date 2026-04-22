@@ -1,0 +1,26 @@
+{
+  "id": "css-visual",
+  "type": "concept",
+  "name": "Visual Techniques",
+  "category": "html-css",
+  "levels": ["junior", "mid"],
+  "description": "CSS Sprites, SVG, 웹 폰트, pseudo-elements, 콘텐츠 숨김 기법 등 시각적 기술",
+  "key_points": [
+    "CSS Sprites의 원리 — 여러 이미지를 하나로 합쳐 HTTP 요청 수를 줄이는 기법과 현대적 대안",
+    "SVG의 장점 — 해상도 독립성, CSS 스타일링, 접근성(title/desc), 애니메이션 지원",
+    "Retina/고해상도 디스플레이 대응 — device-pixel-ratio, srcset, 2x 이미지",
+    "웹 폰트 로딩 전략 — @font-face, font-display 속성, FOIT vs FOUT 문제",
+    "pseudo-elements (::before, ::after)의 활용 — 장식 요소, clearfix, 아이콘 삽입",
+    "콘텐츠 숨김 기법의 접근성 차이 — display:none vs visibility:hidden vs clip-rect vs sr-only 패턴",
+    "CSS Sprites vs SVG Sprites vs Icon Font의 성능 및 접근성 트레이드오프",
+    "이미지 최적화 포맷 — WebP, AVIF와 picture 요소를 활용한 포맷 폴백"
+  ],
+  "model_answer_summary": "CSS 시각적 기법은 이미지 최적화(Sprites, SVG, WebP/AVIF), 고해상도 대응(srcset, device-pixel-ratio), 웹 폰트 관리(font-display), pseudo-elements 활용 등을 포함합니다. SVG는 해상도 독립적이고 CSS로 스타일링 가능하여 아이콘에 최적이며, 콘텐츠 숨김은 접근성을 고려하여 sr-only 패턴을 사용해야 합니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "CSS Sprites의 원리와 현대적 대안(SVG, Icon Font)의 장단점을 비교해주세요.",
+    "mid": "콘텐츠 숨김 기법(display:none, visibility:hidden, clip-rect)의 접근성 차이를 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q9", "html-css-junior-2.md#Q15"],
+  "references": []
+}

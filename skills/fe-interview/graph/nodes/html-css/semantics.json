@@ -1,0 +1,27 @@
+{
+  "id": "html-semantics",
+  "type": "concept",
+  "name": "Semantic HTML",
+  "category": "html-css",
+  "levels": ["junior", "mid"],
+  "description": "의미에 맞는 HTML 태그를 사용하여 문서 구조를 명확하게 전달하고, 접근성과 SEO를 향상시키는 방법",
+  "key_points": [
+    "시맨틱 태그의 종류와 용도 (header, nav, main, article, section, aside, footer)",
+    "DOCTYPE 선언의 역할과 quirks mode vs standards mode 차이",
+    "시맨틱 HTML이 SEO에 미치는 영향 (검색엔진의 콘텐츠 계층 구조 이해)",
+    "시맨틱 HTML과 접근성(스크린 리더)의 관계 — landmark 요소를 통한 페이지 내비게이션",
+    "div/span 남용의 문제점과 적절한 사용 시점",
+    "HTML5 outline algorithm과 heading hierarchy (h1~h6의 올바른 사용)",
+    "다국어 사이트를 위한 lang 속성과 hreflang 활용",
+    "시맨틱 요소가 제공하는 브라우저 기본 동작 (button의 키보드 접근성, details/summary의 토글 동작)",
+    "ARIA roles과 시맨틱 요소의 암묵적 역할 매핑 관계"
+  ],
+  "model_answer_summary": "시맨틱 HTML은 콘텐츠의 의미와 구조를 명확하게 전달하는 태그를 사용하는 것으로, div/span 대신 header, nav, main, article 등의 요소를 활용합니다. 이를 통해 스크린 리더가 페이지 구조를 파악하고 검색엔진이 콘텐츠 계층을 이해할 수 있으며, 브라우저 기본 동작(키보드 접근성, 포커스 관리)을 무료로 얻을 수 있습니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "시맨틱 HTML이란 무엇이며, 왜 중요한가요?",
+    "mid": "시맨틱 HTML이 SEO와 접근성에 미치는 구체적 영향을 설명하고, ARIA와의 관계를 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q1"],
+  "references": []
+}

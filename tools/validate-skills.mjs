@@ -2,7 +2,14 @@
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { GENERATED_DIR, SHARED_SKILLS_DIR, fileExists, readUtf8, resolveSkillSelection } from './skill-lib.mjs';
+import {
+  GENERATED_DIR,
+  SHARED_SKILLS_DIR,
+  fileExists,
+  readUtf8,
+  renderSkillOutput,
+  resolveSkillSelection,
+} from './skill-lib.mjs';
 
 async function main() {
   const requestedSkills = process.argv.slice(2);
@@ -37,6 +44,43 @@ async function main() {
       const outputPath = path.join(GENERATED_DIR, runtime, 'skills', skillName, 'SKILL.md');
       if (!await fileExists(outputPath)) {
         errors.push(`Missing generated ${runtime} file: ${path.relative(process.cwd(), outputPath)}`);
+        continue;
+      }
+
+      const expected = await renderSkillOutput(skillName, runtime, SHARED_SKILLS_DIR);
+      const actualContent = await readUtf8(outputPath);
+      if (actualContent !== expected.content) {
+        errors.push(`Outdated generated ${runtime} file: ${path.relative(process.cwd(), outputPath)}`);
+      }
+
+      for (const assetName of expected.assets) {
+        const sourceAssetPath = path.join(expected.skillDir, assetName);
+        const outputAssetPath = path.join(GENERATED_DIR, runtime, 'skills', skillName, assetName);
+        if (!await fileExists(sourceAssetPath)) {
+          errors.push(`Missing source asset for ${skillName}: ${path.relative(process.cwd(), sourceAssetPath)}`);
+          continue;
+        }
+        if (!await fileExists(outputAssetPath)) {
+          errors.push(`Missing generated ${runtime} asset for ${skillName}: ${path.relative(process.cwd(), outputAssetPath)}`);
+          continue;
+        }
+
+        const assetDiffs = await compareAssetTrees(sourceAssetPath, outputAssetPath);
+        for (const relativePath of assetDiffs.missingFromOutput) {
+          errors.push(
+            `Missing generated ${runtime} asset entry for ${skillName}: ${path.relative(process.cwd(), path.join(outputAssetPath, relativePath))}`
+          );
+        }
+        for (const relativePath of assetDiffs.extraInOutput) {
+          errors.push(
+            `Unexpected generated ${runtime} asset entry for ${skillName}: ${path.relative(process.cwd(), path.join(outputAssetPath, relativePath))}`
+          );
+        }
+        for (const relativePath of assetDiffs.contentMismatch) {
+          errors.push(
+            `Outdated generated ${runtime} asset for ${skillName}: ${path.relative(process.cwd(), path.join(outputAssetPath, relativePath))}`
+          );
+        }
       }
     }
 
@@ -67,3 +111,60 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+
+async function compareAssetTrees(sourcePath, outputPath) {
+  const sourceEntries = await listTreeEntries(sourcePath);
+  const outputEntries = await listTreeEntries(outputPath);
+  const sourceSet = new Set(sourceEntries);
+  const outputSet = new Set(outputEntries);
+
+  const missingFromOutput = sourceEntries.filter((relativePath) => !outputSet.has(relativePath));
+  const extraInOutput = outputEntries.filter((relativePath) => !sourceSet.has(relativePath));
+  const contentMismatch = [];
+
+  for (const relativePath of sourceEntries) {
+    if (!outputSet.has(relativePath)) {
+      continue;
+    }
+
+    const sourceFile = path.join(sourcePath, relativePath);
+    const outputFile = path.join(outputPath, relativePath);
+    const [sourceContent, outputContent] = await Promise.all([
+      fs.readFile(sourceFile),
+      fs.readFile(outputFile),
+    ]);
+
+    if (!sourceContent.equals(outputContent)) {
+      contentMismatch.push(relativePath);
+    }
+  }
+
+  return {
+    missingFromOutput,
+    extraInOutput,
+    contentMismatch,
+  };
+}
+
+async function listTreeEntries(rootPath, relativePath = '') {
+  const targetPath = relativePath ? path.join(rootPath, relativePath) : rootPath;
+  const stats = await fs.stat(targetPath);
+
+  if (!stats.isDirectory()) {
+    return [relativePath];
+  }
+
+  const dirEntries = await fs.readdir(targetPath, { withFileTypes: true });
+  const visibleEntries = dirEntries
+    .filter((entry) => !entry.name.startsWith('.'))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const nestedEntries = [];
+  for (const entry of visibleEntries) {
+    const childRelativePath = relativePath ? path.join(relativePath, entry.name) : entry.name;
+    const childEntries = await listTreeEntries(rootPath, childRelativePath);
+    nestedEntries.push(...childEntries);
+  }
+
+  return nestedEntries;
+}

@@ -1,0 +1,25 @@
+{
+  "id": "perf-images",
+  "type": "concept",
+  "name": "Image Optimization",
+  "category": "performance",
+  "levels": ["mid"],
+  "description": "이미지 포맷 선택, 반응형 이미지, 압축, 전달 최적화를 포괄하는 이미지 성능 전략",
+  "key_points": [
+    "포맷 선택 우선순위 - AVIF > WebP > JPEG/PNG, picture 요소로 점진적 향상",
+    "반응형 이미지 - srcset과 sizes 속성으로 뷰포트에 적합한 크기의 이미지 제공",
+    "압축 설정 - JPEG 75-85, WebP 80이 품질/크기 최적 지점",
+    "width/height 속성 필수 - CLS 방지를 위해 항상 이미지 크기를 명시",
+    "이미지 CDN 서비스 - Cloudinary, Imgix 등으로 엣지에서 자동 포맷 변환과 리사이징",
+    "art direction - picture 요소로 모바일과 데스크톱에서 다른 크롭 이미지 제공",
+    "LCP 이미지 최적화 - fetchpriority='high', preload, 지연 로딩 금지",
+    "next/image 컴포넌트 - Next.js에서 자동 최적화, 지연 로딩, 포맷 변환 제공"
+  ],
+  "model_answer_summary": "이미지는 웹페이지 용량의 50-70%를 차지하므로 최적화의 핵심 영역입니다. AVIF/WebP 포맷을 picture 요소로 점진적 향상하고, srcset/sizes로 반응형 이미지를 제공합니다. width/height 속성으로 CLS를 방지하고, 이미지 CDN으로 엣지에서 자동 최적화합니다. LCP 이미지는 fetchpriority='high'로 우선 로드하고 절대 지연 로딩하지 않습니다.",
+  "difficulty_range": { "min": "intermediate", "max": "intermediate" },
+  "sample_questions": {
+    "mid": "포맷 선택, 반응형 이미지, 압축, 전달을 포괄하는 이미지 최적화 전략을 설명해주세요."
+  },
+  "source_files": ["performance-mid.md#Q3"],
+  "references": []
+}

@@ -11,11 +11,14 @@
   "source": {
     "claude": ".claude/skills/fe-interview/SKILL.md"
   },
+  "assets": [
+    "graph",
+    "knowledge",
+    "scripts"
+  ],
   "runtimeSupport": {
     "claude": "full",
-    "codex": "adapter-required"
+    "codex": "full"
   },
-  "codexFindings": [
-    "Claude 전용 질문 surface (`AskUserQuestion`)를 사용합니다."
-  ]
+  "codexFindings": []
 }

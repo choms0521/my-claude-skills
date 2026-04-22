@@ -4,12 +4,12 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import {
   GENERATED_DIR,
-  SHARED_SKILLS_DIR,
-  adaptBodyForRuntime,
+  copyPath,
   ensureDir,
+  pathExists,
+  renderSkillOutput,
+  SHARED_SKILLS_DIR,
   resolveSkillSelection,
-  readUtf8,
-  renderFrontmatter,
   writeUtf8,
 } from './skill-lib.mjs';
 
@@ -25,34 +25,20 @@ async function main() {
 }
 
 async function buildSkill(skillName) {
-  const skillDir = path.join(SHARED_SKILLS_DIR, skillName);
-  const manifest = JSON.parse(await readUtf8(path.join(skillDir, 'skill.json')));
-  const commonBody = await readUtf8(path.join(skillDir, 'common.md'));
-
   for (const runtime of ['claude', 'codex']) {
-    const adapter = await readUtf8(path.join(skillDir, 'adapters', `${runtime}.md`));
-    const body = adaptBodyForRuntime(commonBody, runtime, skillName);
-    const content = [
-      renderFrontmatter({
-        name: manifest.name,
-        description: manifest.description,
-        triggers: manifest.triggers,
-        'argument-hint': manifest.argumentHint,
-        runtime,
-        'support-level': manifest.runtimeSupport[runtime],
-        'generated-from': `skills/${skillName}`,
-      }),
-      '<!-- Generated file. Edit skills/<name>/... and rebuild. -->',
-      '',
-      adapter.trimEnd(),
-      '',
-      body.trimStart(),
-      '',
-    ].join('\n');
-
+    const { assets, content, skillDir } = await renderSkillOutput(skillName, runtime, SHARED_SKILLS_DIR);
     const outputDir = path.join(GENERATED_DIR, runtime, 'skills', skillName);
     await ensureDir(outputDir);
     await writeUtf8(path.join(outputDir, 'SKILL.md'), content);
+
+    for (const assetName of assets) {
+      const sourcePath = path.join(skillDir, assetName);
+      const targetPath = path.join(outputDir, assetName);
+      if (!await pathExists(sourcePath)) {
+        throw new Error(`Missing asset "${assetName}" for skill "${skillName}" at ${sourcePath}`);
+      }
+      await copyPath(sourcePath, targetPath);
+    }
   }
 }
 

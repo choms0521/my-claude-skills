@@ -1,0 +1,25 @@
+{
+  "id": "arch-api-design",
+  "type": "concept",
+  "name": "API Design & Integration",
+  "category": "architecture",
+  "levels": ["senior"],
+  "description": "REST, GraphQL, tRPC, BFF 패턴의 API 설계와 통합",
+  "key_points": [
+    "REST: 리소스 중심 URL, HTTP 메서드 활용, 캐싱이 자연스러움, 오버/언더페칭 가능",
+    "GraphQL: 클라이언트가 필요한 필드만 요청, N+1 문제와 캐싱 복잡도가 트레이드오프",
+    "tRPC: TypeScript 타입을 프론트/백엔드 간 공유하여 타입 안전한 API 호출",
+    "BFF(Backend for Frontend): 프론트엔드 요구에 맞춘 전용 API 계층으로 데이터 변환/집계",
+    "API Gateway 패턴으로 인증, 레이트 리밋, 로깅을 중앙에서 처리",
+    "에러 핸들링: 일관된 에러 응답 형식, HTTP 상태 코드의 올바른 사용",
+    "API 버저닝: URL 경로(/v2/), 헤더, 쿼리 파라미터 방식 중 선택",
+    "OpenAPI(Swagger) 스펙으로 API 문서 자동 생성과 클라이언트 코드 생성"
+  ],
+  "model_answer_summary": "프론트엔드 API 설계는 REST(단순, 캐싱 용이), GraphQL(유연한 쿼리), tRPC(타입 공유)를 데이터 특성에 맞게 선택합니다. BFF 패턴으로 프론트엔드 요구에 맞는 API 계층을 두고, API Gateway로 공통 관심사를 처리하며, OpenAPI로 문서화합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "REST, GraphQL, tRPC의 트레이드오프와 BFF 패턴의 역할 및 적합한 시나리오는?"
+  },
+  "source_files": ["architecture-senior.md#Q5"],
+  "references": []
+}

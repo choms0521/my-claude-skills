@@ -1,0 +1,28 @@
+{
+  "id": "js-web-apis",
+  "type": "concept",
+  "name": "Web Platform APIs",
+  "category": "javascript",
+  "levels": ["senior"],
+  "description": "Service Worker, Web Components, WebAssembly, WebRTC, WebSocket, SSE, Intersection Observer 등 웹 플랫폼 API",
+  "key_points": [
+    "Service Worker: 백그라운드 스레드에서 네트워크 요청 가로채기, 오프라인 캐싱 전략 (Cache First, Network First, Stale While Revalidate)",
+    "Web Components: Custom Elements, Shadow DOM, HTML Template로 프레임워크 무관 재사용 컴포넌트",
+    "WebAssembly: JavaScript와의 상호운용, SharedArrayBuffer를 통한 메모리 공유, 수치 연산 최적화",
+    "WebSocket vs SSE vs WebRTC: 양방향 통신, 서버 푸시, P2P 통신의 아키텍처 차이",
+    "Intersection Observer: 뷰포트 진입/이탈 감지, 레이지 로딩, 무한 스크롤 구현",
+    "SharedArrayBuffer와 Atomics를 통한 멀티스레드 동시성",
+    "AbortController를 통한 비동기 작업 취소 패턴",
+    "Intl API를 활용한 국제화 포매팅 (숫자, 날짜, 상대 시간)"
+  ],
+  "model_answer_summary": "웹 플랫폼은 Service Worker(오프라인/캐싱), Web Components(프레임워크 무관 컴포넌트), WebAssembly(고성능 연산), WebSocket/SSE/WebRTC(실시간 통신) 등 풍부한 API를 제공합니다. Service Worker는 네트워크 프록시로 동작하며 PWA의 핵심이고, WebAssembly는 C/C++/Rust 코드를 브라우저에서 네이티브에 가까운 속도로 실행합니다. 이러한 API들은 프레임워크 수준에서 해결하기 어려운 기능을 브라우저 네이티브로 지원합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "Service Worker의 라이프사이클과 캐싱 전략을 설명하고, WebSocket, SSE, WebRTC의 아키텍처 차이를 비교해주세요."
+  },
+  "source_files": ["javascript-senior.md#Q4", "javascript-senior.md#Q5", "javascript-senior-2.md#Q14", "javascript-senior-2.md#Q15", "javascript-senior-2.md#Q16"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API",
+    "https://developer.mozilla.org/en-US/docs/Web/API/Web_Components"
+  ]
+}

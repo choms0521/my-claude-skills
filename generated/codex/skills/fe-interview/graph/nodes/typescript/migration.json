@@ -1,0 +1,25 @@
+{
+  "id": "ts-migration",
+  "type": "concept",
+  "name": "JS to TS Migration",
+  "category": "typescript",
+  "levels": ["mid"],
+  "description": "JavaScript 프로젝트를 TypeScript로 점진적으로 마이그레이션하는 전략과 실용적 접근법",
+  "key_points": [
+    "점진적 마이그레이션 전략 - allowJs 옵션으로 JS와 TS 파일 공존",
+    "any에서 시작하여 점진적으로 타입 강화 - 초기에는 any 허용, 단계적으로 strict 옵션 활성화",
+    "checkJs와 JSDoc 타입 - JavaScript 파일에서 타입 검사를 시작하는 경량 접근법",
+    "strictNullChecks 도입 - null/undefined 관련 버그를 단계적으로 제거하는 전략",
+    "타입 커버리지 측정 - any 사용률을 추적하고 점진적으로 감소시키는 방법",
+    "마이그레이션 우선순위 - 유틸리티 함수와 공유 모듈부터 시작, UI 컴포넌트는 나중에",
+    "서드파티 라이브러리의 타입 처리 - @types 패키지, 커스텀 선언 파일, any 임시 타이핑",
+    "CI/CD 통합 - 새로운 any 도입 방지를 위한 lint 규칙과 타입 체크 파이프라인"
+  ],
+  "model_answer_summary": "대규모 JavaScript 코드베이스의 TypeScript 마이그레이션은 점진적 접근이 핵심입니다. allowJs로 JS/TS 공존을 허용하고, 유틸리티 함수와 공유 모듈부터 변환을 시작합니다. 초기에는 any를 허용하되 CI에서 새로운 any 도입을 차단하고, strictNullChecks를 단계적으로 활성화하여 null 관련 버그를 제거합니다. 타입 커버리지를 측정하여 마이그레이션 진행률을 추적합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "intermediate" },
+  "sample_questions": {
+    "mid": "대규모 JavaScript 프로젝트를 TypeScript로 마이그레이션하는 전략과 우선순위를 설명해주세요."
+  },
+  "source_files": ["typescript-senior.md#Q9", "typescript-mid-2.md#Q20"],
+  "references": []
+}

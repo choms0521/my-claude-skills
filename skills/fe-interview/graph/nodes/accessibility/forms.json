@@ -1,0 +1,26 @@
+{
+  "id": "a11y-forms",
+  "type": "concept",
+  "name": "Accessible Forms",
+  "category": "accessibility",
+  "levels": ["mid", "senior"],
+  "description": "접근 가능한 폼 설계와 오류 처리",
+  "key_points": [
+    "모든 입력 필드에 label 요소를 프로그래밍적으로 연결 (for/id 또는 래핑)",
+    "오류 메시지는 aria-describedby로 해당 입력 필드와 연결하여 스크린 리더에 전달",
+    "fieldset과 legend로 관련 입력 필드를 논리적으로 그룹화",
+    "필수 필드 표시: aria-required 또는 HTML required 속성 + 시각적 표시",
+    "인라인 유효성 검사 오류를 aria-live 리전으로 즉시 스크린 리더에 알림",
+    "autocomplete 속성으로 자동 완성 지원 - 인지 장애 사용자에게 특히 유용",
+    "폼 제출 실패 시 첫 번째 오류 필드로 포커스 이동하여 사용자 안내",
+    "WCAG 2.2의 3.3.7 중복 입력 금지와 3.3.8 접근 가능한 인증 기준 준수"
+  ],
+  "model_answer_summary": "접근 가능한 폼은 모든 입력에 프로그래밍적 라벨 연결, 오류 메시지의 aria-describedby 연결, fieldset/legend 그룹화가 기본입니다. 인라인 유효성 검사 오류를 라이브 리전으로 알리고, 제출 실패 시 첫 오류로 포커스를 이동합니다. WCAG 2.2는 중복 입력 금지와 접근 가능한 인증을 추가로 요구합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "접근성을 고려한 폼 설계의 필수 요소와 흔한 실수는?",
+    "senior": "WCAG 2.2의 새로운 폼 관련 기준(중복 입력, 접근 가능한 인증)이 구현에 어떤 변화를 요구하나요?"
+  },
+  "source_files": ["accessibility-mid.md#Q8", "accessibility-mid.md#Q9", "accessibility-senior.md#Q1"],
+  "references": []
+}

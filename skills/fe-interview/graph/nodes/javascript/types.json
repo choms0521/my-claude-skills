@@ -1,0 +1,29 @@
+{
+  "id": "js-types",
+  "type": "concept",
+  "name": "Types & Coercion",
+  "category": "javascript",
+  "levels": ["junior", "mid"],
+  "description": "JavaScript의 원시 타입, 참조 타입, 타입 변환(coercion), 동등 비교 규칙",
+  "key_points": [
+    "7가지 원시 타입: string, number, boolean, null, undefined, symbol, bigint",
+    "typeof null === 'object' 역사적 버그와 올바른 null 체크 방법",
+    "==(느슨한 동등)과 ===(엄격한 동등)의 타입 강제 변환 차이",
+    "암시적 타입 변환 규칙: 문자열 연결, 숫자 변환, boolean 컨텍스트",
+    "truthy/falsy 값 목록과 실무에서의 활용",
+    "null과 undefined의 의미적 차이 - 의도적 부재 vs 미할당",
+    "옵셔널 체이닝(?.)과 널리시 병합(??)의 null/undefined 처리",
+    "Object.is()와 ===의 미세한 차이 (NaN, +0/-0)"
+  ],
+  "model_answer_summary": "JavaScript는 7가지 원시 타입과 객체 참조 타입을 가지며, ==는 타입 강제 변환 후 비교하고 ===는 타입과 값 모두 일치해야 합니다. typeof null이 'object'를 반환하는 것은 역사적 버그이며, null은 의도적 부재, undefined는 미할당을 나타냅니다. 현대 코드에서는 ===를 기본으로 사용하고, null/undefined 동시 체크 시에만 == null 패턴을 허용합니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "==와 ===의 차이를 설명하고, typeof의 알려진 문제점은 무엇인가요?",
+    "mid": "JavaScript의 타입 강제 변환 규칙을 설명하고, [] == false가 true인 이유를 단계별로 풀어주세요."
+  },
+  "source_files": ["javascript-junior.md#Q4", "javascript-junior.md#Q5", "javascript-junior-2.md#Q11"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness"
+  ]
+}

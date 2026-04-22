@@ -1,0 +1,25 @@
+{
+  "id": "sd-monitoring",
+  "type": "concept",
+  "name": "Monitoring & Error Tracking",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "프론트엔드 에러 추적, 로깅, 성능 모니터링 시스템 설계",
+  "key_points": [
+    "window.onerror와 window.onunhandledrejection으로 전역 에러 캡처",
+    "Source Map 활용으로 프로덕션 에러를 원본 소스 코드 위치로 매핑",
+    "에러 배칭과 디바운싱으로 대량 에러 발생 시 서버 과부하 방지",
+    "Sentry, Datadog RUM 등 에러 추적 서비스의 아키텍처와 통합 방식",
+    "사용자 세션 리플레이로 에러 발생 맥락 재현 (LogRocket, FullStory)",
+    "Performance API와 Web Vitals 라이브러리로 실제 사용자 성능 메트릭 수집",
+    "알림 설정: 에러율 급증, 성능 저하 시 자동 알림으로 빠른 대응",
+    "개인정보 보호: 에러 로그에서 민감한 사용자 데이터 스크러빙 필수"
+  ],
+  "model_answer_summary": "프론트엔드 모니터링 시스템은 전역 에러 캡처, Source Map 연동, 에러 배칭을 기반으로 합니다. Sentry 같은 서비스와 통합하고, 세션 리플레이로 맥락을 파악하며, Web Vitals로 성능을 추적합니다. 알림 자동화와 민감 데이터 보호가 운영의 핵심입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "프론트엔드 모니터링 및 에러 추적 시스템을 어떻게 설계하고 운영하나요?"
+  },
+  "source_files": ["system-design-senior.md#Q8"],
+  "references": []
+}

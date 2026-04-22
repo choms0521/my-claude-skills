@@ -1,0 +1,27 @@
+{
+  "id": "css-advanced",
+  "type": "concept",
+  "name": "Modern CSS Features",
+  "category": "html-css",
+  "levels": ["mid", "senior"],
+  "description": "최신 CSS 기능 — Custom Properties, Houdini, Logical Properties, :has() 선택자, Subgrid, Scroll Snap 등",
+  "key_points": [
+    "CSS Custom Properties — 런타임 변수, JavaScript 연동, 테마 전환 활용",
+    "CSS Houdini — Paint API, Layout API, @property를 통한 타입 지정 커스텀 속성과 애니메이션",
+    "Logical Properties — inline/block 방향 기반 속성과 RTL/다국어 레이아웃 지원",
+    ":has() 선택자 — 부모 선택자의 실현, 조건부 스타일링의 새로운 패턴",
+    "Subgrid — 중첩 그리드의 부모 트랙 공유와 카드 레이아웃 정렬",
+    "Scroll Snap — scroll-snap-type, scroll-snap-align을 활용한 캐러셀/슬라이드 구현",
+    "Container Queries — 컨테이너 기반 반응형 컴포넌트와 cqi/cqb 단위",
+    "color-scheme과 prefers-color-scheme을 활용한 다크모드 구현 아키텍처",
+    "aspect-ratio 속성을 활용한 비율 유지와 CLS(레이아웃 시프트) 방지"
+  ],
+  "model_answer_summary": "최신 CSS는 Custom Properties로 동적 테마를, :has()로 조건부 부모 선택을, Container Queries로 컴포넌트 기반 반응형을 지원합니다. Houdini의 @property는 커스텀 속성에 타입을 부여하여 애니메이션을 가능하게 하고, Logical Properties는 다국어 레이아웃을, Scroll Snap은 네이티브 캐러셀을 CSS만으로 구현합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": ":has() 선택자의 동작 원리와 실제 활용 패턴을 설명해주세요.",
+    "senior": "CSS Houdini의 @property와 Paint API가 기존 CSS의 한계를 어떻게 해결하는지 설명해주세요."
+  },
+  "source_files": ["html-css-mid-2.md#Q11", "html-css-mid-2.md#Q12", "html-css-mid-2.md#Q13", "html-css-mid-2.md#Q14", "html-css-mid-2.md#Q15", "html-css-mid-2.md#Q17", "html-css-mid-2.md#Q18", "html-css-mid-2.md#Q19"],
+  "references": []
+}

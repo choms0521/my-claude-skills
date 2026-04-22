@@ -11,9 +11,12 @@
   "source": {
     "claude": ".claude/skills/mp3-downloader/SKILL.md"
   },
+  "assets": [
+    "scripts"
+  ],
   "runtimeSupport": {
     "claude": "full",
-    "codex": "portable"
+    "codex": "full"
   },
   "codexFindings": []
 }

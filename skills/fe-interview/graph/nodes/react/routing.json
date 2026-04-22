@@ -1,0 +1,26 @@
+{
+  "id": "react-routing",
+  "type": "concept",
+  "name": "Client-Side Routing",
+  "category": "react",
+  "levels": ["junior", "mid"],
+  "description": "React 애플리케이션에서 클라이언트 사이드 라우팅의 원리, React Router 사용법, 중첩 라우트 및 코드 스플리팅 전략",
+  "key_points": [
+    "History API 기반 클라이언트 사이드 라우팅 원리",
+    "React Router의 핵심 컴포넌트(BrowserRouter, Route, Link, Navigate)",
+    "중첩 라우트(Nested Routes)와 Outlet 패턴",
+    "동적 라우트 매개변수와 useParams 활용",
+    "Protected Routes(인증 가드) 구현 패턴",
+    "React Router의 lazy loading과 코드 스플리팅 통합",
+    "useNavigate, useLocation, useSearchParams 훅 활용",
+    "React Router v6의 데이터 로딩(loader, action) 패턴"
+  ],
+  "model_answer_summary": "클라이언트 사이드 라우팅은 History API를 기반으로 페이지 전체를 새로고침하지 않고 URL을 변경하며 컴포넌트를 교체하는 방식입니다. React Router는 선언적 라우팅을 제공하며, 중첩 라우트, 동적 매개변수, 인증 가드 등 다양한 패턴을 지원합니다. v6에서는 loader/action 패턴이 도입되어 라우트 단위 데이터 페칭이 가능해졌습니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "React Router를 사용한 기본적인 라우팅 설정 방법을 설명해주세요.",
+    "mid": "중첩 라우트 구조와 Protected Routes 구현 패턴을 설명해주세요."
+  },
+  "source_files": ["react-mid.md#Q4"],
+  "references": []
+}

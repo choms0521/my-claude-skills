@@ -6,9 +6,10 @@
   "source": {
     "claude": ".claude/skills/multi-review/SKILL.md"
   },
+  "assets": [],
   "runtimeSupport": {
     "claude": "full",
-    "codex": "adapter-required"
+    "codex": "full"
   },
-  "codexFindings": ["Claude/OMC 전용 에이전트 또는 런타임 호출을 사용합니다."]
+  "codexFindings": []
 }

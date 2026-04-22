@@ -1,0 +1,29 @@
+{
+  "id": "css-layout",
+  "type": "concept",
+  "name": "CSS Layout",
+  "category": "html-css",
+  "levels": ["junior", "mid", "senior"],
+  "description": "Flexbox, Grid, position, float, display 등 CSS 레이아웃 시스템의 원리와 활용",
+  "key_points": [
+    "Flexbox의 핵심 — 1차원 레이아웃, main/cross axis, justify-content, align-items, flex-grow/shrink/basis",
+    "CSS Grid의 핵심 — 2차원 레이아웃, fr 단위, repeat(), minmax(), auto-fill vs auto-fit",
+    "position 속성 (static, relative, absolute, fixed, sticky)의 동작과 containing block 개념",
+    "z-index와 stacking context — opacity, transform, filter 등이 새 stacking context를 생성하는 경우",
+    "Block Formatting Context(BFC)의 생성 조건과 float 포함, 마진 병합 방지 효과",
+    "display 값의 차이 — block, inline, inline-block, flex, grid, flow-root",
+    "float와 clear의 동작 원리, clearfix 기법 (::after pseudo-element 활용)",
+    "Flexbox vs Grid 선택 기준 — 1차원 vs 2차원, 콘텐츠 기반 vs 레이아웃 기반",
+    "subgrid를 활용한 중첩 그리드 요소 정렬",
+    "named grid areas(grid-template-areas)를 활용한 직관적인 페이지 레이아웃"
+  ],
+  "model_answer_summary": "CSS 레이아웃은 Flexbox(1차원), Grid(2차원), position, float 등 다양한 메커니즘을 제공합니다. Flexbox는 행 또는 열 단위 정렬에, Grid는 행과 열을 동시에 제어하는 복잡한 레이아웃에 적합합니다. position과 z-index는 stacking context를 이해해야 올바르게 사용할 수 있으며, BFC는 float 포함과 마진 병합 방지에 핵심적인 개념입니다.",
+  "difficulty_range": { "min": "basic", "max": "advanced" },
+  "sample_questions": {
+    "junior": "Flexbox의 main axis와 cross axis 개념, 그리고 주요 속성들을 설명해주세요.",
+    "mid": "CSS Grid의 auto-fill vs auto-fit 차이와 subgrid의 활용 사례를 설명해주세요.",
+    "senior": "stacking context의 생성 조건과 z-index 디버깅 전략을 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q3", "html-css-junior-2.md#Q11", "html-css-junior-2.md#Q12", "html-css-junior-2.md#Q14", "html-css-junior-2.md#Q15", "html-css-junior-2.md#Q19", "html-css-mid.md#Q1"],
+  "references": []
+}

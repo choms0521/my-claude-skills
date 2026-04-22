@@ -1,0 +1,25 @@
+{
+  "id": "arch-decision",
+  "type": "concept",
+  "name": "Technical Decision Making",
+  "category": "architecture",
+  "levels": ["senior"],
+  "description": "ADR, RFC, 트레이드오프 분석, 기술 부채 관리 등 기술적 의사결정",
+  "key_points": [
+    "ADR(Architecture Decision Records): 의사결정의 맥락, 옵션, 근거를 구조적으로 기록",
+    "RFC(Request for Comments) 프로세스: 중요한 기술 결정을 팀 전체와 문서로 논의",
+    "트레이드오프 분석: 각 선택지의 장단점, 비용, 위험을 정량적으로 비교",
+    "PoC(Proof of Concept): 불확실한 기술을 작은 범위에서 검증한 후 도입 결정",
+    "기술 부채 관리: 의도적 부채는 기록하고, 비의도적 부채는 발견 즉시 계획 수립",
+    "점진적 마이그레이션: 빅뱅 교체 대신 Strangler Fig 패턴으로 점진적 전환",
+    "의사결정 기록의 가치: 새로운 팀원 온보딩, 나중에 '왜 이렇게 했지?' 질문에 답변",
+    "기술 선택 시 팀 역량, 생태계 성숙도, 장기 유지보수 비용을 종합적으로 고려"
+  ],
+  "model_answer_summary": "기술적 의사결정은 ADR과 RFC 프로세스로 투명하게 기록하고, 트레이드오프 분석과 PoC로 근거 기반 결정을 내립니다. 기술 부채를 체계적으로 관리하고, 점진적 마이그레이션으로 리스크를 분산합니다. 팀 역량과 생태계 성숙도를 종합적으로 고려하는 것이 핵심입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "중요한 기술적 의사결정을 팀에서 어떻게 내리고 기록하며, 기술 부채를 어떻게 관리하나요?"
+  },
+  "source_files": ["architecture-senior-2.md#Q17", "architecture-senior-2.md#Q18"],
+  "references": []
+}

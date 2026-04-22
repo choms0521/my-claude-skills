@@ -1,0 +1,26 @@
+{
+  "id": "testing-component",
+  "type": "concept",
+  "name": "Component Testing",
+  "category": "testing",
+  "levels": ["mid", "senior"],
+  "description": "React Testing Library를 활용한 사용자 관점의 컴포넌트 테스트",
+  "key_points": [
+    "테스트는 사용자가 앱을 사용하는 방식을 모방해야 하며, 구현 세부사항이 아닌 동작을 검증",
+    "쿼리 우선순위: getByRole > getByLabelText > getByText > getByTestId 순으로 접근성 우선",
+    "userEvent가 fireEvent보다 실제 브라우저 이벤트를 더 정확하게 시뮬레이션",
+    "비동기 요소는 waitFor, findBy 쿼리를 사용하고 setTimeout은 절대 사용하지 않음",
+    "리팩토링 시 동작이 변하지 않으면 테스트도 깨지지 않아야 좋은 테스트",
+    "스냅샷 테스트는 의도적 변경과 비의도적 변경을 구분하기 어려워 신중하게 사용",
+    "MSW를 활용한 API 모킹으로 실제 요청 코드 경로까지 테스트 가능",
+    "컴포넌트 통합 테스트는 여러 컴포넌트의 상호작용을 사용자 시나리오 기반으로 검증"
+  ],
+  "model_answer_summary": "React Testing Library는 사용자 관점에서 컴포넌트를 테스트하는 철학을 기반으로 합니다. 구현 세부사항 대신 사용자가 볼 수 있는 동작을 검증하며, 접근성 친화적인 쿼리 우선순위를 따릅니다. userEvent로 현실적인 상호작용을 시뮬레이션하고, 비동기 작업은 waitFor/findBy로 처리합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "React Testing Library의 쿼리 우선순위는 무엇이며, getByTestId를 사용해야 하는 경우는?",
+    "senior": "마이크로 프론트엔드 환경에서 컴포넌트 테스트 전략을 어떻게 설계하나요?"
+  },
+  "source_files": ["testing-mid.md#Q2", "testing-mid.md#Q9", "testing-senior.md#Q5"],
+  "references": []
+}

@@ -1,0 +1,10 @@
+{
+  "role": "TeamLead",
+  "display_name": "팀리드 면접관",
+  "tone": "실용적, 협업 중시, 코드 리뷰 관점",
+  "focus_categories": ["react", "nextjs", "testing", "accessibility", "performance"],
+  "question_style": "어떻게(How) 중심. 실무 적용, 팀 협업, 코드 품질",
+  "preferred_edge_types": ["applies_to", "requires", "tests_together"],
+  "example_opener": "이 컴포넌트를 코드 리뷰할 때 가장 먼저 확인하실 부분은?",
+  "evaluation_focus": ["실무 적용 능력", "협업 관점", "코드 품질 의식", "문제 해결 접근법"]
+}

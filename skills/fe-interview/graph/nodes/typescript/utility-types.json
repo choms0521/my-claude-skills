@@ -1,0 +1,26 @@
+{
+  "id": "ts-utility-types",
+  "type": "concept",
+  "name": "Utility Types",
+  "category": "typescript",
+  "levels": ["mid", "senior"],
+  "description": "TypeScript 내장 유틸리티 타입과 매핑된 타입, 템플릿 리터럴 타입을 활용한 타입 변환",
+  "key_points": [
+    "Partial, Required, Pick, Omit - 객체 타입의 프로퍼티를 변환하는 기본 유틸리티",
+    "Record, Readonly, ReturnType, Parameters - 타입 생성 및 추출 유틸리티",
+    "매핑된 타입(Mapped Types) - keyof와 in 연산자로 기존 타입의 프로퍼티를 변환",
+    "조건부 타입(Conditional Types) - extends와 삼항 연산자를 활용한 타입 분기",
+    "infer 키워드 - 조건부 타입 내에서 타입 변수를 추출하고 캡처",
+    "템플릿 리터럴 타입 - 문자열 타입을 조합하고 변환하는 타입 레벨 문자열 처리",
+    "Capitalize, Uppercase 등 문자열 조작 타입과 매핑된 타입의 결합",
+    "분배 조건부 타입(Distributive Conditional Types) - union 타입에 대한 조건부 타입의 분배 동작"
+  ],
+  "model_answer_summary": "TypeScript의 유틸리티 타입은 기존 타입을 변환하여 새로운 타입을 생성하는 제네릭 타입 도구입니다. Partial, Pick, Omit 등 내장 유틸리티로 객체 타입을 변환하고, 매핑된 타입과 조건부 타입으로 커스텀 유틸리티를 구축합니다. 템플릿 리터럴 타입은 문자열 패턴을 타입 레벨에서 생성하고 추출하는 강력한 기능을 제공합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Partial, Pick, Omit, Record 유틸리티 타입의 동작 원리와 실용적 사용 사례를 설명해주세요.",
+    "senior": "매핑된 타입과 템플릿 리터럴 타입을 결합하여 getter 함수 타입을 자동 생성하는 방법을 설명해주세요."
+  },
+  "source_files": ["typescript-mid.md#Q4", "typescript-mid.md#Q9", "typescript-mid.md#Q10", "typescript-mid-2.md#Q11", "typescript-mid-2.md#Q12", "typescript-senior.md#Q2"],
+  "references": []
+}

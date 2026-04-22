@@ -1,120 +1,105 @@
-# Multi-Review v3 - Parallel Multi-LLM Code Review
+# Multi-Review v4 - Parallel Multi-LLM Code Review
 
-3개 LLM(Claude, Codex, Gemini)이 각각 독립 리뷰 파일을 생성하고, Claude가 종합하여 코드 수정/기각/사람 판단 대기를 수행하는 3-Stage 파이프라인.
+3개 관점(Claude, Codex, Gemini)을 서로 독립된 리뷰 패스로 실행하고, 현재 세션의 리더 에이전트가 결과를 종합해 수정/기각/판단대기까지 정리하는 3-Stage 파이프라인입니다.
 
 ## When to Use
 
 - 브랜치 작업 완료 후 머지 전 코드리뷰
 - 특정 파일에 대한 다각도 리뷰
-- 보안/성능/로직 관점의 교차 검증이 필요할 때
+- 보안, 성능, 로직, 가독성을 분리해서 보고 싶을 때
 
 ## Do Not Use When
 
 - 단순 typo 수정 등 trivial 변경
-- 이미 리뷰 완료된 코드
+- 이미 충분히 검증된 작은 변경
 
 ## Requirements
 
-- **oh-my-claudecode (OMC)**: `omc ask` 명령이 Gemini 디스패치에 사용됨
-  - 설치: `/oh-my-claudecode:omc-setup` 또는 [oh-my-claudecode GitHub](https://github.com/nicekid1/oh-my-claudecode) 참고
-  - OMC 미설치 시 → Gemini 역할을 Claude 대역으로 전환
-- **Codex CLI** (선택): `npm install -g @openai/codex`
-  - 설치 시 → `codex review`로 직접 리뷰 디스패치 (OMC 불필요)
-  - 미설치/실패 시 → Claude가 **Codex 대역**으로 security/performance 관점 리뷰 수행
-- **Gemini CLI** (선택): `npm install -g @google/gemini-cli`
-  - OMC 설치 + Gemini CLI 설치 시 → `omc ask gemini`로 리뷰 디스패치
-  - 미설치/실패 시 → Claude가 **Gemini 대역**으로 clarity/edge case 관점 리뷰 수행
-- **최소 동작 조건**: Claude Code만 있으면 항상 3개 리뷰 파일 생성 (Claude가 모든 역할 대역 수행)
+- 필수 외부 런타임은 없습니다. 현재 세션만으로도 3개 리뷰 파일을 생성할 수 있어야 합니다.
+- `codex` CLI가 있으면 Codex 관점 리뷰를 외부 프로세스로 위임할 수 있습니다.
+- `gemini` CLI가 있으면 Gemini 관점 리뷰를 외부 프로세스로 위임할 수 있습니다.
+- 외부 CLI나 네이티브 하위 에이전트가 없어도, 현재 세션에서 **서로 다른 관점으로 3번 독립 리뷰**를 수행해 동일한 출력 파일을 만들어야 합니다.
 
-> **대역(代役) 원칙:** Codex/Gemini가 미가용일 경우, Claude가 해당 provider의 focus area를 가지고 독립 subagent로 리뷰를 수행하여 3개 리뷰 파일을 항상 생성합니다. 기존의 "1-LLM mode"는 더 이상 사용하지 않습니다.
+<!-- runtime:claude:start -->
+- Claude 런타임에서는 OMC, Gemini 연동, Claude 하위 에이전트를 사용할 수 있습니다.
+- 단, `omc ask`, 전용 에이전트, artifact 경로는 선택 사항입니다. 해당 기능이 없더라도 스킬은 계속 진행되어야 합니다.
+<!-- runtime:end -->
+
+<!-- runtime:codex:start -->
+- Codex 런타임에서는 Codex 네이티브 도구와 셸 명령만 전제로 둡니다.
+- Claude 전용 orchestration 표면이나 artifact 규약에 의존하지 않습니다.
+<!-- runtime:end -->
+
+> **핵심 원칙:** provider가 실제 외부 모델이든, 현재 세션이 수행한 stand-in pass든 상관없이 `claude-agent-llm-code-review.md`, `codex-agent-llm-code-review.md`, `gemini-agent-llm-code-review.md` 세 파일은 항상 새로 생성해야 합니다.
 
 ## Output Files
 
-```
+```text
 프로젝트 루트/
-├── claude-agent-llm-code-review.md   ← Stage 1: Claude 리뷰
-├── codex-agent-llm-code-review.md    ← Stage 1: Codex 리뷰
-├── gemini-agent-llm-code-review.md   ← Stage 1: Gemini 리뷰
-└── agent_code_review.md              ← Stage 2: 종합 최종 리뷰 (Stage 3 후 AMBIGUOUS만 잔존)
+├── claude-agent-llm-code-review.md
+├── codex-agent-llm-code-review.md
+├── gemini-agent-llm-code-review.md
+└── agent_code_review.md
 ```
 
 ## Execution Protocol
 
 Claude MUST follow this 3-Stage workflow exactly when this skill is invoked.
 
----
-
 ### Pre-Stage: Scope Resolution
 
-**Step 0 — Clean up previous review files:**
-
-Before starting, delete any existing review files from prior runs:
+**Step 0 — Clean up previous review files**
 
 ```bash
 rm -f claude-agent-llm-code-review.md codex-agent-llm-code-review.md gemini-agent-llm-code-review.md agent_code_review.md
 ```
 
-This ensures a clean slate and prevents stale results from contaminating the new review.
+이전 결과를 재활용하지 않습니다. 변경이 없더라도 이번 실행의 3개 리뷰 파일을 다시 만듭니다.
 
-> **CRITICAL: 재활용 금지 규칙** — Step 0 이후에는 이전 실행 결과를 절대 재활용하지 않습니다. 코드가 변경되지 않았더라도, 이전 리뷰 내용을 기억하더라도, 반드시 3개 리뷰 파일(`claude-agent-llm-code-review.md`, `codex-agent-llm-code-review.md`, `gemini-agent-llm-code-review.md`)을 모두 새로 생성해야 합니다. "이미 동일한 내용이다", "변경사항이 없다" 등의 이유로 파일 생성을 건너뛰는 것은 금지입니다.
-
----
-
-Determine what code to review based on `{{ARGUMENTS}}`:
+**Step 1 — Determine review scope from `{{ARGUMENTS}}`**
 
 | Input | Action |
 |-------|--------|
-| No arguments | Branch diff: `git diff $(git merge-base HEAD $(git rev-parse --verify main 2>/dev/null \|\| echo master))...HEAD` |
-| File paths (e.g., `src/a.ts src/b.ts`) | Read and review those specific files |
-| `--workspace` | All tracked code files: `git ls-files` filtered to code extensions |
-| `--staged` | Staged changes only: `git diff --cached` |
+| No arguments | `git diff $(git merge-base HEAD $(git rev-parse --verify main 2>/dev/null \|\| echo master))...HEAD` |
+| File paths | 지정 파일만 읽고 리뷰 |
+| `--workspace` | `git ls-files` 기반 전체 tracked 코드 파일 |
+| `--staged` | `git diff --cached` |
 
-**제외 규칙 (모든 스코프 모드에 적용):**
-- `.gitignore`에 포함된 untracked 파일은 제외 (`git ls-files`는 tracked 파일만 나열하므로 별도 필터 불필요, `git diff`는 tracked 파일 간 비교이므로 자동 제외)
-- `.`으로 시작하는 디렉토리(`.claude/`, `.git/`, `.omc/`, `.omx/` 등)의 모든 하위 파일 제외
-- 리뷰 결과 파일(`*-agent-llm-code-review.md`, `agent_code_review.md`) 제외
+**Exclude rules**
 
-**필터 적용 방법:**
-- `--workspace` 모드: `git ls-files | grep -vE '(^|/)\.' | grep -E '\.(ts|js|tsx|jsx|py|go|rs|java|kt|swift|rb|php|c|cpp|h)$'`
-- Branch diff / `--staged` 모드: `--name-only`로 파일 목록을 먼저 구한 뒤 dot 디렉터리 경로를 제외하고, 남은 파일들에 대해서만 diff를 생성합니다. **pathspec(`-- ':!pattern'`)은 git 버전·셸 환경에 따라 실패할 수 있으므로 사용하지 않습니다.**
-  ```bash
-  # Branch diff
-  FILES=$(git diff $(git merge-base HEAD main)...HEAD --name-only | grep -vE '(^|/)\.')
-  [ -n "$FILES" ] && echo "$FILES" | xargs git diff $(git merge-base HEAD main)...HEAD --
+- `.`으로 시작하는 디렉토리 하위 파일 제외
+- 리뷰 결과 파일 제외
+- untracked ignored file 제외
 
-  # --staged
-  FILES=$(git diff --cached --name-only | grep -vE '(^|/)\.')
-  [ -n "$FILES" ] && echo "$FILES" | xargs git diff --cached --
-  ```
-- File paths 모드: 사용자 지정 파일 중 `.`으로 시작하는 경로는 경고 후 제외
+**Filtering guidance**
 
-**Steps:**
-1. Run the appropriate git command via Bash to get the diff or file contents, applying the exclusion rules above.
-2. **Size guard**: If total content exceeds ~50KB, split into file groups of max 10 files each.
-3. Store the diff/content for prompt construction.
-4. Detect base branch: `git rev-parse --verify main 2>/dev/null || echo master`
+```bash
+# Workspace
+git ls-files | grep -vE '(^|/)\\.' | grep -E '\\.(ts|js|tsx|jsx|py|go|rs|java|kt|swift|rb|php|c|cpp|h)$'
 
-If no changes are found, report to the user and stop.
+# Branch diff
+FILES=$(git diff $(git merge-base HEAD main)...HEAD --name-only | grep -vE '(^|/)\\.')
+[ -n "$FILES" ] && echo "$FILES" | xargs git diff $(git merge-base HEAD main)...HEAD --
 
----
-
-### Stage 1: 각 LLM 독립 리뷰 파일 생성
-
-Each LLM produces its own review file using the structured `[REVIEW_ITEM]` format.
-
-#### 1-1. Prompt Construction
-
-Build prompts with provider-specific focus areas:
-
-| Provider | Focus |
-|----------|-------|
-| Claude | Logic correctness, error handling, SOLID principles, spec compliance, anti-patterns |
-| Codex | Security vulnerabilities, performance bottlenecks, algorithmic issues, injection risks |
-| Gemini | Code clarity, alternative approaches, edge cases, documentation gaps, naming |
-
-**Structured output format — embed in ALL provider prompts:**
-
+# Staged
+FILES=$(git diff --cached --name-only | grep -vE '(^|/)\\.')
+[ -n "$FILES" ] && echo "$FILES" | xargs git diff --cached --
 ```
+
+**Step 2 — Size guard**
+
+- 총 입력이 약 50KB를 넘으면 파일 그룹을 10개 이하 단위로 나눕니다.
+- 그룹별 리뷰 결과를 나중에 병합합니다.
+
+**Step 3 — Stop if empty**
+
+리뷰 대상이 없으면 사용자에게 알리고 종료합니다.
+
+### Stage 1: 3개 독립 리뷰 파일 생성
+
+각 provider는 아래 구조화 포맷만 사용합니다.
+
+```text
 You MUST write all review content in Korean (한국어).
 You MUST format each finding using this exact format:
 
@@ -125,200 +110,138 @@ severity: CRITICAL | HIGH | MEDIUM | LOW
 category: security | logic | performance | style | error-handling | best-practice
 title: <한국어로 짧은 제목>
 description: <한국어로 상세한 이슈 설명>
-suggestion: <한국어로 구체적인 수정 방법 — 코드 스니펫 포함>
+suggestion: <한국어로 구체적인 수정 방법 - 코드 스니펫 포함>
 [/REVIEW_ITEM]
 
 If no issues found, output: [NO_ISSUES_FOUND]
 ```
 
-> **언어 규칙:** file, line, severity, category 필드는 영어 키워드 유지. title, description, suggestion은 반드시 한국어로 작성.
+`file`, `line`, `severity`, `category` 값은 영어 키워드를 유지하고, `title`, `description`, `suggestion`은 한국어로 씁니다.
 
-#### 1-2. Check CLI availability and route providers
+#### 1-1. Capability check
 
 ```bash
-command -v omc >/dev/null 2>&1 && echo "omc:available" || echo "omc:unavailable"
 codex --version 2>/dev/null && echo "codex:available" || echo "codex:unavailable"
 gemini --version 2>/dev/null && echo "gemini:available" || echo "gemini:unavailable"
 ```
 
-**Provider routing 결정 로직:**
+<!-- runtime:claude:start -->
+필요하면 Claude 런타임 전용 보조 도구도 확인할 수 있지만, 그 결과에 스킬 성공 여부를 걸지 않습니다.
+<!-- runtime:end -->
 
-| 조건 | Codex 디스패치 방식 | Gemini 디스패치 방식 |
-|------|---------------------|---------------------|
-| `codex` 가용 | `codex review` 직접 실행 | — |
-| `codex` 미가용 | **Claude 대역** (subagent, security/performance 관점) | — |
-| `omc` + `gemini` 둘 다 가용 | — | `omc ask gemini` |
-| `omc` 또는 `gemini` 미가용 | — | **Claude 대역** (subagent, clarity/edge case 관점) |
+#### 1-2. Provider routing
 
-> **핵심 원칙:** 어떤 경우에도 3개 리뷰 파일(`claude-`, `codex-`, `gemini-agent-llm-code-review.md`)은 반드시 생성되어야 합니다. CLI 미가용/실패 시 Claude가 해당 provider의 focus area를 가지고 대역 리뷰를 수행합니다.
+| Provider | Default path | Optional accelerator |
+|----------|--------------|----------------------|
+| Claude perspective | 현재 세션에서 logic/error-handling 관점 stand-in pass | 런타임이 안전한 reviewer lane이 있으면 선택 사용 |
+| Codex perspective | 현재 세션에서 security/performance 관점 stand-in pass | `codex review` |
+| Gemini perspective | 현재 세션에서 clarity/edge-case 관점 stand-in pass | `gemini` headless run |
 
-#### 1-3. Dispatch ALL providers in parallel
+기본값은 항상 **현재 세션 stand-in pass** 입니다. 외부 CLI나 별도 reviewer lane은 성공이 보장될 때만 선택적으로 사용합니다.
+stand-in pass도 반드시 해당 provider 전용 관점만 다뤄야 합니다.
 
-각 provider마다 CLI 가용 여부에 따라 분기합니다. **모든 경로(정상/대역)는 병렬로 실행**합니다.
+#### 1-3. Run review passes
 
-##### 1-3-a. Codex — CLI 가용 시 직접 실행 (OMC 불필요)
+- 런타임이 안전한 독립 lane을 제공하면 병렬 실행합니다.
+- 그렇지 않으면 순차 실행해도 됩니다.
+- 중요한 것은 **독립성**입니다. 앞선 리뷰 결과를 다음 pass에 흘려보내지 말고, 각 pass를 별도 메모/파일로 관리합니다.
+- 각 pass가 끝나면 결과를 메모에만 남기지 말고, 즉시 해당 output file을 새로 기록합니다.
+- 외부 CLI 시도가 실패하면 재시도보다 먼저 stand-in pass로 전환해 세 파일 생성을 완료합니다.
+- 외부 CLI 명령은 반드시 10분 상한으로 실행합니다. 런타임이 명시적 tool timeout을 지원하면 `timeout=600000`을 지정하고, 지원하지 않으면 셸 `timeout`/`gtimeout` 또는 동등한 watchdog로 같은 상한을 강제합니다.
+
+**Claude perspective**
+
+- Focus: logic correctness, error handling, SOLID principles, spec compliance, anti-patterns
+- Output file: `claude-agent-llm-code-review.md`
+- Executor label:
+  - 실제 Claude 계열 외부/내부 reviewer면 `Claude`
+  - 현재 세션 stand-in이면 `Current runtime (Claude perspective)`
+
+**Codex perspective**
+
+- Focus: security vulnerabilities, performance bottlenecks, algorithmic issues, injection risks
+- Output file: `codex-agent-llm-code-review.md`
+- Executor label:
+  - `Codex CLI`
+  - 또는 `Current runtime (Codex perspective)`
+
+외부 Codex CLI는 선택 사항입니다. 사용할 때는 다음 원칙을 지킵니다:
+
+- 기본 경로는 여전히 현재 세션 stand-in pass입니다. 외부 Codex CLI는 속도/분리도가 필요할 때만 사용합니다.
+- 긴 프롬프트를 argv에 직접 넣지 말고 stdin 또는 임시 파일을 사용합니다.
+- `codex review`는 기본적으로 `-c model_reasoning_effort="medium"`을 붙여 지연을 줄입니다.
+- 임시 HOME은 `/tmp` 대신 기존 HOME 아래 별도 디렉터리에 만들어 helper/session 경고를 줄입니다.
+- 현재 세션의 sandbox, approval policy, 인증 상태를 우회하려고 하지 않습니다.
+- `codex review` 호출이 실패하거나 출력이 불완전하면 즉시 stand-in pass로 전환합니다.
 
 ```bash
-# codex review는 코드 리뷰 전용 서브커맨드로, 코드를 실행하지 않고 분석만 수행합니다.
-# 제약: --base/--uncommitted와 [PROMPT]는 상호 배타적이므로, 모든 모드에서 [PROMPT]만 사용합니다.
-# diff/코드 내용을 프롬프트에 직접 포함하여 커스텀 리뷰 포맷을 보장합니다.
-#
-# 프롬프트 구성: Pre-Stage에서 수집한 diff 또는 파일 내용을 임시 파일로 저장 후 전달합니다.
+CODEX_RUN_PARENT="$HOME/.codex-run-tmp"
+mkdir -p "$CODEX_RUN_PARENT"
+CODEX_PROMPT="$(mktemp "$CODEX_RUN_PARENT/prompt-XXXXXX.txt")"
+CODEX_RUN_HOME="$(mktemp -d "$CODEX_RUN_PARENT/home-XXXXXX")"
+cleanup() {
+  rm -rf "$CODEX_RUN_HOME" "$CODEX_PROMPT"
+}
+trap cleanup EXIT INT TERM
 
-# 프롬프트를 임시 파일로 저장하여 셸 이스케이프 문제를 방지
-# 주의: $(cat)으로 인자 치환하므로 OS의 ARG_MAX 제한은 여전히 적용됨
-# diff가 매우 클 경우 Pre-Stage의 Size guard(50KB)에서 분할 처리됨
-CODEX_PROMPT=$(mktemp)
-cat > "$CODEX_PROMPT" <<'CODEX_EOF'
+cat > "$CODEX_PROMPT" <<'EOF'
 Security vulnerabilities, performance bottlenecks, algorithmic issues, injection risks에 집중하여 리뷰.
 
-{STRUCTURED_OUTPUT_FORMAT from 1-1}
+{STRUCTURED_OUTPUT_FORMAT}
 
 아래 코드를 리뷰하세요:
-CODEX_EOF
-# Branch diff 모드: diff 내용 추가
-FILES=$(git diff $(git merge-base HEAD {base_branch})...HEAD --name-only | grep -vE '(^|/)\.')
-[ -n "$FILES" ] && echo "$FILES" | xargs git diff $(git merge-base HEAD {base_branch})...HEAD -- >> "$CODEX_PROMPT"
-# --staged 모드:
-# FILES=$(git diff --cached --name-only | grep -vE '(^|/)\.')
-# [ -n "$FILES" ] && echo "$FILES" | xargs git diff --cached -- >> "$CODEX_PROMPT"
-# 특정 파일 모드: cat {file_list} >> "$CODEX_PROMPT"
+EOF
 
-codex review "$(cat "$CODEX_PROMPT")"
-rm -f "$CODEX_PROMPT"
+# diff 또는 파일 내용을 뒤에 append
+mkdir -p "$CODEX_RUN_HOME/.codex"
+[ -f "$HOME/.codex/auth.json" ] && cp "$HOME/.codex/auth.json" "$CODEX_RUN_HOME/.codex/auth.json"
+[ -f "$HOME/.codex/config.toml" ] && cp "$HOME/.codex/config.toml" "$CODEX_RUN_HOME/.codex/config.toml"
+
+# 이 명령은 반드시 timeout=600000(10분)으로 실행
+HOME="$CODEX_RUN_HOME" \
+codex -c model_reasoning_effort="medium" review - < "$CODEX_PROMPT"
 ```
 
-> Run in the background (`run_in_background: true`). If `codex review` fails, **Claude가 Codex 대역으로 fallback** (1-3-b 참조).
-> `codex review`의 출력은 stdout으로 직접 반환되므로, 결과를 `codex-agent-llm-code-review.md`로 리다이렉트하거나 캡처합니다.
+위 경로가 로그인/권한/환경 제약으로 실패하면, 그 즉시 Codex 관점 stand-in pass로 전환합니다. 실패한 외부 Codex 결과는 재활용하지 않습니다.
 
-##### 1-3-b. Codex — CLI 미가용/실패 시 Claude 대역 (Stand-in)
+**Gemini perspective**
 
-`codex` CLI가 미설치이거나 `codex review` 실행이 실패한 경우, Claude가 Codex의 역할(security/performance/algorithmic issues/injection risks 관점)을 대역으로 수행합니다.
+- Focus: code clarity, alternative approaches, edge cases, documentation gaps, naming
+- Output file: `gemini-agent-llm-code-review.md`
+- Executor label:
+  - `Gemini CLI`
+  - 또는 `Current runtime (Gemini perspective)`
 
-Agent 도구로 `oh-my-claudecode:security-reviewer` (또는 `oh-my-claudecode:code-reviewer`) 에이전트를 security/performance 관점으로 spawning합니다:
-
-```
-Agent(
-  subagent_type: "oh-my-claudecode:security-reviewer",
-  description: "Codex 대역 security/performance 리뷰",
-  prompt: "당신은 Codex의 역할을 대신 수행하는 대역 리뷰어입니다. 다음 코드를 **Security vulnerabilities, performance bottlenecks, algorithmic issues, injection risks** 관점에서만 리뷰하세요. Logic/clarity/style 관점은 다른 리뷰어가 담당하므로 다루지 마세요.
-
-{STRUCTURED_OUTPUT_FORMAT from 1-1}
-
-아래 코드를 리뷰하세요:
-{CODE_FILES or DIFF}",
-  run_in_background: true
-)
-```
-
-> 에이전트 완료 후 결과를 `codex-agent-llm-code-review.md`에 `[REVIEW_ITEM]` 포맷으로 정규화하여 저장합니다. **파일 헤더에 반드시 "실행자: Claude (Codex 대역)"을 명시**하여 Stage 2 종합 시 구분이 가능하도록 합니다.
-
-##### 1-3-c. Gemini — OMC + gemini CLI 가용 시 직접 실행
+외부 Gemini CLI도 선택 사항입니다. 기본 경로는 현재 세션 stand-in pass이며, Gemini CLI는 별도 관점 분리가 필요할 때만 사용합니다.
 
 ```bash
-# 프롬프트를 임시 파일로 저장하여 셸 이스케이프/길이 제한 문제를 방지
 PROMPT_FILE=$(mktemp)
-cat > "$PROMPT_FILE" <<'PROMPT_EOF'
-You are a senior code reviewer specializing in code clarity.
-Review the following code with focus on: Code clarity, alternative approaches, edge cases, documentation gaps, naming.
+cat > "$PROMPT_FILE" <<'EOF'
+Code clarity, alternative approaches, edge cases, documentation gaps, naming에 집중하여 리뷰.
 
-{STRUCTURED_OUTPUT_FORMAT from 1-1}
-PROMPT_EOF
-echo "" >> "$PROMPT_FILE"
-echo "Here is the code:" >> "$PROMPT_FILE"
-cat {CODE_FILES} >> "$PROMPT_FILE"
-omc ask gemini "$(cat "$PROMPT_FILE")" < /dev/null
+{STRUCTURED_OUTPUT_FORMAT}
+
+아래 코드를 리뷰하세요:
+EOF
+
+# diff 또는 파일 내용을 뒤에 append
+gemini --approval-mode plan -p "" < "$PROMPT_FILE"
 rm -f "$PROMPT_FILE"
 ```
 
-> Run in the background (`run_in_background: true`). If `omc ask gemini` fails, **Claude가 Gemini 대역으로 fallback** (1-3-d 참조).
+Gemini CLI가 브라우저 인증을 요구하거나 비대화형 실행에 실패하면, 즉시 Gemini 관점 stand-in pass로 전환합니다.
 
-##### 1-3-d. Gemini — CLI 미가용/실패 시 Claude 대역 (Stand-in)
+#### 1-4. Normalize provider outputs
 
-`omc` 또는 `gemini` CLI가 미설치이거나 `omc ask gemini` 실행이 실패한 경우, Claude가 Gemini의 역할(code clarity/alternative approaches/edge cases/documentation gaps/naming 관점)을 대역으로 수행합니다.
-
-Agent 도구로 `oh-my-claudecode:code-reviewer` 에이전트를 clarity 관점으로 spawning합니다:
-
-```
-Agent(
-  subagent_type: "oh-my-claudecode:code-reviewer",
-  description: "Gemini 대역 clarity/edge case 리뷰",
-  prompt: "당신은 Gemini의 역할을 대신 수행하는 대역 리뷰어입니다. 다음 코드를 **Code clarity, alternative approaches, edge cases, documentation gaps, naming** 관점에서만 리뷰하세요. Security/performance/logic 관점은 다른 리뷰어가 담당하므로 다루지 마세요.
-
-{STRUCTURED_OUTPUT_FORMAT from 1-1}
-
-아래 코드를 리뷰하세요:
-{CODE_FILES or DIFF}",
-  run_in_background: true
-)
-```
-
-> 에이전트 완료 후 결과를 `gemini-agent-llm-code-review.md`에 `[REVIEW_ITEM]` 포맷으로 정규화하여 저장합니다. **파일 헤더에 반드시 "실행자: Claude (Gemini 대역)"을 명시**하여 Stage 2 종합 시 구분이 가능하도록 합니다.
-
-##### 1-3-e. Claude 본 리뷰 — OMC 가용 시 `oh-my-claudecode:code-reviewer` 에이전트에 위임, 미가용 시 인라인 리뷰
-
-While waiting for Codex/Gemini, Claude 리뷰를 수행합니다.
-
-**OMC 가용 시 (권장):**
-
-Agent 도구로 `oh-my-claudecode:code-reviewer` 에이전트를 spawning하여 리뷰를 위임합니다:
-
-```
-Agent(
-  subagent_type: "oh-my-claudecode:code-reviewer",
-  prompt: "다음 코드 변경사항을 리뷰해주세요. Logic correctness, error handling, SOLID principles, spec compliance, anti-patterns에 집중하세요.
-
-{STRUCTURED_OUTPUT_FORMAT from 1-1}
-
-{CODE_FILES}",
-  run_in_background: true
-)
-```
-
-> 에이전트 완료 후 결과를 `claude-agent-llm-code-review.md`에 `[REVIEW_ITEM]` 포맷으로 정규화하여 저장합니다. 에이전트가 구조화된 포맷을 따르지 않은 경우, Claude가 수동으로 추출하여 변환합니다.
-
-**OMC 미가용 시 (fallback — 인라인 리뷰):**
-
-Claude가 직접 리뷰를 수행합니다:
-
-1. Read the diff/files
-2. Check logic correctness: loop bounds, null handling, type mismatches, control flow
-3. Check error handling: are error cases handled? Do errors propagate correctly?
-4. Scan for anti-patterns: God Object, magic numbers, copy-paste, feature envy
-5. Check SOLID principles compliance
-6. (선택) `lsp_diagnostics`를 실행하여 추가 진단 — 권한 거부 또는 미가용 시 건너뜀
-
-**MUST** write results to `claude-agent-llm-code-review.md` using the same `[REVIEW_ITEM]` format. 이전 실행 결과와 동일하더라도 반드시 파일을 새로 작성합니다. 파일이 존재하지 않으면 Stage 2에서 Claude 리뷰가 누락됩니다.
-
-
-#### 1-4. Wait and normalize provider outputs
-
-Collect results from background tasks. If a provider times out (>5 min), proceed without it and note in the summary.
-
-**After each provider completes, Claude MUST normalize the output into the standard file format.**
-
-**Codex:** `codex review`의 출력은 stdout으로 직접 반환됩니다. 백그라운드 실행 시 출력을 캡처하여 처리합니다.
-
-**Gemini:** `omc ask gemini` 아티팩트(`.omc/artifacts/ask/`)에서 결과를 추출합니다.
-
-Claude must:
-
-1. **Codex 결과 수집**: `codex review`의 stdout 출력에서 리뷰 내용을 추출합니다.
-2. **Gemini 결과 수집**: 최신 아티팩트를 찾습니다:
-   ```bash
-   ls -t .omc/artifacts/ask/gemini-*.md 2>/dev/null | head -1
-   ```
-   아티팩트에서 `[REVIEW_ITEM]...[/REVIEW_ITEM]` 블록을 `## Raw output` 섹션에서 추출합니다.
-3. If the provider didn't follow the structured format, manually extract findings and convert them into `[REVIEW_ITEM]` blocks
-4. **Write the normalized result to the standard file** (`codex-agent-llm-code-review.md` or `gemini-agent-llm-code-review.md`) using the exact same format as `claude-agent-llm-code-review.md`:
+각 pass가 끝나면 결과를 표준 파일 포맷으로 정규화합니다.
 
 ```markdown
 # {Provider} 코드 리뷰
 
 **날짜:** {YYYY-MM-DD}
 **범위:** {리뷰 대상 설명}
-**집중 영역:** {provider 집중 영역}
-**실행자:** {Codex CLI | Gemini CLI | Claude 본인 | Claude (Codex 대역) | Claude (Gemini 대역)}
+**집중 영역:** {provider focus}
+**실행자:** {executor label}
 
 ## 리뷰 항목
 
@@ -327,60 +250,56 @@ Claude must:
 [/REVIEW_ITEM]
 ```
 
-> **핵심:** 3개 리뷰 파일은 반드시 동일한 포맷이어야 합니다. artifact의 메타데이터, 프롬프트 에코, MCP 로그 등은 모두 제거하고 순수 리뷰 항목만 포함합니다.
-> **대역 표기:** Claude가 Codex/Gemini 역할을 대역으로 수행한 경우, `실행자` 필드에 반드시 "Claude (Codex 대역)" 또는 "Claude (Gemini 대역)"을 명시합니다. Stage 2 종합 시 `Flagged by` 필드도 이와 동일한 라벨을 사용합니다.
+- 외부 CLI가 구조화 포맷을 어기면, 리더 에이전트가 prose를 읽고 `[REVIEW_ITEM]` 블록으로 변환합니다.
+- 메타데이터, 로그, 프롬프트 에코는 제거합니다.
+- `[NO_ISSUES_FOUND]` 도 그대로 보존합니다.
 
----
+### Stage 2: 종합 리뷰 생성
 
-### Stage 2: Claude 종합 → 최종 리뷰 파일 생성
+세 개의 `*-agent-llm-code-review.md` 파일을 읽어 `agent_code_review.md`를 생성합니다.
 
-Read all available `*-agent-llm-code-review.md` files and synthesize into `agent_code_review.md`.
+#### 2-1. Parse items
 
-#### 2-1. Parse review items from each file
-
-Extract `[REVIEW_ITEM]...[/REVIEW_ITEM]` blocks. If a provider did not follow the structured format, manually extract and normalize.
+`[REVIEW_ITEM]...[/REVIEW_ITEM]` 블록을 추출합니다.
 
 #### 2-2. Merge duplicates
 
-**Matching rules for "same issue":**
-- Same file AND line numbers within 5 lines of each other
-- Same or related category (e.g., security + error-handling on same function)
+같은 이슈 판정 기준:
 
-When merging, combine provider perspectives into a single item and note which providers flagged it.
+- 같은 파일
+- line 차이가 5줄 이내
+- category가 같거나 인접 영역
 
-#### 2-3. Classify each item
+#### 2-3. Classify
 
 | Condition | Action |
 |-----------|--------|
-| 2+ providers flag same issue, agree on fix direction | **FIX** |
-| 3 providers all flag same issue as CRITICAL | **FIX** (immediate) |
-| Finding is clearly a false positive (evidence 필수) | **DISMISS** — 반드시 `evidence` 필드에 오탐 판단 근거를 명시 |
-| 1 provider flags, severity CRITICAL or HIGH | **AMBIGUOUS** — 심각도가 높으므로 사람의 판단 필요 |
-| 1 provider flags, severity MEDIUM or LOW | Claude 자체 판단 (**FIX** or **DISMISS**) — 반드시 `evidence` 필드에 판단 근거를 명시 |
-| 2+ providers flag same area but disagree on fix | **AMBIGUOUS** |
-| Fix direction is unclear or requires architectural decision (evidence 필수) | **AMBIGUOUS** — 반드시 `evidence` 필드에 왜 불명확한지 근거를 명시 |
+| 2개 이상 provider가 같은 문제와 같은 해결 방향에 동의 | FIX |
+| 3개 provider가 모두 같은 CRITICAL 문제를 지적 | FIX |
+| 명백한 false positive | DISMISS |
+| 1개 provider만 지적했고 severity가 CRITICAL 또는 HIGH | AMBIGUOUS |
+| 1개 provider만 지적했고 severity가 MEDIUM 또는 LOW | 리더 에이전트가 FIX 또는 DISMISS 판단 |
+| 2개 이상 provider가 같은 영역을 봤지만 해결 방향 불일치 | AMBIGUOUS |
 
-> **Evidence 규칙:** DISMISS 또는 Claude 자체 판단(1-provider MEDIUM/LOW) 시, `evidence` 필드 없이 판정하는 것은 금지. evidence는 "코드에서 실제로 확인한 사실" 기반이어야 하며, "~로 보인다", "~일 것이다" 같은 추측은 근거로 인정하지 않음.
+DISMISS 또는 1-provider 자체 판정에는 반드시 `Evidence`가 필요합니다.
 
-#### 2-4. Re-evaluate severity
+#### 2-4. Severity re-evaluation
 
-- If 2+ providers agree on severity → use that severity
-- If providers disagree → use the higher severity
-- If only 1 provider flagged → keep original severity but lower confidence
+- 2개 이상이 severity에 동의하면 그 값을 사용
+- 다르면 더 높은 severity 사용
+- 1개만 지적하면 원 severity 유지, confidence는 낮게 해석
 
 #### 2-5. Write `agent_code_review.md`
 
-> **모든 리뷰 내용은 한국어로 작성.** 필드 키(File, Severity 등)와 태그([FIX], [DISMISS], [AMBIGUOUS])는 영어 유지. 제목, 설명, 사유, 분석은 반드시 한국어로 작성.
+모든 리뷰 내용은 한국어로 씁니다. 태그와 필드 키만 영어를 유지합니다.
 
 ```markdown
 # 멀티 LLM 코드 리뷰 (최종)
 
 **날짜:** {YYYY-MM-DD}
-**범위:** {리뷰 대상 설명, 예: "git diff main...HEAD (12개 파일)"}
+**범위:** {리뷰 대상 설명}
 **리뷰어:** {완료된 provider 목록}
 **원본 파일:** claude-agent-llm-code-review.md, codex-agent-llm-code-review.md, gemini-agent-llm-code-review.md
-
----
 
 ## 요약
 
@@ -390,141 +309,90 @@ When merging, combine provider perspectives into a single item and note which pr
 | 기각(DISMISS) | N | N | N | N | N |
 | 검토필요(AMBIGUOUS) | N | N | N | N | N |
 
----
-
 ## [FIX] #{number}: {한국어 제목}
 - **File:** `{path}:{line}`
 - **Severity:** {severity}
 - **Flagged by:** {providers}
-- **수정 내용:** {합의된 수정 방법 한국어 설명}
-- **Evidence:** {1-provider 자체 판단인 경우 필수 — 코드에서 확인한 구체적 사실 기반 근거. 2+ provider 합의인 경우 생략 가능}
+- **수정 내용:** {한국어 설명}
+- **Evidence:** {필요한 경우만}
 
 ## [DISMISS] #{number}: {한국어 제목}
 - **File:** `{path}:{line}`
 - **Flagged by:** {provider}
-- **기각 사유:** {한국어로 기각 이유}
-- **Evidence:** {코드에서 확인한 구체적 사실 기반 근거}
+- **기각 사유:** {한국어 설명}
+- **Evidence:** {코드 사실 기반 근거}
 
 ## [AMBIGUOUS] #{number}: {한국어 제목}
 - **File:** `{path}:{line}`
 - **Severity:** {severity}
 - **Flagged by:** {providers}
-- **각 LLM 의견:**
-  - {Provider A}: {한국어로 의견 + 제안}
-  - {Provider B}: {한국어로 의견 + 제안}
-- **애매한 이유:** {한국어로 사람의 판단이 필요한 이유}
-- **Evidence:** {불명확하다고 판단한 구체적 근거 — 코드 사실 기반}
-- **장단점:** {각 선택지의 장단점 한국어 분석}
+- **각 LLM 의견:** {provider별 한국어 요약}
+- **애매한 이유:** {한국어 설명}
+- **Evidence:** {코드 사실 기반 근거}
+- **장단점:** {선택지 비교}
 ```
 
----
+### Stage 3: 사용자 승인 후 수정
 
-### Stage 3: 사용자 승인 후 액션 수행
+자동 수정하지 않습니다. 먼저 리뷰 결과를 요약해 사용자에게 보여주고 승인을 받습니다.
 
-Stage 2에서 생성된 `agent_code_review.md`를 기반으로, **코드를 자동 수정하지 않고** 사용자에게 리뷰 결과를 제시하고 승인을 받은 후에만 수정합니다.
+#### 3-1. Present summary
 
-#### 3-1. 리뷰 결과 요약 제시
+사용자에게 아래 정보를 요약합니다.
 
-사용자에게 아래 형식으로 리뷰 결과를 출력합니다:
+- FIX 항목 수와 표
+- DISMISS 항목 수와 표
+- AMBIGUOUS 항목 수와 표
+- 상세 내용은 `agent_code_review.md` 참고
 
-```
-## 리뷰 결과 요약
+#### 3-2. Ask for approval
 
-### 🔧 수정 추천 (FIX) — N건
-2+ LLM이 동의한 이슈로, 수정을 권장합니다.
+사용자에게 수정할 항목 번호를 받습니다.
 
-| # | 파일 | Severity | 제목 | 리뷰어 |
-|---|------|----------|------|--------|
-| 1 | src/auth.ts:11 | CRITICAL | 평문 비밀번호 비교 | Claude, Codex, Gemini |
-| 2 | src/api.ts:37 | HIGH | Cache race condition | Claude, Gemini |
-...
+- 전체 수정: `all`
+- 선택 수정: `1, 2, 5`
+- 수정 안 함: `none`
+- FIX만 전부 수정: `fix만`
 
-### ❌ 수정 불필요 (DISMISS) — N건
-오탐으로 판단되어 기각을 권장합니다.
+#### 3-3. Apply only approved items
 
-| # | 파일 | 제목 | 기각 사유 |
-|---|------|------|-----------|
-...
+승인된 항목만 처리합니다.
 
-### ❓ 판단 필요 (AMBIGUOUS) — N건
-1개 LLM만 지적했거나 수정 방향이 불명확한 항목입니다.
+1. 대상 소스 파일 읽기
+2. 제안된 수정 적용
+3. 필요하면 진단 도구 실행
+4. 프로젝트 테스트 실행
+5. 깨지는 수정은 되돌리고 실패 이유 보고
+6. 성공적으로 반영된 항목은 `agent_code_review.md`에서 제거
 
-| # | 파일 | Severity | 제목 | 리뷰어 |
-|---|------|----------|------|--------|
-...
-```
+#### 3-4. Update final report
 
-> 각 항목의 상세 내용은 `agent_code_review.md`를 참조하도록 안내합니다.
+사용자에게 아래를 간단히 보고합니다.
 
-#### 3-2. 사용자 입력 대기
-
-사용자에게 다음과 같이 질문합니다:
-
-```
-수정할 항목 번호를 알려주세요.
-- 전체 수정: "all" 또는 "전부"
-- 선택 수정: "1, 2, 5" (쉼표로 구분)
-- 수정 안 함: "none" 또는 "없음"
-- 카테고리 수정: "fix만" (FIX 추천 항목만 전부 수정)
-```
-
-#### 3-3. 승인된 항목만 수정
-
-사용자가 선택한 항목에 대해서만:
-1. Read the target source file
-2. Apply the suggested fix using the Edit tool
-3. After ALL approved edits are applied, (선택) `lsp_diagnostics`를 실행하여 추가 진단 — 권한 거부 또는 미가용 시 건너뜀
-4. Run project test suite if available (`npm test`, `pytest`, `go test ./...`, `cargo test`)
-5. If a fix breaks tests → revert that fix and report to user with failure reason
-6. **Delete successfully applied items from `agent_code_review.md`**
-
-#### 3-4. Update summary table
-
-After approved actions, update `agent_code_review.md`:
-- 적용된 항목: 삭제
-- 기각 확인된 항목: 삭제
-- 미처리 항목: 유지 (향후 참조용)
-
-#### 3-5. Report to user
-
-Output a concise summary:
-- Number of items fixed (user-approved)
-- Number of items dismissed
-- Number of items skipped (not selected by user)
-- Number of remaining items in `agent_code_review.md`
-
----
+- 수정된 항목 수
+- 기각된 항목 수
+- 건너뛴 항목 수
+- `agent_code_review.md`에 남은 항목 수
 
 ## Error Handling
 
 | Failure | Fallback |
 |---------|----------|
-| OMC unavailable | Gemini를 **Claude 대역**으로 전환 (Codex CLI는 OMC와 독립적이므로 별도 확인) |
-| Codex CLI unavailable | **Claude가 Codex 대역** 수행 (security/performance subagent, 1-3-b) |
-| Gemini CLI unavailable | **Claude가 Gemini 대역** 수행 (clarity/edge case subagent, 1-3-d) |
-| `codex review` fails | **Claude가 Codex 대역**으로 재시도 (1-3-b) |
-| `omc ask gemini` fails | **Claude가 Gemini 대역**으로 재시도 (1-3-d) |
-| OMC + Both CLIs unavailable | **Claude가 3가지 역할 모두 대역** 수행 (본 리뷰 + Codex 대역 + Gemini 대역을 각각 독립 subagent로 병렬 실행) |
-| Provider returns unstructured output | Claude manually extracts items from prose |
-| Diff too large (>50KB) | Batch into file groups, run multiple rounds, merge results |
-| Provider timeout (>5 min) | **Claude가 해당 역할 대역**으로 전환 (타임아웃된 결과는 폐기) |
-| Approved fix breaks tests | Revert fix, report failure reason to user |
-| Individual review file write fails | 재시도, 여전히 실패 시 summary에 명시하되 3개 파일 생성 목표는 유지 |
-
----
+| `codex` CLI unavailable | 현재 세션이 Codex 관점 stand-in pass 수행 |
+| `codex review` fails (권한, 세션 경로, 로그인 포함) | 현재 세션이 Codex 관점 stand-in pass 수행 |
+| `gemini` CLI unavailable | 현재 세션이 Gemini 관점 stand-in pass 수행 |
+| `gemini -p` fails (브라우저 인증, 비대화형 실패 포함) | 현재 세션이 Gemini 관점 stand-in pass 수행 |
+| 외부 reviewer output is unstructured | 리더 에이전트가 수동 정규화 |
+| Diff too large | 파일 그룹으로 분할 후 병합 |
+| Provider timeout | 해당 pass를 현재 세션 stand-in으로 재실행 |
+| Approved fix breaks tests | 해당 수정 되돌리고 실패 이유 보고 |
+| Individual review file write fails | 재시도 후, 실패 사실을 최종 요약에 명시 |
 
 ## Examples
 
 ```bash
-# Review current branch changes (default)
 /multi-review
-
-# Review specific files
 /multi-review src/auth.ts src/middleware/validate.ts
-
-# Review all workspace files
 /multi-review --workspace
-
-# Review staged changes only
 /multi-review --staged
 ```

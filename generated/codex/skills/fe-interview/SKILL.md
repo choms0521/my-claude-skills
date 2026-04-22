@@ -4,7 +4,7 @@ description: "Frontend developer interview coach - knowledge graph-based adaptiv
 triggers: ["fe-interview","fe interview","frontend interview","프론트엔드 면접"]
 argument-hint: "[--mode graph|classic] [--test dry-run|agent:junior|agent:mid|agent:senior] [--resume <file_path>] [--level junior|mid|senior] [--length short|medium|long]"
 runtime: codex
-support-level: adapter-required
+support-level: full
 generated-from: skills/fe-interview
 ---
 
@@ -15,9 +15,8 @@ generated-from: skills/fe-interview
 - Runtime: Codex
 - Invocation: `$fe-interview`
 - Install target: `$CODEX_HOME/skills/fe-interview` (기본값: `~/.codex/skills/fe-interview`)
-- Support level: adapter-required
-- Migration notes: 아래 Claude 전용 전제를 Codex surface로 치환해야 합니다.
-- Claude 전용 질문 surface (`AskUserQuestion`)를 사용합니다.
+- Support level: full
+- Canonical source: `skills/<name>/...`에서 생성된 Codex용 스킬입니다.
 
 # Frontend Interview Coach v2
 
@@ -51,7 +50,7 @@ Knowledge Graph의 노드/엣지를 추가·수정·삭제할 때는 반드시 `
 
 ```bash
 # 스킬 디렉토리 기준 상대 경로로 실행
-SKILL_DIR=".claude/skills$fe-interview"
+SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/fe-interview"
 
 # 노드 추가 (graph + detail file 자동 생성)
 python $SKILL_DIR/scripts/graph-cli.py add-node \
@@ -129,7 +128,7 @@ Codex MUST follow this workflow exactly when this skill is invoked.
 
 #### 0-T1. 테스트 모드 자동 설정
 
-`AskUserQuestion` 호출 없이 다음을 자동으로 설정합니다:
+대화형 질문 없이 다음을 자동으로 설정합니다:
 
 - **레벨:** `--level` 지정 시 해당 값 사용. 미지정 시:
   - `--test agent:{level}` → agent 레벨과 동일하게 설정 (예: `agent:junior` → `level: junior`)
@@ -216,7 +215,7 @@ sessionState = {
 
 #### 0-2. 레벨 결정
 
-`--level`이 없으면 `AskUserQuestion`으로 연차를 질문합니다:
+`--level`이 없으면 대화형 질문으로 연차를 묻습니다:
 
 | 연차 | 레벨 | 기본 카테고리 | 질문 수 |
 |------|------|--------------|---------|
@@ -226,14 +225,14 @@ sessionState = {
 
 #### 0-3. 카테고리 커스터마이즈
 
-자동 추천된 카테고리를 보여주고, `AskUserQuestion`으로 추가/제거 여부를 묻습니다.
+자동 추천된 카테고리를 보여주고, 대화형 질문으로 추가/제거 여부를 묻습니다.
 사용자가 추가하고 싶은 카테고리가 있으면 반영합니다.
 
 #### 0-4. 이력서 처리 (선택)
 
 `--resume`이 제공된 경우:
 1. `Read` 도구로 이력서 파일을 읽습니다
-2. `AskUserQuestion`으로 이력서 활용 방식을 묻습니다:
+2. 대화형 질문으로 이력서 활용 방식을 묻습니다:
    - **이력서 기반 맞춤 질문**: 이력서의 기술 스택/프로젝트 경험에 맞춘 질문 생성
    - **약점 탐색**: 이력서에 없는 영역을 파악하여 그 부분을 집중 질문
 
@@ -241,7 +240,7 @@ sessionState = {
 
 #### 0-5. 세션 설정
 
-`AskUserQuestion`으로 다음을 설정합니다:
+대화형 질문으로 다음을 설정합니다:
 
 **세션 길이** (`--length` 미지정 시):
 | 옵션 | 메인 질문 수 | 예상 소요 |
@@ -378,7 +377,7 @@ historyMap = {
 - 즉시 다음 질문으로 자동 이동
 
 **c-2) Tester Agent 모드** (`testMode === "agent"`):
-- `AskUserQuestion` 대신 **Agent 도구**로 서브에이전트를 호출합니다
+- 대화형 질문 대신 **네이티브 하위 에이전트**를 호출합니다
 - Agent에게 전달하는 정보:
   - 렌더링된 질문 텍스트 (면접관이 표시한 질문 그대로)
   - 노드의 `sample_questions[level]` (참고용)
@@ -391,7 +390,7 @@ historyMap = {
   - Senior: 원래 면접관 최소 2회 + 크로스 필수 1회 (총 최소 3회, 최대 4회). Tester Agent는 3-4회까지 깊이 있는 답변
 
 **c-3) 일반 모드** (`testMode === null`):
-- 기존 동작: `AskUserQuestion`으로 사용자 답변을 대기합니다
+- 기존 동작: 대화형 질문으로 사용자 답변을 대기합니다
 
 **평가 (c-2, c-3 공통):**
 
@@ -528,7 +527,7 @@ Knowledge 파일이 없는 카테고리: 해당 카테고리를 건너뛰고 사
 
 **b) 사용자 답변 대기**
 
-`AskUserQuestion` 또는 자유 텍스트로 답변을 받습니다.
+대화형 질문 또는 자유 텍스트로 답변을 받습니다.
 
 **c) 답변 평가 및 꼬리질문**
 

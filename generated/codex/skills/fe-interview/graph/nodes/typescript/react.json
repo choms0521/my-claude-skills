@@ -1,0 +1,26 @@
+{
+  "id": "ts-react",
+  "type": "concept",
+  "name": "TypeScript with React",
+  "category": "typescript",
+  "levels": ["mid", "senior"],
+  "description": "React 컴포넌트, 훅, 이벤트 핸들러를 TypeScript로 타이핑하는 패턴과 기법",
+  "key_points": [
+    "컴포넌트 Props 타이핑 - interface/type으로 Props 정의, children 타입, defaultProps 대안",
+    "이벤트 핸들러 타이핑 - React.ChangeEvent, React.MouseEvent 등 합성 이벤트 타입",
+    "훅 타이핑 - useState의 제네릭, useRef의 타입, custom hook의 반환 타입",
+    "제네릭 컴포넌트 - 타입 매개변수를 받는 재사용 가능한 컴포넌트 패턴",
+    "다형성 컴포넌트(Polymorphic Components) - as prop으로 렌더링 요소를 변경하는 타입 안전 패턴",
+    "React.FC vs 함수 선언 - 암시적 children과 제네릭 지원의 차이",
+    "forwardRef와 타입 - ref 타이핑과 제네릭 forwardRef 컴포넌트",
+    "서버 컴포넌트와 클라이언트 컴포넌트의 타입 차이 - async 컴포넌트와 직렬화 가능한 Props"
+  ],
+  "model_answer_summary": "React에서 TypeScript를 활용할 때는 Props를 interface로 정의하고, 이벤트 핸들러에 합성 이벤트 타입을 지정하며, 훅에 적절한 제네릭을 제공합니다. 고급 패턴으로 제네릭 컴포넌트와 다형성 컴포넌트를 구현하여 재사용성을 극대화하고, 서버 컴포넌트에서는 직렬화 가능한 Props 타입을 유지해야 합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "React 컴포넌트의 Props와 이벤트 핸들러를 TypeScript로 타이핑하는 방법을 설명해주세요.",
+    "senior": "제네릭 컴포넌트와 다형성(polymorphic) 컴포넌트를 TypeScript로 구현하는 방법을 설명해주세요."
+  },
+  "source_files": ["typescript-mid.md#Q1", "typescript-mid-2.md#Q18"],
+  "references": []
+}

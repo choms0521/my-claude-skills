@@ -1,0 +1,27 @@
+{
+  "id": "react-performance",
+  "type": "concept",
+  "name": "React Performance",
+  "category": "react",
+  "levels": ["mid", "senior"],
+  "description": "React 애플리케이션의 렌더링 최적화, 메모이제이션 전략, 코드 스플리팅, 가상화 등 성능 향상 기법",
+  "key_points": [
+    "React.memo를 활용한 불필요한 리렌더링 방지",
+    "useMemo/useCallback의 적절한 사용과 과도한 메모이제이션의 부작용",
+    "React.lazy와 Suspense를 활용한 코드 스플리팅",
+    "React Profiler를 사용한 성능 병목 분석",
+    "가상화(Virtualization) 기법으로 대량 리스트 렌더링 최적화",
+    "React 18 자동 배칭(Automatic Batching)의 동작 원리",
+    "useTransition과 useDeferredValue를 활용한 동시성 렌더링",
+    "React Compiler(React Forget)의 자동 메모이제이션 접근법",
+    "번들 사이즈 최적화와 트리 셰이킹"
+  ],
+  "model_answer_summary": "React 성능 최적화는 불필요한 리렌더링 방지(React.memo, useMemo, useCallback), 코드 스플리팅(React.lazy, Suspense), 대량 데이터 가상화 등 다층적 접근이 필요합니다. React 18에서는 자동 배칭과 동시성 렌더링(useTransition, useDeferredValue)이 도입되어 UI 응답성이 크게 개선되었으며, React Compiler는 수동 메모이제이션의 필요성을 줄이는 방향으로 발전하고 있습니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "React.memo와 useMemo/useCallback을 사용한 렌더링 최적화 방법을 설명해주세요.",
+    "senior": "React Concurrent Mode가 성능 최적화에 제공하는 구체적 이점과 useTransition/useDeferredValue의 내부 동작을 설명해주세요."
+  },
+  "source_files": ["react-mid.md#Q2", "react-mid.md#Q6", "react-mid.md#Q7", "react-mid-2.md#Q18", "react-senior.md#Q2", "react-senior.md#Q6", "react-senior-2.md#Q11", "react-senior-2.md#Q18"],
+  "references": []
+}

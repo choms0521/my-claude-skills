@@ -1,0 +1,27 @@
+{
+  "id": "js-memory",
+  "type": "concept",
+  "name": "Memory Management",
+  "category": "javascript",
+  "levels": ["senior"],
+  "description": "가비지 컬렉션, 메모리 누수 탐지/방지, V8 메모리 구조와 프로파일링",
+  "key_points": [
+    "Mark-and-Sweep: GC 루트에서 도달 가능한 객체만 유지, 나머지는 수거",
+    "세대별 GC: Young Generation(빈번하고 빠른 Minor GC)과 Old Generation(덜 빈번한 Major GC)",
+    "V8 Orinoco GC: 증분 마킹, 동시 마킹, 병렬 스캐빈징으로 일시 정지 최소화",
+    "일반적인 메모리 누수 원인: 분리된 DOM 노드, 미제거 이벤트 리스너, 미정리 타이머, 무한 캐시",
+    "WeakMap/WeakRef를 활용한 GC 친화적 캐시 구현",
+    "TypedArray를 통한 GC 오버헤드 없는 숫자 데이터 처리",
+    "Chrome DevTools Memory 패널: 힙 스냅샷, 할당 타임라인, 비교 분석",
+    "핫 루프에서의 객체 할당 최소화 - 사전 할당 패턴"
+  ],
+  "model_answer_summary": "JavaScript는 Mark-and-Sweep 기반 자동 가비지 컬렉션을 사용하며, V8은 세대별 GC로 Young/Old Generation을 분리하여 효율적으로 메모리를 관리합니다. 메모리 누수는 분리된 DOM 노드, 미제거 이벤트 리스너, 무한 캐시, 클로저의 대형 객체 참조 등에서 발생하며, Chrome DevTools의 힙 스냅샷으로 탐지합니다. WeakMap과 TypedArray를 활용하여 GC 친화적 코드를 작성하는 것이 중요합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "JavaScript의 가비지 컬렉션 동작 원리를 설명하고, 웹 애플리케이션에서 흔한 메모리 누수 패턴과 Chrome DevTools를 활용한 탐지 방법을 설명해주세요."
+  },
+  "source_files": ["javascript-senior.md#Q2", "javascript-senior-2.md#Q20", "javascript-mid.md#Q5"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_management"
+  ]
+}

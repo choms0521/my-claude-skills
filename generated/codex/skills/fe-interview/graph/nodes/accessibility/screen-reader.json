@@ -1,0 +1,25 @@
+{
+  "id": "a11y-screen-reader",
+  "type": "concept",
+  "name": "Screen Reader Compatibility",
+  "category": "accessibility",
+  "levels": ["senior"],
+  "description": "스크린 리더 호환성과 접근성 트리의 이해",
+  "key_points": [
+    "접근성 트리는 DOM에서 파생되지만 숨겨진 요소를 제외하고 계산된 속성을 포함",
+    "브라우저는 플랫폼 접근성 API(UIA, NSAccessibility, AT-SPI)를 통해 접근성 트리를 노출",
+    "접근성 이름 계산 우선순위: aria-labelledby > aria-label > 네이티브 라벨 > title > 텍스트 콘텐츠",
+    "display:none과 aria-hidden은 접근성 트리에서 제거, opacity:0은 제거하지 않음",
+    "ARIA 라이브 리전: polite는 대기 후 알림, assertive는 즉시 중단하고 알림",
+    "sr-only 클래스로 시각적으로 숨기되 스크린 리더에는 노출되는 콘텐츠 구현",
+    "Chrome/Firefox DevTools의 Accessibility 패널로 계산된 접근성 트리 디버깅",
+    "VoiceOver, NVDA, JAWS 간의 동작 차이를 고려한 크로스 스크린 리더 테스트"
+  ],
+  "model_answer_summary": "스크린 리더는 브라우저가 구축한 접근성 트리를 플랫폼 API를 통해 읽습니다. 접근성 트리는 DOM과 다르게 숨겨진 요소를 제외하고 계산된 이름, 역할, 상태를 포함합니다. ARIA 라이브 리전으로 동적 변경을 알리고, DevTools로 접근성 트리를 디버깅하며, 주요 스크린 리더 간 동작 차이를 테스트해야 합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "브라우저가 접근성 트리를 어떻게 구축하며, DOM과 어떤 차이가 있나요?"
+  },
+  "source_files": ["accessibility-senior.md#Q2", "accessibility-senior.md#Q3"],
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "sd-component-lib",
+  "type": "concept",
+  "name": "Component Library Design",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "디자인 시스템, 테마, 토큰을 포함한 컴포넌트 라이브러리 설계",
+  "key_points": [
+    "디자인 토큰으로 색상, 간격, 타이포그래피를 중앙 관리하고 플랫폼 간 일관성 확보",
+    "Compound Component 패턴으로 유연한 API 설계 - Select, Select.Option 등",
+    "테마 시스템: CSS Custom Properties 기반으로 런타임 테마 전환 지원",
+    "Storybook으로 컴포넌트 문서화, 시각적 테스트, 인터랙티브 데모 제공",
+    "시맨틱 버저닝으로 Breaking Change 관리 - 소비자에게 마이그레이션 경로 제공",
+    "Tree-shakeable한 ESM 빌드로 번들 크기 최적화",
+    "접근성을 기본으로 내장 - 모든 인터랙티브 컴포넌트에 ARIA 패턴 적용",
+    "Headless UI 패턴으로 로직과 스타일을 분리하여 최대 커스터마이징 허용"
+  ],
+  "model_answer_summary": "컴포넌트 라이브러리는 디자인 토큰 기반 테마 시스템, Compound Component API, 접근성 내장, Tree-shakeable 빌드로 설계합니다. Storybook으로 문서화하고, 시맨틱 버저닝으로 Breaking Change를 관리하며, Headless UI 패턴으로 유연성을 확보합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "확장 가능한 프론트엔드 컴포넌트 라이브러리를 테마, 접근성, 버저닝을 고려하여 어떻게 설계하나요?"
+  },
+  "source_files": ["system-design-senior.md#Q4", "system-design-senior.md#Q9"],
+  "references": []
+}

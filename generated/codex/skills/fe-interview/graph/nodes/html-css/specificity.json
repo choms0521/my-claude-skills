@@ -1,0 +1,27 @@
+{
+  "id": "css-specificity",
+  "type": "concept",
+  "name": "Specificity & Cascade",
+  "category": "html-css",
+  "levels": ["junior", "mid"],
+  "description": "CSS 선택자 우선순위 계산 방법, 캐스케이드 규칙, 그리고 Cascade Layers를 활용한 스타일 관리",
+  "key_points": [
+    "Specificity 계산법 — ID(0,1,0,0) > class/attribute/pseudo-class(0,0,1,0) > type/pseudo-element(0,0,0,1)",
+    "인라인 스타일과 !important의 우선순위 — specificity와 별개의 메커니즘",
+    "동일 specificity에서의 소스 순서(cascade order) 규칙",
+    "CSS Cascade Layers(@layer)를 활용한 명시적 우선순위 제어",
+    ":where()와 :is() pseudo-class의 specificity 차이 — :where()는 0, :is()는 인자 중 최고값",
+    "ID 선택자와 깊은 중첩 선택자를 피해야 하는 이유",
+    "BEM 방법론을 통한 낮고 균일한 specificity 유지 전략",
+    "!important의 올바른 사용 시점 — 유틸리티 클래스, 서드파티 스타일 오버라이드",
+    "Cascade Layers에서 unlayered 스타일이 항상 우선하는 규칙"
+  ],
+  "model_answer_summary": "CSS specificity는 선택자의 종류에 따라 3자리(A,B,C) 점수로 계산되며, ID가 가장 높고 type 선택자가 가장 낮습니다. 동일 specificity에서는 나중에 선언된 규칙이 적용됩니다. 현대 CSS에서는 @layer로 명시적 우선순위 계층을 설정하고, :where()로 specificity를 0으로 유지하며, BEM으로 평탄한 specificity를 유지하는 것이 권장됩니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "CSS specificity의 계산 방법과 선택자 우선순위를 설명해주세요.",
+    "mid": "CSS Cascade Layers(@layer)의 동작 원리와 서드파티 스타일 관리에서의 활용법을 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q4", "html-css-junior-2.md#Q13", "html-css-mid-2.md#Q20"],
+  "references": []
+}

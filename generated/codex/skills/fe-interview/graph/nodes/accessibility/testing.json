@@ -1,0 +1,26 @@
+{
+  "id": "a11y-testing",
+  "type": "concept",
+  "name": "Accessibility Auditing",
+  "category": "accessibility",
+  "levels": ["mid", "senior"],
+  "description": "접근성 감사와 자동화/수동 테스트 전략",
+  "key_points": [
+    "자동화 도구(axe-core, Lighthouse)는 전체 접근성 문제의 약 57%만 탐지 가능",
+    "수동 테스트: 키보드 전용 탐색, 스크린 리더(VoiceOver, NVDA) 사용 테스트 필수",
+    "Storybook a11y 애드온으로 개발 중 컴포넌트별 접근성 실시간 피드백",
+    "접근성 프로그램: 교육, 자동화 통합, 감사 주기, 이슈 추적의 체계적 접근",
+    "VPAT(Voluntary Product Accessibility Template) 작성으로 규정 준수 문서화",
+    "사용자 테스트: 실제 보조 기술 사용자와의 사용성 테스트가 최종 검증",
+    "접근성 이슈 우선순위: POUR 원칙(인식 가능, 운용 가능, 이해 가능, 견고함) 기반",
+    "CI/CD에 접근성 게이트를 설정하여 회귀 방지"
+  ],
+  "model_answer_summary": "접근성 감사는 자동화 도구, 수동 테스트, 사용자 테스트의 3단계 접근이 필요합니다. axe-core와 Lighthouse로 자동 탐지하고, 키보드/스크린 리더 수동 테스트로 보완하며, 실제 사용자 테스트로 최종 검증합니다. CI/CD 통합과 체계적인 접근성 프로그램으로 지속적인 품질을 보장합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "axe-core와 Lighthouse의 접근성 검사 기능과 각각의 한계는?",
+    "senior": "조직 차원의 접근성 프로그램을 구축하고 운영하는 전략은?"
+  },
+  "source_files": ["accessibility-mid.md#Q6", "accessibility-senior.md#Q7", "accessibility-senior.md#Q10"],
+  "references": []
+}

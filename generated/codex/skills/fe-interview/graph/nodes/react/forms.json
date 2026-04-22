@@ -1,0 +1,26 @@
+{
+  "id": "react-forms",
+  "type": "concept",
+  "name": "React Forms",
+  "category": "react",
+  "levels": ["junior", "mid"],
+  "description": "React에서 폼 상태 관리, 유효성 검증, Controlled/Uncontrolled 패턴 및 폼 라이브러리 활용 전략",
+  "key_points": [
+    "Controlled 컴포넌트: state로 입력값을 관리하는 패턴",
+    "Uncontrolled 컴포넌트: ref를 통한 DOM 직접 접근 패턴",
+    "React Hook Form의 비제어 컴포넌트 기반 성능 최적화 원리",
+    "폼 유효성 검증 전략 (클라이언트/서버 사이드)",
+    "다중 입력 필드의 효율적 상태 관리",
+    "Formik vs React Hook Form 비교와 선택 기준",
+    "접근성을 고려한 폼 설계 (label, aria 속성, 에러 메시지)",
+    "폼 제출 시 비동기 처리와 로딩 상태 관리"
+  ],
+  "model_answer_summary": "React 폼은 Controlled(state 기반)와 Uncontrolled(ref 기반) 두 가지 접근법이 있습니다. Controlled 컴포넌트는 React가 폼 상태를 완전히 제어하여 예측 가능하지만, 대규모 폼에서는 리렌더링 비용이 발생합니다. React Hook Form은 Uncontrolled 방식을 기반으로 최소한의 리렌더링으로 높은 성능을 제공하며, 현재 가장 널리 사용되는 폼 라이브러리입니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "Controlled 컴포넌트와 Uncontrolled 컴포넌트의 차이점을 설명해주세요.",
+    "mid": "React Hook Form이 성능 최적화를 달성하는 원리와 Formik 대비 장점을 설명해주세요."
+  },
+  "source_files": ["react-junior.md#Q8", "react-mid.md#Q9"],
+  "references": []
+}

@@ -57,6 +57,57 @@ export async function writeJson(filePath, value) {
   await writeUtf8(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
+const CODEX_INCOMPATIBILITY_CHECKS = [
+  {
+    pattern: /~\/\.claude|CLAUDE\.md|bot-character\.md/,
+    message: 'Claude 전용 설정 파일 경로를 사용합니다 (`~/.claude/...`, `CLAUDE.md`, `bot-character.md`).',
+  },
+  {
+    pattern: /AskUserQuestion/,
+    message: 'Claude 전용 질문 surface (`AskUserQuestion`)를 사용합니다.',
+  },
+  {
+    pattern: /Agent\(|oh-my-claudecode|omc ask|\/oh-my-claudecode/,
+    message: 'Claude/OMC 전용 에이전트 또는 런타임 호출을 사용합니다.',
+  },
+];
+
+export async function pathExists(targetPath) {
+  try {
+    await fs.access(targetPath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function listVisibleAssetEntries(skillDir) {
+  const dirEntries = await fs.readdir(skillDir, { withFileTypes: true });
+  return dirEntries
+    .filter((entry) => entry.name !== 'SKILL.md')
+    .filter((entry) => !entry.name.startsWith('.'))
+    .map((entry) => entry.name)
+    .sort();
+}
+
+export async function copyPath(sourcePath, targetPath) {
+  await ensureDir(path.dirname(targetPath));
+  await fs.rm(targetPath, { recursive: true, force: true });
+  await fs.cp(sourcePath, targetPath, {
+    recursive: true,
+    filter: (candidatePath) => {
+      const relativePath = path.relative(sourcePath, candidatePath);
+      if (!relativePath || relativePath === '') {
+        return true;
+      }
+
+      return relativePath
+        .split(path.sep)
+        .every((segment) => segment !== '' && !segment.startsWith('.'));
+    },
+  });
+}
+
 export function parseSkillMarkdown(markdown) {
   const match = markdown.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
   if (!match) {
@@ -123,21 +174,7 @@ function renderFrontmatterValue(value) {
 }
 
 export function detectCodexSupport(body) {
-  const findings = [];
-
-  if (/~\/\.claude|CLAUDE\.md|bot-character\.md/.test(body)) {
-    findings.push(
-      'Claude 전용 설정 파일 경로를 사용합니다 (`~/.claude/...`, `CLAUDE.md`, `bot-character.md`).'
-    );
-  }
-
-  if (/AskUserQuestion/.test(body)) {
-    findings.push('Claude 전용 질문 surface (`AskUserQuestion`)를 사용합니다.');
-  }
-
-  if (/Agent\(|oh-my-claudecode|omc ask|\/oh-my-claudecode/.test(body)) {
-    findings.push('Claude/OMC 전용 에이전트 또는 런타임 호출을 사용합니다.');
-  }
+  const findings = findCodexIncompatibilities(renderRuntimeBlocks(body, 'codex'));
 
   let level = 'portable';
   if (findings.some((finding) => finding.includes('설정 파일 경로'))) {
@@ -150,6 +187,12 @@ export function detectCodexSupport(body) {
     level,
     findings,
   };
+}
+
+export function findCodexIncompatibilities(body) {
+  return CODEX_INCOMPATIBILITY_CHECKS
+    .filter(({ pattern }) => pattern.test(body))
+    .map(({ message }) => message);
 }
 
 export function buildClaudeAdapter(skillName) {
@@ -188,15 +231,93 @@ export function buildCodexAdapter(skillName, support) {
   return lines.join('\n');
 }
 
-export function adaptBodyForRuntime(body, runtime, skillName) {
-  if (runtime !== 'codex') {
-    return body;
+export function renderRuntimeBlocks(body, runtime) {
+  const lines = body.split('\n');
+  const rendered = [];
+  const stack = [];
+
+  for (const line of lines) {
+    const startMatch = line.match(/^<!--\s*runtime:([a-z0-9_-]+):start\s*-->$/i);
+    if (startMatch) {
+      stack.push(startMatch[1].toLowerCase());
+      continue;
+    }
+
+    if (/^<!--\s*runtime:end\s*-->$/i.test(line)) {
+      if (stack.length === 0) {
+        throw new Error('Encountered runtime:end without a matching runtime:start block.');
+      }
+      stack.pop();
+      continue;
+    }
+
+    if (stack.every((entry) => entry === runtime)) {
+      rendered.push(line);
+    }
   }
 
-  return body
+  if (stack.length > 0) {
+    throw new Error(`Unclosed runtime block(s): ${stack.join(', ')}`);
+  }
+
+  return rendered.join('\n');
+}
+
+export function adaptBodyForRuntime(body, runtime, skillName) {
+  const runtimeBody = renderRuntimeBlocks(body, runtime);
+
+  if (runtime !== 'codex') {
+    return runtimeBody;
+  }
+
+  const escapedSkillName = skillName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const invocationPattern = new RegExp(
+    `(^|[\\s(\`])\\/${escapedSkillName}(?=($|[\\s)\`.,:;!?]))`,
+    'gm'
+  );
+
+  const adaptedBody = runtimeBody
     .replaceAll('Claude MUST', 'Codex MUST')
-    .replaceAll(
-      `/${skillName}`,
-      `$${skillName}`
+    .replace(invocationPattern, (_, prefix) => `${prefix}$${skillName}`);
+
+  const incompatibilities = findCodexIncompatibilities(adaptedBody);
+  if (incompatibilities.length > 0) {
+    throw new Error(
+      `Codex body for "${skillName}" still contains unsupported runtime-specific guidance:\n- ${incompatibilities.join('\n- ')}`
     );
+  }
+
+  return adaptedBody;
+}
+
+export async function renderSkillOutput(skillName, runtime, baseDir = SHARED_SKILLS_DIR) {
+  const skillDir = path.join(baseDir, skillName);
+  const manifest = JSON.parse(await readUtf8(path.join(skillDir, 'skill.json')));
+  const commonBody = await readUtf8(path.join(skillDir, 'common.md'));
+  const adapter = await readUtf8(path.join(skillDir, 'adapters', `${runtime}.md`));
+  const body = adaptBodyForRuntime(commonBody, runtime, skillName);
+  const content = [
+    renderFrontmatter({
+      name: manifest.name,
+      description: manifest.description,
+      triggers: manifest.triggers,
+      'argument-hint': manifest.argumentHint,
+      runtime,
+      'support-level': manifest.runtimeSupport[runtime],
+      'generated-from': `skills/${skillName}`,
+    }),
+    '<!-- Generated file. Edit skills/<name>/... and rebuild. -->',
+    '',
+    adapter.trimEnd(),
+    '',
+    body.trimStart(),
+    '',
+  ].join('\n');
+
+  return {
+    skillDir,
+    manifest,
+    assets: manifest.assets ?? [],
+    content,
+  };
 }

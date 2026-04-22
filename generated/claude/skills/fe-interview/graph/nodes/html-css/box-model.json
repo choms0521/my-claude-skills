@@ -1,0 +1,25 @@
+{
+  "id": "css-box-model",
+  "type": "concept",
+  "name": "Box Model",
+  "category": "html-css",
+  "levels": ["junior"],
+  "description": "CSS 박스 모델의 구성 요소와 box-sizing 속성이 크기 계산에 미치는 영향",
+  "key_points": [
+    "박스 모델의 4가지 영역 — content, padding, border, margin의 순서와 역할",
+    "content-box(기본값) vs border-box의 크기 계산 차이",
+    "border-box를 전역 리셋으로 적용하는 이유와 방법 (*, *::before, *::after)",
+    "margin collapsing — 인접 블록 요소의 수직 마진 병합 규칙과 예외 조건",
+    "outline과 border의 차이 — outline은 박스 모델에 영향을 주지 않음",
+    "Block Formatting Context(BFC)가 마진 병합을 방지하는 원리",
+    "inline 요소에서 width/height가 적용되지 않는 이유",
+    "display: inline-block과 block의 박스 모델 동작 차이"
+  ],
+  "model_answer_summary": "CSS 박스 모델은 모든 요소를 content, padding, border, margin의 4개 영역으로 구성된 사각형 박스로 표현합니다. 기본 content-box에서는 width/height가 content만 포함하여 padding/border 추가 시 크기가 커지지만, border-box에서는 이를 포함하여 직관적인 크기 제어가 가능합니다. 실무에서는 border-box 전역 리셋이 표준입니다.",
+  "difficulty_range": { "min": "basic", "max": "basic" },
+  "sample_questions": {
+    "junior": "CSS 박스 모델의 구성 요소와 box-sizing: border-box가 크기 계산에 미치는 영향을 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q2"],
+  "references": []
+}

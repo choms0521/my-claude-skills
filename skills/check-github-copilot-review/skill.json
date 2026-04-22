@@ -12,9 +12,10 @@
   "source": {
     "claude": ".claude/skills/check-github-copilot-review/SKILL.md"
   },
+  "assets": [],
   "runtimeSupport": {
     "claude": "full",
-    "codex": "portable"
+    "codex": "full"
   },
   "codexFindings": []
 }

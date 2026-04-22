@@ -1,0 +1,26 @@
+{
+  "id": "nextjs-data",
+  "type": "concept",
+  "name": "Next.js Data Fetching",
+  "category": "nextjs",
+  "levels": ["mid", "senior"],
+  "description": "RSC에서의 fetch, Server Actions, 캐싱 계층을 포괄하는 Next.js 데이터 페칭 패턴",
+  "key_points": [
+    "RSC 데이터 페칭 - async 서버 컴포넌트에서 직접 fetch, 컴포넌트 레벨 데이터 콜로케이션",
+    "확장된 fetch API - cache: 'force-cache'(기본), 'no-store', next.revalidate, next.tags 옵션",
+    "자동 fetch 중복 제거 - 동일 렌더 패스 내 같은 URL 요청은 자동으로 단일 요청으로 통합",
+    "Server Actions - 서버에서 실행되는 async 함수, 폼 제출과 데이터 뮤테이션에 활용",
+    "Route Handlers - HTTP 메서드별 명명된 export(GET, POST), Web API Request/Response 사용",
+    "4단계 캐싱 계층 - Request Memoization > Data Cache > Full Route Cache > Router Cache",
+    "revalidatePath/revalidateTag - 데이터 캐시와 Full Route 캐시의 명시적 무효화",
+    "getServerSideProps에서의 마이그레이션 - 페이지 레벨 데이터 페칭에서 컴포넌트 레벨로 전환"
+  ],
+  "model_answer_summary": "Next.js App Router의 데이터 페칭은 서버 컴포넌트에서 직접 fetch를 호출하여 컴포넌트 레벨 데이터 콜로케이션을 실현합니다. 확장된 fetch API로 캐싱과 재검증을 제어하고, 자동 중복 제거로 동일 요청이 한 번만 실행됩니다. 4단계 캐싱 계층(Request Memoization, Data Cache, Full Route Cache, Router Cache)이 상호작용하며, Server Actions로 데이터 뮤테이션을 처리합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "RSC에서의 데이터 페칭이 getServerSideProps와 어떻게 다르며, 어떤 이점이 있나요?",
+    "senior": "Next.js의 4단계 캐싱 계층(Request Memoization, Data Cache, Full Route Cache, Router Cache)의 동작과 상호작용을 설명해주세요."
+  },
+  "source_files": ["nextjs-mid.md#Q4", "nextjs-mid.md#Q6", "nextjs-senior.md#Q4", "nextjs-senior.md#Q5"],
+  "references": []
+}

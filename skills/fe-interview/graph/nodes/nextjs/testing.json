@@ -1,0 +1,26 @@
+{
+  "id": "nextjs-testing",
+  "type": "concept",
+  "name": "Next.js Testing",
+  "category": "nextjs",
+  "levels": ["mid", "senior"],
+  "description": "서버 컴포넌트, Server Actions, 미들웨어를 포함한 Next.js 애플리케이션 테스팅 전략",
+  "key_points": [
+    "서버 컴포넌트 테스팅 - async 컴포넌트의 렌더링 결과를 테스트, fetch 모킹 필요",
+    "클라이언트 컴포넌트 테스팅 - React Testing Library로 상호작용과 상태 변화 테스트",
+    "Server Actions 테스팅 - 직접 함수 호출로 유닛 테스트, 인증/검증 로직 포함",
+    "MSW(Mock Service Worker) - 네트워크 레벨 API 모킹으로 통합 테스트 지원",
+    "E2E 테스팅 - Playwright로 전체 사용자 플로우 테스트, next dev/start 환경에서 실행",
+    "미들웨어 테스팅 - NextRequest/NextResponse 모킹으로 리다이렉트/리라이트 로직 검증",
+    "서버 컴포넌트 스냅샷 - RSC 페이로드의 스냅샷 테스트로 렌더링 회귀 방지",
+    "환경 분리 - jest.config에서 서버/클라이언트 테스트 환경(node/jsdom) 분리 설정"
+  ],
+  "model_answer_summary": "Next.js 테스팅은 서버와 클라이언트 컴포넌트의 테스트 환경 분리가 핵심입니다. 서버 컴포넌트는 node 환경에서 async 렌더링을 테스트하고, 클라이언트 컴포넌트는 jsdom에서 React Testing Library로 테스트합니다. MSW로 네트워크 레벨 모킹을 하고, Playwright로 E2E 테스트를 실행합니다. Server Actions는 인증과 입력 검증 로직을 포함한 유닛 테스트가 필수입니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Next.js 클라이언트 컴포넌트와 서버 컴포넌트의 테스트 환경을 어떻게 분리하나요?",
+    "senior": "서버 컴포넌트, Server Actions, 미들웨어를 포함한 Next.js 앱의 전체 테스팅 전략을 설명해주세요."
+  },
+  "source_files": ["nextjs-mid.md#Q3", "nextjs-senior.md#Q4"],
+  "references": []
+}

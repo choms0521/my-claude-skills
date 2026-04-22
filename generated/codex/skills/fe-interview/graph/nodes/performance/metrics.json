@@ -1,0 +1,26 @@
+{
+  "id": "perf-metrics",
+  "type": "concept",
+  "name": "Performance Metrics",
+  "category": "performance",
+  "levels": ["mid", "senior"],
+  "description": "Core Web Vitals(LCP, INP, CLS)와 성능 측정 지표, 성능 예산 설정",
+  "key_points": [
+    "LCP(Largest Contentful Paint) - 2.5초 미만이 양호, 히어로 이미지나 대형 텍스트 블록 측정",
+    "INP(Interaction to Next Paint) - FID를 대체한 상호작용 응답성 지표, 200ms 미만이 양호",
+    "CLS(Cumulative Layout Shift) - 시각적 안정성 지표, 0.1 미만이 양호",
+    "TTFB, FCP, TTI - 보조 성능 지표와 각각의 측정 대상",
+    "필드 데이터 vs 랩 데이터 - CrUX(실사용자 데이터)가 Lighthouse(랩 데이터)보다 신뢰도 높음",
+    "75번째 백분위수 기준 - Google은 중앙값이 아닌 p75 기준으로 Core Web Vitals 평가",
+    "성능 예산(Performance Budget) - size-limit, Lighthouse CI로 CI/CD에서 예산 초과 방지",
+    "Navigation Timing API - 실제 네비게이션 성능을 측정하는 브라우저 API"
+  ],
+  "model_answer_summary": "Core Web Vitals는 LCP(로딩), INP(상호작용성), CLS(시각적 안정성)의 세 가지 핵심 지표로 사용자 경험을 정량화합니다. 2024년 FID가 INP로 대체되어 전체 방문 중 가장 느린 상호작용을 측정합니다. Lighthouse 랩 데이터보다 CrUX 필드 데이터가 실제 사용자 경험을 정확히 반영하며, 성능 예산을 CI/CD에 통합하여 회귀를 방지합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Core Web Vitals 세 가지 지표의 측정 대상, 양호 기준값, 개선 방법을 각각 설명해주세요.",
+    "senior": "성능 예산을 정의하고 CI/CD 파이프라인에 통합하는 방법을 설명해주세요."
+  },
+  "source_files": ["performance-mid.md#Q1", "performance-mid-2.md#Q19", "performance-senior.md#Q1"],
+  "references": []
+}

@@ -1,0 +1,28 @@
+{
+  "id": "js-functional",
+  "type": "concept",
+  "name": "Functional Programming",
+  "category": "javascript",
+  "levels": ["mid", "senior"],
+  "description": "커링, 메모이제이션, 불변성, 고차 함수, 함수 합성 등 함수형 프로그래밍 패러다임",
+  "key_points": [
+    "순수 함수: 동일 입력에 동일 출력, 부수 효과 없음 - 테스트와 예측 가능성 향상",
+    "커링: f(a, b, c)를 f(a)(b)(c) 형태로 변환하여 부분 적용 가능",
+    "메모이제이션: 순수 함수의 결과를 캐싱하여 반복 계산 방지",
+    "불변성: 데이터를 직접 변경하지 않고 새 객체를 생성 - 스프레드, structuredClone 활용",
+    "고차 함수: 함수를 인자로 받거나 함수를 반환하는 함수 (map, filter, reduce 등)",
+    "함수 합성(composition): pipe/compose를 통한 데이터 변환 파이프라인 구축",
+    "Function.prototype.bind를 활용한 내장 부분 적용",
+    "React에서의 함수형 패턴: useMemo, useCallback, 선언적 UI"
+  ],
+  "model_answer_summary": "함수형 프로그래밍은 순수 함수, 불변성, 함수 합성을 핵심 원리로 하며, JavaScript에서 커링, 메모이제이션, 고차 함수 등으로 구현됩니다. 커링은 다중 인자 함수를 단항 함수 체인으로 변환하여 재사용 가능한 특화 함수를 생성하고, 메모이제이션은 순수 함수의 결과를 캐싱합니다. React의 hooks(useMemo, useCallback)도 이러한 함수형 패턴의 실용적 적용입니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "커링과 부분 적용의 차이를 설명하고, 메모이제이션을 구현해주세요.",
+    "senior": "함수 합성 파이프라인을 설계하고, 불변성이 대규모 애플리케이션에서 왜 중요한지 아키텍처 관점에서 설명해주세요."
+  },
+  "source_files": ["javascript-mid-2.md#Q11", "javascript-mid-2.md#Q12"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function"
+  ]
+}

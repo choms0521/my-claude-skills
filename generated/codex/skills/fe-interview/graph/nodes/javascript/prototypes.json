@@ -1,0 +1,28 @@
+{
+  "id": "js-prototypes",
+  "type": "concept",
+  "name": "Prototypal Inheritance",
+  "category": "javascript",
+  "levels": ["mid", "senior"],
+  "description": "프로토타입 체인을 통한 객체 간 상속과 ES6 class 문법의 내부 동작",
+  "key_points": [
+    "프로토타입 체인: 객체에서 프로퍼티를 찾지 못하면 __proto__를 따라 상위로 탐색",
+    "Object.create()를 통한 명시적 프로토타입 위임 설정",
+    "생성자 함수와 prototype 프로퍼티의 관계",
+    "ES6 class는 프로토타입 기반 상속의 문법적 설탕(syntactic sugar)",
+    "프로퍼티 섀도잉 - 인스턴스 프로퍼티가 프로토타입 프로퍼티를 가리는 메커니즘",
+    "__proto__, Object.getPrototypeOf(), .prototype의 차이점",
+    "믹스인 패턴을 활용한 다중 상속 구현",
+    "프로토타입 런타임 수정의 위험성 - 모든 인스턴스에 영향"
+  ],
+  "model_answer_summary": "JavaScript는 클래스 기반이 아닌 프로토타입 기반 상속을 사용하며, 모든 객체는 프로토타입 체인을 통해 다른 객체로부터 프로퍼티와 메서드를 상속받습니다. Object.create()로 프로토타입 위임을 설정하고, ES6 class 문법은 이 메커니즘 위에 구축된 문법적 설탕입니다. 프로토타입 체인의 끝은 null이며, 프로퍼티 조회는 체인을 따라 상위로 올라가며 수행됩니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "프로토타입 상속이 어떻게 동작하는지 설명하고, ES6 class와의 관계를 설명해주세요.",
+    "senior": "프로토타입 체인의 성능 영향을 분석하고, 믹스인 패턴과 Object.create()를 활용한 유연한 객체 구성 방법을 설명해주세요."
+  },
+  "source_files": ["javascript-mid.md#Q1"],
+  "references": [
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain"
+  ]
+}

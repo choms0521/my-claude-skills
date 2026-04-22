@@ -1,0 +1,25 @@
+{
+  "id": "a11y-color",
+  "type": "concept",
+  "name": "Color & Visual Accessibility",
+  "category": "accessibility",
+  "levels": ["mid"],
+  "description": "색상 대비, 색맹 대응, 시각적 접근성 요구사항",
+  "key_points": [
+    "WCAG AA 기준: 일반 텍스트 4.5:1, 큰 텍스트 3:1 대비 비율 필요",
+    "WCAG AAA 기준: 7:1 강화된 대비 비율 - 모든 콘텐츠에 적용하기 어려움",
+    "색상만으로 정보를 전달하지 않음 - 아이콘, 패턴, 텍스트 라벨을 함께 사용",
+    "색각 이상(적록, 청황) 사용자를 고려한 색상 팔레트 설계",
+    "prefers-reduced-motion 미디어 쿼리로 모션 감소 선호 사용자 대응",
+    "prefers-color-scheme으로 다크 모드에서도 대비 비율 유지",
+    "고대비 모드(Windows High Contrast)에서의 UI 동작 확인",
+    "자동화 도구(axe, Lighthouse)로 대비 비율 검사 가능하지만 맥락적 판단은 수동 필요"
+  ],
+  "model_answer_summary": "시각적 접근성은 WCAG AA 기준의 색상 대비 비율(4.5:1 일반, 3:1 큰 텍스트)을 충족하고, 색상만으로 정보를 전달하지 않으며, 모션 감소와 다크 모드를 지원하는 것을 포함합니다. 색각 이상 사용자와 고대비 모드를 고려한 설계가 필요합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "intermediate" },
+  "sample_questions": {
+    "mid": "WCAG 색상 대비 요구사항과 색상만으로 정보를 전달하면 안 되는 이유를 설명해주세요."
+  },
+  "source_files": ["accessibility-mid.md#Q5"],
+  "references": []
+}

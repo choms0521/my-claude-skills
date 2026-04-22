@@ -1,0 +1,25 @@
+{
+  "id": "nextjs-server-components",
+  "type": "concept",
+  "name": "Next.js Server Components",
+  "category": "nextjs",
+  "levels": ["senior"],
+  "description": "React Server Components의 동작 원리, 클라이언트/서버 경계, 직렬화 제약을 다루는 고급 주제",
+  "key_points": [
+    "서버 컴포넌트 기본 원칙 - 서버에서만 렌더링, 컴포넌트 코드가 클라이언트에 전송되지 않음",
+    "'use client' 디렉티브 - 클라이언트 경계를 명시, 해당 파일과 모든 import가 클라이언트 번들에 포함",
+    "'use server' 디렉티브 - Server Actions 정의, HTTP POST 엔드포인트로 노출",
+    "서버/클라이언트 경계 - 서버 컴포넌트가 클라이언트 컴포넌트를 렌더링할 수 있지만 반대는 불가(children 패턴 제외)",
+    "직렬화 가능한 Props - 서버에서 클라이언트로 전달되는 Props는 JSON 직렬화 가능해야 함",
+    "클라이언트 경계를 트리 최하단으로 밀기 - 서버 렌더링 이점을 극대화하는 설계 원칙",
+    "RSC 페이로드 - 서버 컴포넌트의 렌더링 결과를 직렬화한 스트리밍 데이터 형식",
+    "Streaming과 Suspense 통합 - 서버 컴포넌트가 Suspense 경계에서 독립적으로 스트리밍"
+  ],
+  "model_answer_summary": "React Server Components는 서버에서만 실행되어 컴포넌트 코드가 클라이언트 번들에 포함되지 않습니다. 'use client' 디렉티브로 클라이언트 경계를 명시하고, 서버 컴포넌트는 데이터베이스 접근과 무거운 라이브러리를 서버에 유지할 수 있습니다. 클라이언트 경계를 트리 최하단으로 밀어 서버 렌더링 비율을 극대화하는 것이 핵심 설계 원칙입니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "서버/클라이언트 컴포넌트 경계의 동작 원리와 'use client' 경계를 최적으로 배치하는 전략을 설명해주세요."
+  },
+  "source_files": ["nextjs-mid.md#Q3", "nextjs-senior.md#Q2", "nextjs-senior.md#Q8"],
+  "references": []
+}

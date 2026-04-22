@@ -1,0 +1,26 @@
+{
+  "id": "nextjs-routing",
+  "type": "concept",
+  "name": "Next.js Routing",
+  "category": "nextjs",
+  "levels": ["mid", "senior"],
+  "description": "파일 기반 라우팅, 레이아웃, 미들웨어, 병렬/인터셉팅 라우트를 포괄하는 Next.js 라우팅 시스템",
+  "key_points": [
+    "파일 기반 라우팅 - app/ 디렉토리의 폴더 구조가 URL 세그먼트에 매핑",
+    "특수 파일 - page.tsx, layout.tsx, loading.tsx, error.tsx, not-found.tsx, template.tsx의 역할",
+    "중첩 레이아웃(Nested Layouts) - 세그먼트별 레이아웃이 자동으로 중첩, 네비게이션 간 상태 유지",
+    "동적 세그먼트 - [param], [...slug], [[...slug]]로 동적/캐치올/옵셔널 캐치올 라우트",
+    "라우트 그룹 - (groupName)으로 URL에 영향 없이 라우트 조직화",
+    "병렬 라우트(Parallel Routes) - @slotName으로 동일 레이아웃에서 독립적으로 네비게이션되는 다중 페이지",
+    "인터셉팅 라우트 - (.), (..), (...)로 모달 패턴 구현, 딥링크 가능한 모달",
+    "미들웨어 - 라우트 처리 전 엣지에서 요청 검사, 리다이렉트, 리라이트 수행"
+  ],
+  "model_answer_summary": "Next.js App Router는 폴더 기반 라우팅에 특수 파일 컨벤션(page, layout, loading, error)을 결합합니다. 중첩 레이아웃은 네비게이션 간 상태를 유지하고, 병렬 라우트와 인터셉팅 라우트로 Instagram 스타일의 딥링크 가능한 모달을 구현합니다. 미들웨어는 Edge Runtime에서 모든 요청을 인터셉트하여 인증, A/B 테스팅, i18n 라우팅을 처리합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "Next.js App Router의 파일 기반 라우팅 컨벤션과 특수 파일들의 역할을 설명해주세요.",
+    "senior": "병렬 라우트와 인터셉팅 라우트를 결합하여 딥링크 가능한 모달을 구현하는 방법을 설명해주세요."
+  },
+  "source_files": ["nextjs-mid.md#Q2", "nextjs-mid.md#Q5", "nextjs-senior.md#Q3"],
+  "references": []
+}

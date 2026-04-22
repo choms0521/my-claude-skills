@@ -1,0 +1,25 @@
+{
+  "id": "sec-supply-chain",
+  "type": "concept",
+  "name": "Supply Chain Security",
+  "category": "security",
+  "levels": ["senior"],
+  "description": "SRI, npm audit, lockfile 관리 등 의존성 공급망 보안",
+  "key_points": [
+    "SRI(Subresource Integrity): CDN에서 로드하는 스크립트의 해시를 검증하여 변조 탐지",
+    "npm audit으로 알려진 취약점이 있는 의존성 식별 및 자동 수정",
+    "lockfile(package-lock.json, pnpm-lock.yaml) 커밋으로 의존성 버전 고정 - 공급망 공격 완화",
+    "의존성 리뷰: 새 패키지 추가 시 유지보수 상태, 다운로드 수, 보안 이력 확인",
+    "SBOM(Software Bill of Materials)으로 프로젝트의 전체 의존성 목록을 투명하게 관리",
+    "typosquatting 공격 주의: 유사한 이름의 악성 패키지 식별 (lodas → lodash)",
+    "Dependabot/Renovate로 의존성 업데이트를 자동화하고 PR 단위로 검토",
+    "npm publish 시 2FA 필수 설정, .npmrc에 registry 고정으로 레지스트리 하이재킹 방지"
+  ],
+  "model_answer_summary": "공급망 보안은 SRI로 외부 리소스 무결성을 검증하고, lockfile로 의존성 버전을 고정하며, npm audit으로 취약점을 자동 탐지하는 것이 기본입니다. SBOM으로 투명성을 확보하고, Dependabot으로 업데이트를 자동화하며, typosquatting과 레지스트리 하이재킹에 주의해야 합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "프론트엔드 프로젝트의 의존성 공급망 보안을 어떻게 관리하고, SRI와 lockfile의 역할은?"
+  },
+  "source_files": ["security-senior.md#Q5", "security-senior.md#Q9"],
+  "references": []
+}

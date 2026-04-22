@@ -1,0 +1,26 @@
+{
+  "id": "perf-ssr",
+  "type": "concept",
+  "name": "SSR vs CSR vs SSG",
+  "category": "performance",
+  "levels": ["mid", "senior"],
+  "description": "CSR, SSR, SSG, ISR, Streaming SSR의 렌더링 전략별 성능 트레이드오프와 선택 기준",
+  "key_points": [
+    "CSR(Client-Side Rendering) - TTFB 빠르지만 FCP/LCP 느림, 인증 대시보드에 적합",
+    "SSR(Server-Side Rendering) - FCP/LCP 빠르지만 TTFB가 데이터 페칭에 종속, SEO 필요한 개인화 콘텐츠에 적합",
+    "SSG(Static Site Generation) - 최고의 TTFB/FCP/LCP, 빌드 시간과 데이터 신선도 한계",
+    "ISR(Incremental Static Regeneration) - SSG 속도와 설정 가능한 staleness, 비개인화 반동적 콘텐츠에 적합",
+    "Streaming SSR - React 18의 renderToPipeableStream으로 점진적 HTML 전송",
+    "선택적 하이드레이션(Selective Hydration) - 사용자 상호작용 우선으로 점진적 하이드레이션",
+    "Islands Architecture - 정적 HTML 바다에 인터랙티브 섬만 하이드레이션(Astro, Qwik)",
+    "부분 프리렌더링(Partial Prerendering) - Next.js 14의 정적 셸 + 동적 Suspense 홀 결합"
+  ],
+  "model_answer_summary": "렌더링 전략 선택은 콘텐츠 특성에 따라 결정됩니다. SSG는 비개인화 정적 콘텐츠에 최적이고, ISR은 주기적 갱신이 필요한 콘텐츠에, SSR은 개인화 SEO 콘텐츠에 적합합니다. Streaming SSR은 Suspense 경계 단위로 점진적 HTML을 전송하여 SSR의 TTFB 문제를 해결하고, Islands Architecture는 하이드레이션 비용을 인터랙티브 컴포넌트만으로 제한합니다.",
+  "difficulty_range": { "min": "intermediate", "max": "advanced" },
+  "sample_questions": {
+    "mid": "CSR, SSR, SSG, ISR의 성능 특성과 각각의 적합한 사용 시나리오를 비교해주세요.",
+    "senior": "Streaming SSR의 기술적 동작 원리와 선택적 하이드레이션이 성능에 미치는 영향을 설명해주세요."
+  },
+  "source_files": ["performance-senior.md#Q4", "performance-senior-2.md#Q11", "performance-senior-2.md#Q12", "performance-senior-2.md#Q15"],
+  "references": []
+}

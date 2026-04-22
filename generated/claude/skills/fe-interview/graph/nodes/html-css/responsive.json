@@ -1,0 +1,27 @@
+{
+  "id": "css-responsive",
+  "type": "concept",
+  "name": "Responsive Design",
+  "category": "html-css",
+  "levels": ["junior", "mid"],
+  "description": "반응형 웹 디자인의 핵심 기법 — 미디어 쿼리, 컨테이너 쿼리, 유동 단위, 반응형 이미지",
+  "key_points": [
+    "반응형 디자인의 3요소 — 유동 그리드, 유연한 미디어, 미디어 쿼리",
+    "모바일 퍼스트 접근법 — min-width 기반 미디어 쿼리와 점진적 향상",
+    "CSS 단위의 적절한 활용 — px, em, rem, %, vw, vh, dvh의 특성과 사용 시점",
+    "clamp(), min(), max() 함수를 활용한 유동 타이포그래피와 미디어 쿼리 최소화",
+    "Container Queries(@container)와 Media Queries의 차이 — 뷰포트 vs 컨테이너 기반 반응",
+    "반응형 이미지 — srcset, sizes 속성과 picture 요소를 활용한 해상도/포맷 대응",
+    "prefers-color-scheme, prefers-reduced-motion 등 사용자 환경 미디어 쿼리",
+    "컨테이너 쿼리 단위 (cqi, cqb, cqw)와 뷰포트 단위의 차이",
+    "일반적인 브레이크포인트 설정 전략과 Tailwind CSS의 기본 브레이크포인트 참고"
+  ],
+  "model_answer_summary": "반응형 웹 디자인은 유동 그리드, 유연한 미디어, 미디어 쿼리를 조합하여 다양한 화면 크기에 적응하는 접근법입니다. 모바일 퍼스트로 base 스타일을 작성하고 min-width 미디어 쿼리로 확장하며, clamp()로 유동 타이포그래피를 구현합니다. Container Queries는 뷰포트가 아닌 컨테이너 크기에 반응하여 진정한 컴포넌트 기반 반응형 설계를 가능하게 합니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "반응형 웹 디자인이란 무엇이며, 모바일 퍼스트 접근법을 설명해주세요.",
+    "mid": "Container Queries와 Media Queries의 차이점, 그리고 각각의 적절한 사용 시점을 설명해주세요."
+  },
+  "source_files": ["html-css-junior.md#Q5", "html-css-junior.md#Q8", "html-css-junior.md#Q10", "html-css-mid-2.md#Q16"],
+  "references": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "sd-search",
+  "type": "concept",
+  "name": "Search & Autocomplete",
+  "category": "system-design",
+  "levels": ["senior"],
+  "description": "디바운스, 캐싱, 키보드 네비게이션을 포함한 검색 자동완성 시스템",
+  "key_points": [
+    "200-300ms 디바운스로 타이핑 중 불필요한 API 요청 방지",
+    "AbortController로 이전 요청 취소하여 stale response race condition 방지 필수",
+    "클라이언트 캐시(Map<string, Result[]>)로 동일 쿼리 재요청 방지, 백스페이스 시 즉시 응답",
+    "제한된 데이터셋은 Trie나 클라이언트 필터로 네트워크 지연 없이 완성",
+    "ARIA combobox 패턴: role=combobox, role=listbox, aria-activedescendant로 접근성 보장",
+    "포커스는 항상 input에 유지하고 aria-activedescendant로 선택 항목을 관리",
+    "매칭 텍스트를 <mark> 태그로 하이라이트하여 시각적/스크린 리더 양쪽에 효과적",
+    "관심사 분리: useAutoComplete 훅, AutoCompleteInput, SuggestionList, useKeyboardNavigation"
+  ],
+  "model_answer_summary": "자동완성 검색은 디바운스, AbortController를 통한 race condition 방지, 클라이언트 캐싱이 핵심입니다. ARIA combobox 패턴으로 접근성을 보장하고, aria-activedescendant로 포커스를 input에 유지하면서 목록을 탐색합니다. 관심사를 훅과 컴포넌트로 분리하여 유지보수성을 확보합니다.",
+  "difficulty_range": { "min": "advanced", "max": "advanced" },
+  "sample_questions": {
+    "senior": "프론트엔드 자동완성 검색 컴포넌트를 디바운싱, 캐싱, 접근성을 고려하여 어떻게 설계하나요?"
+  },
+  "source_files": ["system-design-senior.md#Q2"],
+  "references": []
+}

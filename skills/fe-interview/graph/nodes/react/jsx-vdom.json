@@ -1,0 +1,26 @@
+{
+  "id": "react-jsx-vdom",
+  "type": "concept",
+  "name": "JSX & Virtual DOM",
+  "category": "react",
+  "levels": ["junior", "mid"],
+  "description": "JSX 문법의 본질과 Virtual DOM의 동작 원리, Reconciliation 알고리즘을 통한 효율적 UI 업데이트 메커니즘",
+  "key_points": [
+    "JSX는 React.createElement 호출로 변환되는 문법적 설탕(syntactic sugar)",
+    "Virtual DOM은 실제 DOM의 경량 JavaScript 객체 표현",
+    "Reconciliation 알고리즘의 Diffing 전략과 O(n) 복잡도",
+    "React Element와 Component의 차이점",
+    "key prop이 Diffing 과정에서 수행하는 역할",
+    "Babel/SWC 등 트랜스파일러의 JSX 변환 과정",
+    "React 17+ 새로운 JSX Transform (jsx-runtime)",
+    "합성 이벤트(Synthetic Event) 시스템과 브라우저 이벤트의 차이"
+  ],
+  "model_answer_summary": "JSX는 JavaScript 내에서 UI 구조를 선언적으로 작성할 수 있게 해주는 문법으로, 빌드 시 React.createElement 호출로 변환됩니다. Virtual DOM은 실제 DOM의 경량 사본으로, 상태 변경 시 새로운 Virtual DOM 트리를 생성하고 이전 트리와 비교(Diffing)하여 최소한의 실제 DOM 조작만 수행합니다. 이 Reconciliation 과정이 React의 성능 최적화 핵심 메커니즘입니다.",
+  "difficulty_range": { "min": "basic", "max": "intermediate" },
+  "sample_questions": {
+    "junior": "JSX란 무엇이며, React가 JSX를 사용하는 이유를 설명해주세요.",
+    "mid": "Virtual DOM의 Diffing 알고리즘이 어떻게 동작하며, key prop이 왜 중요한지 설명해주세요."
+  },
+  "source_files": ["react-junior.md#Q1", "react-junior.md#Q6", "react-junior-2.md#Q11", "react-junior-2.md#Q20"],
+  "references": []
+}

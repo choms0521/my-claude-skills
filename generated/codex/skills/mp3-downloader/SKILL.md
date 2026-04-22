@@ -4,7 +4,7 @@ description: "Download audio as MP3 from YouTube or YouTube Music links using yt
 triggers: ["mp3 download","download youtube audio","download youtube music","batch convert urls to mp3"]
 argument-hint: "<url1> [url2 ...] | --extract-from-description <video_url> [--out <directory>]"
 runtime: codex
-support-level: portable
+support-level: full
 generated-from: skills/mp3-downloader
 ---
 
@@ -15,8 +15,8 @@ generated-from: skills/mp3-downloader
 - Runtime: Codex
 - Invocation: `$mp3-downloader`
 - Install target: `$CODEX_HOME/skills/mp3-downloader` (기본값: `~/.codex/skills/mp3-downloader`)
-- Support level: portable
-- Migration notes: 특별한 런타임 차이 없이 바로 포팅 가능한 스킬로 분류됩니다.
+- Support level: full
+- Canonical source: `skills/<name>/...`에서 생성된 Codex용 스킬입니다.
 
 # MP3 Downloader Skill
 

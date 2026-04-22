@@ -7,9 +7,11 @@ import {
   SHARED_SKILLS_DIR,
   buildClaudeAdapter,
   buildCodexAdapter,
+  copyPath,
   detectCodexSupport,
   ensureDir,
   fileExists,
+  listVisibleAssetEntries,
   parseSkillMarkdown,
   readUtf8,
   writeJson,
@@ -34,9 +36,11 @@ async function main() {
 
 async function bootstrapSkill(skillName) {
   const sourceFile = path.join(CLAUDE_SKILLS_DIR, skillName, 'SKILL.md');
+  const sourceDir = path.join(CLAUDE_SKILLS_DIR, skillName);
   const sourceMarkdown = await readUtf8(sourceFile);
   const { frontmatter, body } = parseSkillMarkdown(sourceMarkdown);
   const codexSupport = detectCodexSupport(body);
+  const assets = await listVisibleAssetEntries(sourceDir);
 
   const skillDir = path.join(SHARED_SKILLS_DIR, skillName);
   const adaptersDir = path.join(skillDir, 'adapters');
@@ -56,6 +60,7 @@ async function bootstrapSkill(skillName) {
     source: {
       claude: path.relative(process.cwd(), sourceFile),
     },
+    assets,
     runtimeSupport: {
       claude: 'full',
       codex: codexSupport.level,
@@ -67,6 +72,10 @@ async function bootstrapSkill(skillName) {
   await maybeWriteUtf8(commonPath, body.endsWith('\n') ? body : `${body}\n`);
   await maybeWriteUtf8(claudeAdapterPath, `${buildClaudeAdapter(skillName)}\n`);
   await maybeWriteUtf8(codexAdapterPath, `${buildCodexAdapter(skillName, codexSupport)}\n`);
+
+  for (const assetName of assets) {
+    await maybeCopyPath(path.join(sourceDir, assetName), path.join(skillDir, assetName));
+  }
 }
 
 async function maybeWriteJson(filePath, value) {
@@ -81,6 +90,13 @@ async function maybeWriteUtf8(filePath, content) {
     return;
   }
   await writeUtf8(filePath, content);
+}
+
+async function maybeCopyPath(sourcePath, targetPath) {
+  if (!force && await fileExists(targetPath)) {
+    return;
+  }
+  await copyPath(sourcePath, targetPath);
 }
 
 main().catch((error) => {
