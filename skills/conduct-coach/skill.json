@@ -1,0 +1,23 @@
+{
+  "name": "conduct-coach",
+  "description": "On-demand evaluator that reads recent Claude Code sessions, grades agent conduct (manners + discipline) via a custom judge subagent, interviews the user, and writes a global discipline rules file.",
+  "triggers": [
+    "conduct-coach"
+  ],
+  "argumentHint": "[--days 7|3] [--scope global|current]",
+  "source": {
+    "claude": ".claude/skills/conduct-coach/SKILL.md"
+  },
+  "assets": [
+    "scripts",
+    "agents/conduct-judge.md",
+    "fixtures/known-violation.json"
+  ],
+  "runtimeSupport": {
+    "claude": "full",
+    "codex": "none"
+  },
+  "codexFindings": [
+    "Depends on Claude Code session JSONL records, the personal subagent directory, the personal rules directory, and the interactive question surface. Codex exposes none of these, so the skill is Claude Code only."
+  ]
+}
