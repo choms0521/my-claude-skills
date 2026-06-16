@@ -26,6 +26,14 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const DEFAULT_MAX_CHARS = 250_000;
 const DEFAULT_MAX_MESSAGES = 600;
 
+// Parse a positive finite numeric flag. Zero, negative, and non-numeric input
+// fall back to the default so a bogus limit cannot make shouldShrink() always
+// fire or collapse capRecent() down to a single message.
+function positiveNumberArg(value, fallback) {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
 export function parseArgs(argv) {
   const args = {
     days: 7,
@@ -57,11 +65,11 @@ export function parseArgs(argv) {
         i += 1;
         break;
       case '--max-chars':
-        args.maxChars = Number(value) || DEFAULT_MAX_CHARS;
+        args.maxChars = positiveNumberArg(value, DEFAULT_MAX_CHARS);
         i += 1;
         break;
       case '--max-messages':
-        args.maxMessages = Number(value) || DEFAULT_MAX_MESSAGES;
+        args.maxMessages = positiveNumberArg(value, DEFAULT_MAX_MESSAGES);
         i += 1;
         break;
       default:
