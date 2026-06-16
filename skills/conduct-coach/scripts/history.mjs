@@ -67,13 +67,31 @@ export async function loadLatest(home) {
   } catch {
     return null;
   }
-  const jsonFiles = entries.filter((name) => name.endsWith('.json')).sort();
+  const jsonFiles = entries.filter((name) => name.endsWith('.json'));
   if (jsonFiles.length === 0) {
     return null;
   }
-  const latest = jsonFiles[jsonFiles.length - 1];
+  // Select the most recently written file by mtime. A lexicographic filename
+  // sort mis-orders same-stamp collisions: "...-10.json" sorts before
+  // "...-2.json", and "....json" sorts after "...-1.json", so the plain sort
+  // could return an older diagnosis as the baseline.
+  let latest = null;
+  for (const name of jsonFiles) {
+    const filePath = path.join(dir, name);
+    try {
+      const stat = await fs.stat(filePath);
+      if (latest === null || stat.mtimeMs > latest.mtimeMs) {
+        latest = { path: filePath, mtimeMs: stat.mtimeMs };
+      }
+    } catch {
+      // ignore unreadable entry
+    }
+  }
+  if (latest === null) {
+    return null;
+  }
   try {
-    return JSON.parse(await fs.readFile(path.join(dir, latest), 'utf8'));
+    return JSON.parse(await fs.readFile(latest.path, 'utf8'));
   } catch {
     return null;
   }

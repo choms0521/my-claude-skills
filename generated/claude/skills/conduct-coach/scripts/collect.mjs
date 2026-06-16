@@ -130,10 +130,13 @@ export function capRecent(messages, maxChars, maxMessages) {
   return kept;
 }
 
-// Read + refine every message inside the widest (7-day) mtime window once.
-async function gatherRefinedMessages({ scope, cwd, home }, sinceTsMs, nowMs) {
+// Read + refine every message inside the requested-day mtime window once.
+// The file-level mtime filter is scoped to the requested window (3 or 7 days)
+// so a `--days 3` run does not read+parse session files older than 3 days.
+async function gatherRefinedMessages({ scope, cwd, home, days }, sinceTsMs, nowMs) {
   const files = await listSessionFiles(scope, cwd, home);
-  const recentFiles = filterFilesByMtime(files, 7, nowMs);
+  const windowDays = days === 3 ? 3 : 7;
+  const recentFiles = filterFilesByMtime(files, windowDays, nowMs);
 
   const refined = [];
   for (const file of recentFiles) {

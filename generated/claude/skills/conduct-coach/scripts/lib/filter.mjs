@@ -23,7 +23,11 @@ export function withinDays(timestampMs, days, nowMs) {
   if (!Number.isFinite(timestampMs)) {
     return false;
   }
-  return nowMs - timestampMs <= days * DAY_MS;
+  const delta = nowMs - timestampMs;
+  // Reject future timestamps (delta < 0). Otherwise a clock-skewed future-dated
+  // file/message would satisfy `<= days * DAY_MS` and be wrongly treated as
+  // "recent" for what is meant to be a backward-looking window.
+  return delta >= 0 && delta <= days * DAY_MS;
 }
 
 // files: array of { path, mtimeMs }. Returns the subset modified within `days`.

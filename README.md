@@ -178,7 +178,7 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/conduct-coach ~/.claude/skills/
 
 conduct-coach는 다른 스킬과 달리 **심사관 서브에이전트**를 사용합니다. 설치 후 처음 `/conduct-coach`를 실행할 때 다음이 자동으로 일어납니다.
 
-1. **심사관 자동 설치**: 번들된 `conduct-judge` 서브에이전트가 `~/.claude/agents/conduct-judge.md`에 멱등 설치됩니다(관리 마커로 버전 추적, 마커 밖 수동 편집 보존).
+1. **심사관 자동 설치**: 번들된 `conduct-judge` 서브에이전트가 `~/.claude/agents/conduct-judge.md`에 멱등 설치됩니다(관리 마커로 버전 추적). 마커가 없는 파일은 사용자 작성본으로 보고 건드리지 않지만, 관리 마커가 있는 파일은 번들 버전이 바뀌면 파일 전체가 다시 쓰여 수동 편집은 보존되지 않습니다.
 2. **재적재 필요(첫 설치 직후 1회)**: Claude Code는 서브에이전트를 세션 시작 시 발견하므로, 갓 설치된 `conduct-judge`는 같은 세션에서 바로 잡히지 않을 수 있습니다. 이 경우 `/reload-skills`를 실행하거나 세션을 재시작한 뒤 다시 `/conduct-coach`를 호출하세요.
 3. **산출물 위치**: 진단 이력은 `~/.claude/.conduct-coach/history/`에, 문답으로 합의한 규칙은 `~/.claude/rules/agent-discipline.md`(관리 마커 구획)에 저장됩니다. 위반이 없으면 규칙 파일은 작성하지 않습니다.
 

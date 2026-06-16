@@ -66,7 +66,7 @@ node "$SKILL_DIR/scripts/install-judge.mjs"
 ```
 
 - 관리 마커로 버전을 추적하며, 이미 동일 버전이면 다시 쓰지 않습니다(멱등).
-- 사용자가 마커 밖을 수동 편집했어도 보존합니다.
+- 마커가 없는 파일은 사용자 작성본으로 보고 건드리지 않습니다. 다만 관리 마커가 있는 파일은 번들 버전이 바뀌면 파일 전체를 다시 쓰므로, 설치된 심사관 파일에 가한 수동 편집은 보존되지 않습니다.
 
 ## Step 2 — collect: 수집·선마스킹·절삭
 
@@ -154,7 +154,7 @@ node "$SKILL_DIR/scripts/history.mjs" diff --home "$HOME" --input /tmp/diagnosis
 ## Step 8 — merge: 전역 지침 파일 멱등 병합
 
 ```bash
-node "$SKILL_DIR/scripts/merge-rules.mjs" --home "$HOME" --rules /tmp/composed-rules.json
+node "$SKILL_DIR/scripts/merge-rules.mjs" merge --home "$HOME" --input /tmp/composed-rules.json
 ```
 
 - write 전에 `$HOME/.claude/rules/*.md`와 프로젝트 `.claude/rules/*.md`를 스캔하여 주제 중복/충돌을 점검합니다.
