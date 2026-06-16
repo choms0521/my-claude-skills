@@ -250,7 +250,8 @@ Code clarity, alternative approaches, edge cases, documentation gaps, naming에 
 아래 코드를 리뷰하세요:
 '
 PROMPT_FILE="$AGY_CWD/prompt.txt"
-{ printf '%s' "$PROMPT"; cat <diff_or_files>; } > "$PROMPT_FILE"   # diff/파일 내용을 뒤에 인라인 첨부
+# REVIEW_TARGET_FILE: Pre-Stage 에서 정한 리뷰 대상(diff 또는 파일 내용)을 담은 파일 경로
+{ printf '%s' "$PROMPT"; cat "$REVIEW_TARGET_FILE"; } > "$PROMPT_FILE"   # 프롬프트 뒤에 리뷰 대상 인라인 첨부
 
 # 3) 빈 격리 cwd 에서 외부 하드 워치독으로 실행 (agy --print-timeout 은 신뢰하지 않음)
 #    exec 로 subshell 을 agy 로 치환 → $! 가 실제 agy PID 가 되어 watchdog 가 확실히 종료
@@ -260,6 +261,7 @@ AGY_PID=$!
 WATCHDOG=$!
 wait "$AGY_PID" 2>/dev/null
 kill "$WATCHDOG" 2>/dev/null
+wait "$WATCHDOG" 2>/dev/null   # watchdog 프로세스 수거 (좀비 방지)
 
 # 4) 비파괴적 백스톱: 본 저장소가 바뀌었으면 되돌리지 말고 경고 + agy 결과 폐기 → stand-in
 REPO_AFTER=$(git status --porcelain | sort)
