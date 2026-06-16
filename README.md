@@ -26,6 +26,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **fe-interview** | 프론트엔드 면접 코치 — Knowledge Graph 기반 적응형 면접. 3명 면접관(CTO/팀리드/시니어), S/A/B/C/D 등급, 합의 평가, 개선 로드맵 | `/fe-interview [--mode graph\|classic] [--resume <파일>] [--level junior\|mid\|senior] [--length short\|medium\|long]` |
 | **persona-builder** | 봇 페르소나 정의 — 5개 차원(말투/감정 톤/대화 성향/입장-세계관/호칭) 인터뷰 후 Personality Config 생성. Tester Agent 샘플 대화 검증 포함 | `/persona-builder [--scope workspace\|global] [--remove] [--quick]` |
 | **music-generator** | mmx CLI 기반 음악 생성 — 음악 설계(코드 진행/전조/다이나믹스/리듬/편곡) 우선 체계. Easy/Expert 인터뷰, 가사 자동 생성(가사 밀도/길이 통제, 언어 비율 가이드), 듀엣/그룹 보컬, 참고곡 분석(텍스트·YouTube URL·로컬 MP3) 지원 | `/music-generator [가사 텍스트] [--instrumental] [--genre <genre>] [--mood <mood>] [--out <path>] ...` *(대표 옵션 일부)* |
+| **conduct-coach** | 에이전트 행동 진단 — 최근 Claude Code 세션 기록을 읽어 예절·말투/규율·정직을 S/A/B/C/D로 채점(커스텀 심사관 서브에이전트, read-only). 수집 단계 선마스킹, 진단 이력 추이 비교, 항목별 3갈래(의도/수정/오진) 문답 후 `~/.claude/rules/agent-discipline.md`에 멱등 병합. **Claude Code 전용(Codex 미지원)** | `/conduct-coach [--days 7\|3] [--scope global\|current]` |
 
 ## 스킬 사용
 
@@ -94,6 +95,12 @@ Claude Code에서 슬래시 커맨드로 호출:
 
 # Tester Agent: AI가 시니어로 답변, 등급 A-S 나오는지 검증
 /fe-interview --test agent:senior --length short
+
+# 에이전트 행동 진단 (기본 - 최근 7일 전역 세션)
+/conduct-coach
+
+# 현재 프로젝트 세션만, 3일로 한정
+/conduct-coach --days 3 --scope current
 ```
 
 ## 설치
@@ -139,6 +146,7 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/mp3-downloader ~/.claude/skills
 ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/fe-interview
 ln -sfn /path/to/my-claude-skills/.claude/skills/persona-builder ~/.claude/skills/persona-builder
 ln -sfn /path/to/my-claude-skills/.claude/skills/music-generator ~/.claude/skills/music-generator
+ln -sfn /path/to/my-claude-skills/.claude/skills/conduct-coach ~/.claude/skills/conduct-coach
 ```
 
 ### 개별 스킬 설치
@@ -161,7 +169,22 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/persona-builder ~/.claude/skill
 
 # music-generator만 설치
 ln -sfn /path/to/my-claude-skills/.claude/skills/music-generator ~/.claude/skills/music-generator
+
+# conduct-coach만 설치
+ln -sfn /path/to/my-claude-skills/.claude/skills/conduct-coach ~/.claude/skills/conduct-coach
 ```
+
+### conduct-coach 첫 실행 유의사항
+
+conduct-coach는 다른 스킬과 달리 **심사관 서브에이전트**를 사용합니다. 설치 후 처음 `/conduct-coach`를 실행할 때 다음이 자동으로 일어납니다.
+
+1. **심사관 자동 설치**: 번들된 `conduct-judge` 서브에이전트가 `~/.claude/agents/conduct-judge.md`에 멱등 설치됩니다(관리 마커로 버전 추적). 마커가 없는 파일은 사용자 작성본으로 보고 건드리지 않지만, 관리 마커가 있는 파일은 번들 버전이 바뀌면 파일 전체가 다시 쓰여 수동 편집은 보존되지 않습니다.
+2. **재적재 필요(첫 설치 직후 1회)**: Claude Code는 서브에이전트를 세션 시작 시 발견하므로, 갓 설치된 `conduct-judge`는 같은 세션에서 바로 잡히지 않을 수 있습니다. 이 경우 `/reload-skills`를 실행하거나 세션을 재시작한 뒤 다시 `/conduct-coach`를 호출하세요.
+3. **산출물 위치**: 진단 이력은 `~/.claude/.conduct-coach/history/`에, 문답으로 합의한 규칙은 `~/.claude/rules/agent-discipline.md`(관리 마커 구획)에 저장됩니다. 위반이 없으면 규칙 파일은 작성하지 않습니다.
+
+> **런타임:** conduct-coach는 **Claude Code 전용**입니다. 세션 JSONL 기록·서브에이전트·`AskUserQuestion`에 의존하므로 Codex 런타임에서는 동작하지 않습니다.
+>
+> **개인정보:** 세션 기록은 수집 단계에서 결정론적 정규식으로 선마스킹(API 키/토큰/이메일/비밀키)된 뒤에만 심사관에 전달되며, 외부 제3자 API로 전송되지 않습니다(in-session 서브에이전트만 사용).
 
 ### 스킬 파일 직접 복사 (심볼릭 링크 대신)
 
