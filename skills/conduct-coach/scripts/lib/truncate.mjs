@@ -16,9 +16,13 @@ export function truncateText(text, limit = DEFAULT_LIMIT, keep = DEFAULT_KEEP) {
     return text;
   }
 
-  const head = text.slice(0, keep);
-  const tail = text.slice(text.length - keep);
-  const removed = text.slice(keep, text.length - keep);
+  // Clamp keep so head+tail never exceed the limit and never overlap. A keep
+  // larger than limit/2 (or half the text) would expand the output beyond the
+  // original and report a misleading "0 bytes truncated".
+  const safeKeep = Math.min(Math.max(keep, 0), Math.floor(limit / 2), Math.floor(text.length / 2));
+  const head = text.slice(0, safeKeep);
+  const tail = text.slice(text.length - safeKeep);
+  const removed = text.slice(safeKeep, text.length - safeKeep);
   const removedBytes = Buffer.byteLength(removed, 'utf8');
 
   return `${head}\n... (${removedBytes} bytes truncated)\n${tail}`;

@@ -129,8 +129,12 @@ export async function scanExistingRules(home, cwd) {
 export function detectOverlap(newTopics, scan) {
   const duplicates = [];
   const seen = new Set();
+  // Normalize to lowercase strings so overlap matches the already
+  // tokenized/lowercased topics from existing rule files: a caller-supplied
+  // "Tone"/"Communication" must still hit the synonym groups.
+  const normalizedNewTopics = (newTopics ?? []).map((topic) => String(topic).toLowerCase());
   for (const file of scan.files) {
-    for (const newTopic of newTopics) {
+    for (const newTopic of normalizedNewTopics) {
       const hit = file.topics.find((existing) => topicsRelated(newTopic, existing));
       if (hit) {
         const dedupeKey = `${file.path}::${newTopic}`;
