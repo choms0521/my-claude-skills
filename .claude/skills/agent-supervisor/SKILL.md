@@ -1,0 +1,1 @@
+../../../generated/claude/skills/agent-supervisor/SKILL.md
