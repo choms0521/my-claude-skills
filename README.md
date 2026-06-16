@@ -325,7 +325,7 @@ mkdir -p ~/.claude/skills/music-generator && curl -fsSL -o ~/.claude/skills/musi
 - [Claude Code](https://claude.com/claude-code) CLI
 - [GitHub CLI](https://cli.github.com/) (`gh`) — check-github-copilot-review 스킬에 필수
 - (선택) [Codex CLI](https://github.com/openai/codex) — `npm install -g @openai/codex` (`codex review`로 직접 호출)
-- (선택) Antigravity CLI (`agy`) — multi-review 스킬의 Gemini 관점 리뷰에 사용. 구 Gemini CLI는 2026-06-18 서비스 종료되어 `agy`로 대체됨. `agy`는 파일을 직접 수정하는 에이전트형 CLI이므로 스킬이 저장소 바깥 격리 실행 + 읽기 전용 프롬프트 + 외부 워치독 + 비파괴적 백스톱과 함께 호출함
+- (선택) [Antigravity CLI](https://antigravity.google) (`agy`) — multi-review 스킬의 Gemini 관점 리뷰에 사용. 설치(macOS/Linux 공식): `curl -fsSL https://antigravity.google/cli/install.sh | bash` (바이너리는 `~/.local/bin/agy`에 설치, PATH 추가 필요). Homebrew(커뮤니티): `brew install --cask antigravity-cli`. 구 Gemini CLI는 2026-06-18 서비스 종료되어 `agy`로 대체됨. `agy`는 파일을 직접 수정하는 에이전트형 CLI이므로 스킬이 저장소 바깥 격리 실행 + 읽기 전용 프롬프트 + 외부 워치독 + 비파괴적 백스톱과 함께 호출함
 - (자동 설치) `yt-dlp`, `ffmpeg` — mp3-downloader 스킬에 필요 (미설치 시 스크립트가 자동 설치 시도)
 - (선택) [mmx CLI](https://www.minimaxi.com/cli) — music-generator 스킬 사용 시 필수
 

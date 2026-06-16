@@ -237,9 +237,10 @@ codex -c model_reasoning_effort="medium" review - < "$CODEX_PROMPT"
 ```bash
 # 1) 격리 실행 디렉터리 (저장소 바깥, 저장소의 상위 경로 아님) + 본 저장소 비파괴 스냅샷
 AGY_CWD=$(mktemp -d "${TMPDIR:-/tmp}/agy-review.XXXXXX")
-REPO_BEFORE=$(git status --porcelain | sort | shasum)
+REPO_BEFORE=$(git status --porcelain | sort)   # 외부 해시(shasum) 의존 없이 문자열 직접 비교 (이식성)
 
-# 2) 읽기 전용 + 인라인 전용 프롬프트 구성 (코드/diff는 PROMPT 뒤에 인라인 append)
+# 2) 읽기 전용 + 인라인 전용 프롬프트를 임시 파일에 기록 후 stdin 으로 전달
+#    (긴 리뷰 대상은 argv 길이 한계(ARG_MAX)에 걸리므로 -p argv 대신 stdin 사용)
 PROMPT='STRICT READ-ONLY REVIEW MODE. Do NOT edit, write, or create any file. The code to review is provided INLINE below. Review ONLY the inline content; do NOT search the filesystem or open any files.
 
 Code clarity, alternative approaches, edge cases, documentation gaps, naming에 집중하여 리뷰.
@@ -248,10 +249,12 @@ Code clarity, alternative approaches, edge cases, documentation gaps, naming에 
 
 아래 코드를 리뷰하세요:
 '
-# PROMPT="$PROMPT$(cat <diff_or_files>)"   # diff/파일 내용을 인라인으로 첨부
+PROMPT_FILE="$AGY_CWD/prompt.txt"
+{ printf '%s' "$PROMPT"; cat <diff_or_files>; } > "$PROMPT_FILE"   # diff/파일 내용을 뒤에 인라인 첨부
 
 # 3) 빈 격리 cwd 에서 외부 하드 워치독으로 실행 (agy --print-timeout 은 신뢰하지 않음)
-( cd "$AGY_CWD" && agy --print-timeout 540s -p "$PROMPT" ) > "$AGY_CWD/raw.out" 2>&1 &
+#    exec 로 subshell 을 agy 로 치환 → $! 가 실제 agy PID 가 되어 watchdog 가 확실히 종료
+( cd "$AGY_CWD" && exec agy --print-timeout 540s -p "" ) < "$PROMPT_FILE" > "$AGY_CWD/raw.out" 2>&1 &
 AGY_PID=$!
 ( sleep 600; kill -9 "$AGY_PID" 2>/dev/null ) &   # 10분 하드 상한
 WATCHDOG=$!
@@ -259,7 +262,7 @@ wait "$AGY_PID" 2>/dev/null
 kill "$WATCHDOG" 2>/dev/null
 
 # 4) 비파괴적 백스톱: 본 저장소가 바뀌었으면 되돌리지 말고 경고 + agy 결과 폐기 → stand-in
-REPO_AFTER=$(git status --porcelain | sort | shasum)
+REPO_AFTER=$(git status --porcelain | sort)
 if [ "$REPO_BEFORE" != "$REPO_AFTER" ]; then
   echo "WARN: agy 가 작업트리를 변경함. agy 패스 폐기, stand-in 으로 전환 (git checkout 금지)." >&2
 else
