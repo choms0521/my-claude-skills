@@ -1,1 +1,0 @@
-../../../generated/claude/skills/conduct-coach/SKILL.md
