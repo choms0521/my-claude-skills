@@ -2,7 +2,7 @@
   "name": "xmultiplan",
   "description": "Cross-runtime consensus planning. A planner runtime drafts the plan and a critic runtime evaluates it in a closed loop until APPROVE. Roles are configurable: defaults to Codex planner + Claude critic. Plan-only; marks the result pending approval and never executes.",
   "triggers": ["xmultiplan", "cross-plan", "crossplan"],
-  "argumentHint": "[--planner codex|claude] [--critic codex|claude] [--model M] [--effort medium] [--rounds 2] <task description>",
+  "argumentHint": "[--planner codex|claude] [--critic codex|claude] [--model M] [--effort minimal|low|medium|high|xhigh] [--rounds N] <task description>",
   "source": {
     "claude": ".claude/skills/xmultiplan/SKILL.md"
   },

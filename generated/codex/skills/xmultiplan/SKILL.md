@@ -2,7 +2,7 @@
 name: xmultiplan
 description: "Cross-runtime consensus planning. A planner runtime drafts the plan and a critic runtime evaluates it in a closed loop until APPROVE. Roles are configurable: defaults to Codex planner + Claude critic. Plan-only; marks the result pending approval and never executes."
 triggers: ["xmultiplan","cross-plan","crossplan"]
-argument-hint: "[--planner codex|claude] [--critic codex|claude] [--model M] [--effort medium] [--rounds 2] <task description>"
+argument-hint: "[--planner codex|claude] [--critic codex|claude] [--model M] [--effort minimal|low|medium|high|xhigh] [--rounds N] <task description>"
 runtime: codex
 support-level: full
 generated-from: skills/xmultiplan
@@ -147,10 +147,17 @@ mkdir -p "$CODEX_RUN_HOME/.codex"
 [ -f "$HOME/.codex/auth.json" ] && cp "$HOME/.codex/auth.json" "$CODEX_RUN_HOME/.codex/auth.json"
 [ -f "$HOME/.codex/config.toml" ] && cp "$HOME/.codex/config.toml" "$CODEX_RUN_HOME/.codex/config.toml"
 
-# 반드시 timeout=600000(10분). -s read-only 로 저장소를 건드리지 못하게 한다.
+# 10분(600초) 상한을 셸 워치독으로 강제한다. 호스트 harness가 자체 timeout(예: 600000ms)을
+# 지원하면 그와 함께 적용된다. timeout(Linux)·gtimeout(coreutils, macOS) 중 가용한 것을 고르고,
+# 둘 다 없으면 워치독 없이 실행한다(이때 상한은 호스트 harness timeout에만 의존).
+if command -v timeout >/dev/null 2>&1; then WATCHDOG="timeout 600"
+elif command -v gtimeout >/dev/null 2>&1; then WATCHDOG="gtimeout 600"
+else WATCHDOG=""; fi
+
+# -s read-only 로 저장소를 건드리지 못하게 한다.
 # --model 은 --model 플래그가 있을 때만 붙인다(없으면 사용자 기본 모델 존중).
-HOME="$CODEX_RUN_HOME" \
-codex exec -s read-only \
+$WATCHDOG env HOME="$CODEX_RUN_HOME" \
+  codex exec -s read-only \
   -c model_reasoning_effort="${EFFORT:-medium}" \
   ${MODEL:+-m "$MODEL"} \
   -o "$CODEX_OUT" \
@@ -175,8 +182,13 @@ cat > "$CLAUDE_PROMPT" <<'EOF'
 <role contract + task description + (재검토면) 직전 초안 전문과 CRITIC Findings>
 EOF
 
-# 반드시 timeout=600000(10분). 비대화형 텍스트 출력.
-claude -p --output-format text < "$CLAUDE_PROMPT"
+# 10분(600초) 상한을 셸 워치독으로 강제한다(timeout/gtimeout 중 가용한 것 선택,
+# 둘 다 없으면 호스트 harness timeout에만 의존). 비대화형 텍스트 출력.
+if command -v timeout >/dev/null 2>&1; then WATCHDOG="timeout 600"
+elif command -v gtimeout >/dev/null 2>&1; then WATCHDOG="gtimeout 600"
+else WATCHDOG=""; fi
+
+$WATCHDOG claude -p --output-format text < "$CLAUDE_PROMPT"
 ```
 
 - Claude가 HOST이고 critic=claude(기본값)이면 이 harness를 쓰지 않고 **인라인**으로 비평한다. 이 harness는 Claude가 HOST가 아닌(즉 Codex가 HOST인) 상황에서 claude 역할을 외부로 부를 때만 쓴다.
