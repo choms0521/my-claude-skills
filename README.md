@@ -27,6 +27,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **persona-builder** | 봇 페르소나 정의 — 5개 차원(말투/감정 톤/대화 성향/입장-세계관/호칭) 인터뷰 후 Personality Config 생성. Tester Agent 샘플 대화 검증 포함 | `/persona-builder [--scope workspace\|global] [--remove] [--quick]` |
 | **music-generator** | mmx CLI 기반 음악 생성 — 음악 설계(코드 진행/전조/다이나믹스/리듬/편곡) 우선 체계. Easy/Expert 인터뷰, 가사 자동 생성(가사 밀도/길이 통제, 언어 비율 가이드), 듀엣/그룹 보컬, 참고곡 분석(텍스트·YouTube URL·로컬 MP3) 지원 | `/music-generator [가사 텍스트] [--instrumental] [--genre <genre>] [--mood <mood>] [--out <path>] ...` *(대표 옵션 일부)* |
 | **agent-supervisor** | 에이전트 행동 진단 — 최근 Claude Code 세션 기록을 읽어 예절·말투/규율·정직을 S/A/B/C/D로 채점(커스텀 심사관 서브에이전트, read-only). 수집 단계 선마스킹, 진단 이력 추이 비교, 항목별 3갈래(의도/수정/오진) 문답 후 `~/.claude/rules/agent-discipline.md`에 멱등 병합. **Claude Code 전용(Codex 미지원)** | `/agent-supervisor [--days 7\|3] [--scope global\|current]` |
+| **xmultiplan** | 런타임 교차 합의 계획 — PLANNER(초안)와 CRITIC(비평)을 서로 다른 런타임에 배정해 APPROVE까지 닫힌 루프(최대 N라운드). 기본값 **Codex 초안 + Claude 비평**, `--planner`/`--critic`/`--model`/`--effort`로 역할·모델 가변. 외부 호출은 `codex exec -s read-only`·`claude -p`, 미가용 시 HOST 인라인 폴백. 계획 전용 — 결과를 `pending approval`로 `docs/plans/`에 저장하고 실행하지 않음 | `/xmultiplan [--planner codex\|claude] [--critic codex\|claude] [--model M] [--effort minimal\|low\|medium\|high\|xhigh] [--rounds N] <작업>` |
 
 ## 스킬 사용
 
@@ -101,6 +102,15 @@ Claude Code에서 슬래시 커맨드로 호출:
 
 # 현재 프로젝트 세션만, 3일로 한정
 /agent-supervisor --days 3 --scope current
+
+# 런타임 교차 합의 계획 (기본: Codex 초안 → Claude 비평)
+/xmultiplan 결제 모듈에 멱등성 키를 도입하는 계획을 세워줘
+
+# 역할을 뒤집어 Claude 초안 → Codex 비평 (기존 ralplan --critic codex와 동치)
+/xmultiplan --planner claude --critic codex 캐시 무효화 전략 설계
+
+# Codex 모델·추론 강도 지정, 최대 3라운드
+/xmultiplan --model <codex-model> --effort high --rounds 3 결제 재시도 로직 리팩터링 계획
 ```
 
 ## 설치
@@ -147,6 +157,7 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/fe-interview ~/.claude/skills/f
 ln -sfn /path/to/my-claude-skills/.claude/skills/persona-builder ~/.claude/skills/persona-builder
 ln -sfn /path/to/my-claude-skills/.claude/skills/music-generator ~/.claude/skills/music-generator
 ln -sfn /path/to/my-claude-skills/.claude/skills/agent-supervisor ~/.claude/skills/agent-supervisor
+ln -sfn /path/to/my-claude-skills/.claude/skills/xmultiplan ~/.claude/skills/xmultiplan
 ```
 
 ### 개별 스킬 설치
@@ -172,6 +183,9 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/music-generator ~/.claude/skill
 
 # agent-supervisor만 설치
 ln -sfn /path/to/my-claude-skills/.claude/skills/agent-supervisor ~/.claude/skills/agent-supervisor
+
+# xmultiplan만 설치
+ln -sfn /path/to/my-claude-skills/.claude/skills/xmultiplan ~/.claude/skills/xmultiplan
 ```
 
 ### agent-supervisor 첫 실행 유의사항
