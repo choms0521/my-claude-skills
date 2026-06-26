@@ -1,0 +1,1 @@
+../../../generated/claude/skills/xmultiplan/SKILL.md
