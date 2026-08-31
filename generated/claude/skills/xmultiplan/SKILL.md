@@ -1,6 +1,6 @@
 ---
 name: xmultiplan
-description: "Cross-runtime consensus planning. A planner runtime drafts the plan and a critic runtime evaluates it in a closed loop until APPROVE. Roles are configurable: defaults to Codex planner + Claude critic. Plan-only; marks the result pending approval and never executes."
+description: "Cross-runtime consensus planning. A planner runtime drafts the plan and a critic runtime evaluates it in a closed loop until APPROVE. Roles are configurable: defaults to Codex planner + Claude critic. Multi-step plans include a step dependency graph with parallel execution waves. Plan-only; marks the result pending approval and never executes."
 triggers: ["xmultiplan","cross-plan","crossplan"]
 argument-hint: "[--planner codex|claude] [--critic codex|claude] [--model M] [--effort minimal|low|medium|high|xhigh] [--rounds N] <task description>"
 runtime: claude
@@ -77,8 +77,19 @@ PLANNER에게 아래 **초안 계약**에 맞춘 계획을 요청한다. `inline
   (살아남은 안이 하나뿐이면 나머지를 왜 배제했는지 명시)
 
 ## Plan Steps
-- 순서가 있는 단계. 각 단계마다: 목표 / 산출물 / **측정 가능한 종료 조건**
-  (종료 조건은 "정상 동작" 같은 모호한 표현 금지. 실행 가능한 명령이나 측정 가능한 결과로)
+- 순서가 있는 단계. 각 단계에 `[S1]`, `[S2]` 형태의 ID를 부여한다.
+- 각 단계마다: 목표 / 산출물 / **측정 가능한 종료 조건** / `depends_on: [S...]`
+  (종료 조건은 "정상 동작" 같은 모호한 표현 금지. 실행 가능한 명령이나 측정 가능한 결과로.
+   선행 단계가 없으면 `depends_on: 없음`으로 명시한다)
+
+## Dependency Graph & Parallel Execution
+- **단계가 2개 이상일 때만 작성한다.** 단일 단계 계획이면 이 섹션 전체를 생략한다.
+- mermaid flowchart로 단계 간 의존성을 그린다(예: `S1 --> S3`). 고립된 단계도 노드로 포함한다.
+- Wave 분해: 위상 정렬 기준으로 동시에 시작 가능한 단계를 묶는다.
+  - Wave 1: `depends_on: 없음`인 단계들 — 서로 병렬 실행 가능
+  - Wave 2: Wave 1 완료만으로 시작 가능한 단계들, 이후 동일 규칙 반복
+- 이 섹션은 계획을 집행할 주체가 병렬화를 판단하기 위한 참고 정보다.
+  이 스킬 자체는 어떤 단계도 실행하지 않는다(아래 "금지 사항" 유지).
 
 ## Acceptance Criteria
 - 테스트 가능한 수용 기준. 구체적 명령/조건과 통과 기준을 함께
@@ -103,6 +114,9 @@ Verdict: APPROVE | ITERATE | REJECT
 3. 위험 완화의 구체성: 각 위험에 실효성 있는 완화책이 있는가
 4. 수용 기준의 검증 가능성: 모호한 표현 없이 테스트 가능한가
 5. 단계 종료 조건의 측정 가능성: 각 단계가 측정 가능한 종료 조건을 갖는가
+6. 의존성 그래프 타당성(단계 2개 이상일 때): 순환이 없는가 / `depends_on`이 각 단계의
+   목표·산출물과 모순되지 않는가(누락된 의존이나 허위 의존이 없는가) / Wave 분해가
+   그래프와 일치하는가(같은 Wave 안의 단계끼리 의존이 없는가)
 ```
 
 CRITIC은 반드시 셋 중 하나의 Verdict를 첫 줄에 낸다. `ITERATE`/`REJECT`면 PLANNER가 고칠 수 있도록 항목별로 무엇을 어떻게 보완해야 하는지 적는다.
