@@ -1,0 +1,29 @@
+{
+  "name": "reauth-docmost",
+  "description": "docmost MCP 인증 토큰 갱신 — 로그인된 Chrome 세션의 authToken 쿠키를 복호화해 ~/.claude.json의 docmost Bearer 토큰에 주입하고 재연결을 안내한다. docmost MCP가 토큰 만료/401/unauthorized 오류를 낼 때 사용. Claude는 헤더를 직접 읽고, Codex 0.151.0+는 bearer_token_env_var(DOCMOST_MCP_TOKEN)로 셸 환경에서 읽으며 그 값은 ~/.codex/docmost-token.env가 ~/.claude.json에서 파생시킨다. 한 파일만 갱신하면 두 런타임 공통 적용.",
+  "triggers": [
+    "reauth docmost",
+    "reauth-docmost",
+    "docmost 재인증",
+    "docmost 토큰 갱신",
+    "docmost 토큰 만료",
+    "docmost authToken expired",
+    "docmost token expired",
+    "docmost 401",
+    "docmost unauthorized",
+    "docmost 인증 오류",
+    "docmost auth error"
+  ],
+  "argumentHint": "[--dry-run]",
+  "source": {
+    "claude": ".claude/skills/reauth-docmost/SKILL.md"
+  },
+  "assets": [
+    "scripts"
+  ],
+  "runtimeSupport": {
+    "claude": "full",
+    "codex": "full"
+  },
+  "codexFindings": []
+}

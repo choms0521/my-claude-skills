@@ -28,6 +28,7 @@ Claude Code에서 사용하는 커스텀 스킬 모음 저장소입니다.
 | **music-generator** | mmx CLI 기반 음악 생성 — 음악 설계(코드 진행/전조/다이나믹스/리듬/편곡) 우선 체계. Easy/Expert 인터뷰, 가사 자동 생성(가사 밀도/길이 통제, 언어 비율 가이드), 듀엣/그룹 보컬, 참고곡 분석(텍스트·YouTube URL·로컬 MP3) 지원 | `/music-generator [가사 텍스트] [--instrumental] [--genre <genre>] [--mood <mood>] [--out <path>] ...` *(대표 옵션 일부)* |
 | **agent-supervisor** | 에이전트 행동 진단 — 최근 Claude Code 세션 기록을 읽어 예절·말투/규율·정직을 S/A/B/C/D로 채점(커스텀 심사관 서브에이전트, read-only). 수집 단계 선마스킹, 진단 이력 추이 비교, 항목별 3갈래(의도/수정/오진) 문답 후 `~/.claude/rules/agent-discipline.md`에 멱등 병합. **Claude Code 전용(Codex 미지원)** | `/agent-supervisor [--days 7\|3] [--scope global\|current]` |
 | **xmultiplan** | 런타임 교차 합의 계획 — PLANNER(초안)와 CRITIC(비평)을 서로 다른 런타임에 배정해 APPROVE까지 닫힌 루프(최대 N라운드). 기본값 **Codex 초안 + Claude 비평**, `--planner`/`--critic`/`--model`/`--effort`로 역할·모델 가변. 외부 호출은 `codex exec -s read-only`·`claude -p`, 미가용 시 HOST 인라인 폴백. 계획 전용 — 결과를 `pending approval`로 `docs/plans/`에 저장하고 실행하지 않음 | `/xmultiplan [--planner codex\|claude] [--critic codex\|claude] [--model M] [--effort minimal\|low\|medium\|high\|xhigh] [--rounds N] <작업>` |
+| **reauth-docmost** | docmost MCP 인증 토큰 갱신 — 로그인된 Chrome 세션의 `authToken` 쿠키를 로컬 쿠키 저장소에서 복호화(macOS 키체인)해 `~/.claude.json`의 docmost `Bearer` 토큰에 주입하고 재연결을 안내. Claude는 헤더를 직접 읽고, **Codex 0.151.0+는 `bearer_token_env_var`(`DOCMOST_MCP_TOKEN`)로 셸 환경에서 읽으며** 그 값은 `~/.codex/docmost-token.env`가 `~/.claude.json`에서 파생 — 한 파일만 갱신하면 두 런타임 공통 적용. 만료 토큰·동일 토큰·미구성 서버는 게이트로 차단하고, 원자적 교체 + 타임스탬프 백업 + 토큰 마스킹. docmost가 401/토큰 만료 오류를 낼 때 자동 트리거. **Claude·Codex 모두 지원** | `/reauth-docmost [--dry-run]` |
 
 ## 스킬 사용
 
@@ -111,6 +112,12 @@ Claude Code에서 슬래시 커맨드로 호출:
 
 # Codex 모델·추론 강도 지정, 최대 3라운드
 /xmultiplan --model <codex-model> --effort high --rounds 3 결제 재시도 로직 리팩터링 계획
+
+# docmost MCP 토큰 갱신 — 먼저 드라이런으로 무엇이 바뀔지 확인
+/reauth-docmost --dry-run
+
+# 실제 주입 (Chrome에 docmost 로그인된 상태여야 함) → 이후 /mcp에서 docmost 재연결
+/reauth-docmost
 ```
 
 ## 설치
@@ -158,6 +165,7 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/persona-builder ~/.claude/skill
 ln -sfn /path/to/my-claude-skills/.claude/skills/music-generator ~/.claude/skills/music-generator
 ln -sfn /path/to/my-claude-skills/.claude/skills/agent-supervisor ~/.claude/skills/agent-supervisor
 ln -sfn /path/to/my-claude-skills/.claude/skills/xmultiplan ~/.claude/skills/xmultiplan
+ln -sfn /path/to/my-claude-skills/.claude/skills/reauth-docmost ~/.claude/skills/reauth-docmost
 ```
 
 ### 개별 스킬 설치
@@ -186,6 +194,9 @@ ln -sfn /path/to/my-claude-skills/.claude/skills/agent-supervisor ~/.claude/skil
 
 # xmultiplan만 설치
 ln -sfn /path/to/my-claude-skills/.claude/skills/xmultiplan ~/.claude/skills/xmultiplan
+
+# reauth-docmost만 설치
+ln -sfn /path/to/my-claude-skills/.claude/skills/reauth-docmost ~/.claude/skills/reauth-docmost
 ```
 
 ### agent-supervisor 첫 실행 유의사항
