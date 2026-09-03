@@ -15,7 +15,7 @@ xmultiplan은 계획 모듈이다. 컨텍스트를 읽고 계획 문서를 작�
 | `--planner <codex\|claude>` | `codex` | 초안을 작성할 런타임 |
 | `--critic <codex\|claude>` | `claude` | 초안을 비평할 런타임 |
 | `--model <model>` | (미지정) | Codex 역할이 외부 호출일 때 `codex exec -m`에 전달할 모델. 미지정 시 사용자의 `~/.codex/config.toml` 기본값을 존중한다 |
-| `--effort <minimal\|low\|medium\|high\|xhigh>` | `medium` | Codex 역할의 추론 강도(`model_reasoning_effort`). 어려운 설계는 `high` 권장 |
+| `--effort <minimal\|low\|medium\|high\|xhigh>` | (미지정) | Codex 역할의 추론 강도(`model_reasoning_effort`). 미지정 시 사용자의 `~/.codex/config.toml` 기본값을 존중한다. 어려운 설계는 `high` 권장 |
 | `--rounds <N>` | `2` | PLANNER↔CRITIC 최대 반복 횟수(1 이상 4 이하로 클램프) |
 
 ## 핵심 개념 — HOST 런타임과 역할 배정
@@ -31,7 +31,7 @@ xmultiplan은 계획 모듈이다. 컨텍스트를 읽고 계획 문서를 작�
 
 1. 마지막 플래그 뒤의 자유 텍스트를 `<task description>`으로 본다. 비어 있으면 사용자에게 한 줄로 작업 설명을 요청하고 멈춘다.
 2. `--planner`, `--critic`을 정규화한다(소문자, 미지정 시 기본값). 값이 `codex`/`claude`가 아니면 오류로 멈춘다.
-3. `--rounds`는 정수로 파싱 후 1~4로 클램프한다. `--effort`는 허용값 집합에 없으면 `medium`으로 되돌린다.
+3. `--rounds`는 정수로 파싱 후 1~4로 클램프한다. `--effort`는 허용값 집합에 없으면 무시하고 미지정으로 취급한다(사용자 기본값 존중).
 4. 각 역할에 대해 `runtime == HOST`이면 `inline`, 아니면 `external`로 표시한다.
 
 ### 1. 가드(boundary guard)
@@ -148,10 +148,10 @@ elif command -v gtimeout >/dev/null 2>&1; then WATCHDOG="gtimeout 600"
 else WATCHDOG=""; fi
 
 # -s read-only 로 저장소를 건드리지 못하게 한다.
-# --model 은 --model 플래그가 있을 때만 붙인다(없으면 사용자 기본 모델 존중).
+# --model / --effort 는 해당 플래그가 있을 때만 붙인다(없으면 config.toml 의 model / model_reasoning_effort 존중).
 $WATCHDOG env HOME="$CODEX_RUN_HOME" \
   codex exec -s read-only \
-  -c model_reasoning_effort="${EFFORT:-medium}" \
+  ${EFFORT:+-c model_reasoning_effort="$EFFORT"} \
   ${MODEL:+-m "$MODEL"} \
   -o "$CODEX_OUT" \
   - < "$CODEX_PROMPT"
